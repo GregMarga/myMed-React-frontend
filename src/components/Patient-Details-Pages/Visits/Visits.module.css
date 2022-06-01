@@ -1,0 +1,19 @@
+.visits{
+    padding-left: 10%;
+    padding-top: 7%;
+   
+    
+}
+.cardsVisit{
+    width: 88%;
+    left: 6%;
+}
+
+
+@media only screen and (max-width: 1000px) {
+    .visits {
+       padding-left: 0;
+     
+
+    }
+  }

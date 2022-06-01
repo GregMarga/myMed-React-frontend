@@ -1,0 +1,19 @@
+.myDiv{
+    padding-left: 10%;
+    font-size: 1.32rem;
+    width: 100%;
+    background-color: rgb(215, 229, 242);
+    position: fixed;
+    top:5rem;
+}
+@media only screen and (max-width: 1000px) {
+    .myDiv {
+      width: 100%;
+      padding-left: auto;
+      height: auto;
+      position: relative;
+      top:auto;
+
+    }
+  }
+  

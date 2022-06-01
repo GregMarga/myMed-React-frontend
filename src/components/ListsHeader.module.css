@@ -1,0 +1,14 @@
+.visitsHeader{
+    background-color: rgb(215, 229, 242);
+    border-bottom:solid black 1px ;
+    width: 100%;
+   
+}
+.test{
+    border-right: solid white 2px;
+}
+.visitsHeader h4{
+    font-size: 1.3rem;
+    font-weight: bold; 
+
+}

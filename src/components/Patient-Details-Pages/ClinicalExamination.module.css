@@ -1,0 +1,8 @@
+.clinical{
+    padding-left: 10%;
+}
+.clinical div{
+    width: 100%;
+    text-decoration:underline ;
+    color:red;
+}

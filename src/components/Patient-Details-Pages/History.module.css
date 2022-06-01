@@ -1,0 +1,40 @@
+.history{
+    font-size: 1.25rem;
+    padding-top: 7.5%;
+}
+.history label{
+    font-weight: bold;
+}
+.history textarea{
+    width: 120%;
+    margin-bottom: 10%;
+}
+.history #others{
+    width: 140%;
+}
+@media only screen and (max-width: 1000px) {
+    .history {
+      width: 100%;
+      padding-left: auto;
+      height: auto;
+      position: relative;
+      top:auto;
+
+    }
+  }
+  @media only screen and (max-width: 1470px) {
+    .history textarea {
+       width: 300px;
+     
+
+    }
+    .history{
+        width: 100%;
+       
+        height: auto;
+        position: relative;
+        padding-top: 12%;
+    }
+  }
+
+  

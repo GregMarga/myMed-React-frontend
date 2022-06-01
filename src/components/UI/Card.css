@@ -1,0 +1,7 @@
+
+.card{
+    border-radius: 12px;
+    box-shadow: 1 1px 8px rgba(255, 255,255, 0.25);
+    /* min-width: 1300px;
+    overflow-x: scroll; */
+}

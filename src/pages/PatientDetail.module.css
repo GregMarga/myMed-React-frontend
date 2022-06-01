@@ -1,0 +1,28 @@
+.mytitle{
+    position: fixed;
+    top:116px; 
+    padding-left: 15%;
+    font-style: italic;
+   
+}
+.mytitle span{
+    color: red;
+}
+@media only screen and (max-width: 1450px) {
+    .mytitle {
+      width: 100%;
+    
+
+    }
+  }
+  @media only screen and (max-width: 999px) {
+    .mytitle {
+      width: 100%;
+      padding-left: auto;
+      height: auto;
+      position: relative;
+      top:auto;
+
+    }
+  }
+  

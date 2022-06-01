@@ -1,0 +1,53 @@
+
+  .myHeader{
+    background-color: #97c0f5;
+    padding-left: 10%;
+    width: 100%;
+    height: 5rem;
+    position: fixed;
+    top:0;
+  }
+    
+  .myHeader a {
+    color: white;
+    text-decoration: none;
+  }
+  .myHeader li {
+    margin: 1rem;
+   
+    font-size: 1.38rem;
+  }
+  .myHeader ul {
+    height: 100%;
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    /* justify-content: space-around; */
+  }
+  .myHeader nav {
+    height: 100%;
+  }
+  .myHeader a:hover,
+  .myHeader a:active,
+  .myHeader a.active {
+    color: #c6f2f7;
+    padding-bottom: 0.25rem;
+    border-bottom: 4px solid #c6f2f7;
+  }
+  @media only screen and (max-width: 1000px) {
+    .myHeader {
+      width: 100%;
+      padding-left: 0;
+      height: auto;
+      position: relative;
+      top:auto;
+
+    }
+    .myHeader li {
+      margin: 1rem;
+     
+      font-size: 1.1rem;
+    }
+  }
+  

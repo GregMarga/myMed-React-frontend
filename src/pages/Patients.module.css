@@ -1,0 +1,18 @@
+
+.test {
+    padding-left: 15%;
+    padding-right: 5%;
+    /* padding-right: 10%; */
+    /* width: 72%; */
+}
+.addButton{
+    color: white;
+    background-color: #889dbf;
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.addButton:hover{
+    background-color: #566f97;
+}

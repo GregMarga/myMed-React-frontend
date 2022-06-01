@@ -1,0 +1,20 @@
+/* .myLinks{
+    background-color: red;
+} */
+.myLinks:hover span{
+    color: aliceblue;  
+   
+}
+.myLinks span{
+   
+    display: inline-block;
+    width: 130%;
+    height: 100%;
+}
+@media only screen and (max-width: 900px) {
+    .myLinks {
+        border:solid black 1px;
+     
+    }
+  }
+ 

@@ -1,0 +1,42 @@
+.bloodForm{
+    font-size: 1.0625rem;
+}
+.bloodForm label{
+    font-weight: bold;
+    
+}
+.bloodForm input{
+    width: 5%;
+    position :fixed;
+    right:63%;
+    
+}
+.myCol{
+    margin-bottom: 1.5%;
+}
+.bloodForm span{
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin-right: 4.8%;
+    text-decoration: underline;
+}
+@media only screen and (max-width: 1800px) {
+    .bloodForm input {
+        position: relative; 
+        right: auto;
+        width: 9%;
+        margin-left: 1%;
+     
+
+    }
+  }
+@media only screen and (max-width: 1200px) {
+    .bloodForm input {
+        position: relative; 
+        right: auto;
+        width: 20%;
+        margin-left: 1%;
+     
+
+    }
+  }

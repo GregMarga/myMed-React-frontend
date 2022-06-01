@@ -1,0 +1,56 @@
+.basicForm{
+    padding-right: 5%;
+    padding-top: 7.5%;
+}
+.basicForm input{
+    border-radius: 4px;
+    font:inherit;
+    padding: 5px;
+    padding-left: 0;
+    width: 20rem;
+    max-width: 100%;
+    box-sizing: border-box; 
+    margin: 0;
+    outline:0;
+    margin-bottom: 25px;
+    font-size: 20px;
+
+
+}
+.basicForm select{
+    font-size: 1.38rem;
+    width: 100%;
+
+}
+.basicForm label{
+    font-weight: bold;
+    margin-bottom: 1.38rem;
+    font-size: 1.25rem;
+    padding: 4px;
+    padding-right: 0;
+    
+}
+.basicForm span{
+    color: red;
+}
+
+@media only screen and (max-width: 1000px) {
+    .basicForm select {
+       width: 300px;
+     
+
+    }
+  }
+  @media only screen and (max-width: 1470px) {
+    .basicForm {
+      width: 100%;
+      padding-left: auto;
+      height: auto;
+      position: relative;
+      padding-top: 10%;
+      padding-right: auto;
+     
+
+    }
+   
+  }
