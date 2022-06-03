@@ -17,20 +17,11 @@ function App() {
     })
       .then((data) => {
         setLoadedPatients(data);
-      })``
+      })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
-
-
-  // const patientsList=[
-  //   {id:'p1',sirname:'Μαργαρίτης',name:'Γρηγόρης',fathersName:'Βασίλειος',age:'23',tel:'6984651329',amka:'011019983232'},
-  //   {id:'p2',sirname:'Μαργαρίτης',name:'Γρηγόρης',fathersName:'Βασίλειος',age:'23',tel:'6984651329',amka:'011019983232'},
-  //   {id:'p3',sirname:'Μαργαρίτης',name:'Γρηγόρης',fathersName:'Βασίλειος',age:'23',tel:'6984651329',amka:'011019983232'},
-  //   {id:'p4',sirname:'Μαργαρίτης',name:'Γρηγόρης',fathersName:'Βασίλειος',age:'23',tel:'6984651329',amka:'011019983232'},
-  //   {id:'p5',sirname:'Μαργαρίτης',name:'Γρηγόρης',fathersName:'Βασίλειος',age:'23',tel:'6984651329',amka:'011019983232'},
-  // ];
 
   return (
     <div>
@@ -47,7 +38,7 @@ function App() {
             <Appointments />
           </Route>
           <Route path='/patients/:patientId' >
-            <PatientDetail patients={loadedPatients} />
+            <PatientDetail />
           </Route>
         </Switch>
       </main>

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import classes from './Basic.module.css';
+import SaveButton from '../UI/SaveButton';
 
 
 
@@ -120,6 +121,10 @@ const Basic = () => {
                             <input id='email' type='text' />
                         </Col>
                     </Row>
+                    <Row >
+                        <Col  ><SaveButton/></Col>
+                    </Row>
+                    
 
 
                 </Container>

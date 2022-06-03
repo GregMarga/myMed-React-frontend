@@ -1,0 +1,7 @@
+.saveButton{
+    border: none;
+    background-color: ebeced;
+    position: fixed;
+    right: 18vw;
+    margin-top:2%;
+}
