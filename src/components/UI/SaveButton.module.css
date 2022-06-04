@@ -1,7 +1,17 @@
 .saveButton{
     border: none;
-    background-color: ebeced;
+    background-color: #ebeced;
     position: fixed;
     right: 18vw;
     margin-top:2%;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+}
+.saveButton:hover{
+    transform: scale(1.1) perspective(1px);
+    
+}
+.saveButton:active{
+    transform:translateY(5px);
 }
