@@ -3,25 +3,9 @@ import SideNavigation from './components/SideNavigation';
 import Appointments from './pages/Appointments';
 import PatientDetail from './pages/PatientDetail';
 import Patients from './pages/Patients';
-import { useState, useEffect } from 'react';
 
 function App() {
-  const [loadedPatients, setLoadedPatients] = useState([]);
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
-
-  useEffect(() => {
-    fetch("http://localhost:5000/patients"
-    ).then((response) => {
-      return response.json()
-    })
-      .then((data) => {
-        setLoadedPatients(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+  // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
   return (
     <div>
@@ -32,7 +16,7 @@ function App() {
             <Redirect to='/patients' />
           </Route>
           <Route path='/patients' exact>
-            <Patients patients={loadedPatients} />
+            <Patients />
           </Route>
           <Route path='/appointments'>
             <Appointments />

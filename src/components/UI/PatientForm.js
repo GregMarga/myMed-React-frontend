@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef,useState } from 'react';
 import classes from './PatientForm.module.css';
 
 const PatientForm = (props) => {
@@ -8,6 +8,7 @@ const PatientForm = (props) => {
     const AgeInputRef = useRef();
     const TelInputRef = useRef();
     const amkaInputRef = useRef();
+    // const [patient,setPatient]=useState()
     // const [userInput,setUserInput]=useState({
     //     enteredSirname:'',
     //     enteredName:'',
@@ -26,17 +27,16 @@ const PatientForm = (props) => {
             tel: TelInputRef.current.value,
             amka: amkaInputRef.current.value
         }
-        console.log(enteredPatient);
         const response=await fetch('http://localhost:5000/patients', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: enteredPatient
+            body: JSON.stringify(enteredPatient)
         });
         const data=await response.json();
-        console.log(data);
+        props.onSubmit(data);
         props.onClick(); //close form
 
     }

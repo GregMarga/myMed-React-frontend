@@ -13,8 +13,8 @@ const PatientsList=(props)=>{
                    
                         {props.patients.map((patient)=>(
                         <PatientsListItems 
-                        key={patient.id}
-                        id={patient.id}
+                        key={patient._id}
+                        id={patient._id}
                         sirname={patient.sirname}
                         name={patient.name}
                         fathersName={patient.fathersName}
