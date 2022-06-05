@@ -1,0 +1,65 @@
+.deleteModal {
+    z-index: 100;
+    position: fixed;
+    top: 15vh;
+    left: 15%;
+    width: 70%;
+    height: 30%;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-radius: 8px;
+}
+.cancel{
+    position: fixed;
+    top: 40%;
+    right:40%;
+    width: 4.2%;
+    font-size: 1.3rem;
+    color: red;
+    background-color: white;
+    border-radius: 2px;
+    border: 1px solid red;    
+}
+.cancel:hover{
+    transform: scale(1.1) perspective(1px);
+}
+.cancel:active{
+    transform:translateY(5px);
+}
+.delete{
+    position: fixed;
+    top: 40%;
+    right: 34.5%;
+    width: 4.4%;
+    font-size: 1.3rem;
+    color:white;
+    background-color: red;
+    border-radius: 2px;
+    border: 1px solid white;
+}
+.delete:hover{
+    transform: scale(1.1) perspective(1px);
+}
+.delete:active{
+    transform:translateY(5px);
+}
+.deleteModal header {
+    width: 100%;
+    padding: 1rem 0.5rem;
+    background: #2a006e;
+    color: white;
+}
+
+.deleteModal h3 {
+    margin: 0.5rem;
+}
+
+.deleteModal div {
+    font-size: 1.4rem;
+}
+@media (min-width: 768px) {
+    .deleteModal {
+      left: calc(50% - 20rem);
+      width: 40rem;
+    }
+  }
