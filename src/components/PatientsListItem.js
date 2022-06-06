@@ -8,6 +8,9 @@ const PatientsListItems = (props) => {
         function deleteHandler(){
                 props.onDelete(props.id);
         }
+        function editHandler(){
+                props.onEdit(props.id);
+        }
         return (
 
 
@@ -20,7 +23,7 @@ const PatientsListItems = (props) => {
                         <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.tel}</span></Link></Col>
                         <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.amka}</span></Link></Col>
                         <Col className='text-end' >
-                                <EditButton />
+                                <EditButton onClick={editHandler}/>
                                 <DeleteButton onClick={deleteHandler} />
                         </Col>
 

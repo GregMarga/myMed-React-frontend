@@ -13,7 +13,8 @@ const PatientsList=(props)=>{
                    
                         {props.patients.map((patient)=>(
                         <PatientsListItems
-                        onDelete={props.onDelete} 
+                        onDelete={props.onDelete}
+                        onEdit={props.onEdit} 
                         key={patient._id}
                         id={patient._id}
                         sirname={patient.sirname}
