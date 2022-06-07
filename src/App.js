@@ -4,14 +4,59 @@ import Appointments from './pages/Appointments';
 import PatientDetail from './pages/PatientDetail';
 import Patients from './pages/Patients';
 import Auth from './authentication/Auth';
+import { AuthContext } from './context/auth-context';
+import { useState, useCallback } from 'react';
 
 function App() {
-  // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  let routes;
+  if (!isLoggedIn) {
+    routes=(
+      <Switch>
+        <Route path='/' exact>
+          <Auth />
+        </Route>
+        {/* <Route path='/' exact>
+          <Redirect to='/auth' />
+        </Route> */}
+      </Switch>
+    )
+  } else {
+    routes=(
+      <Switch>
+        <Route path='/' exact>
+          <SideNavigation />
+          <Redirect to='/patients' />
+        </Route>
+        <Route path='/patients' exact>
+          <SideNavigation />
+          <Patients />
+        </Route>
+        <Route path='/appointments'>
+          <SideNavigation />
+          <Appointments />
+        </Route>
+        <Route path='/patients/:patientId' >
+          <SideNavigation />
+          <PatientDetail />
+        </Route>
+      </Switch>
+    )
+
+  }
 
   return (
-
+    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
       <main>
-        <Switch>
+        {routes}
+        {/* <Switch>
           <Route path='/' exact>
             <SideNavigation />
             <Redirect to='/patients' />
@@ -31,8 +76,9 @@ function App() {
           <Route path='/auth' >
             <Auth />
           </Route>
-        </Switch>
+        </Switch> */}
       </main>
+    </AuthContext.Provider>
   );
 }
 

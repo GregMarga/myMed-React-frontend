@@ -1,49 +1,36 @@
 import { NavLink } from 'react-router-dom';
 import classes from './SideNavigation.module.css'
 import { Navbar, Container } from 'react-bootstrap';
+import { AuthContext } from '../context/auth-context';
+import { useContext } from 'react';
 
 const SideNavigation = () => {
+    const auth = useContext(AuthContext);
     return (
         <Navbar expand='lg'>
             <Container fluid>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id="basic-navbar-nav">
-                <header className={classes.header}>
-                    <ul>
-                        <li>
-                            <NavLink activeClassName={classes.active} to='/patients'>Patients</NavLink>
-                        </li>
-                        <li>
-                            <NavLink activeClassName={classes.active} to='/Appointments'>Appointments</NavLink>
-                        </li>
-                    </ul>
-                </header>
+                    <header className={classes.header}>
+                        <ul>
+                            <li>
+                                <NavLink className={classes.headerA} activeClassName={classes.active} to='/patients'>Patients</NavLink>
+                            </li>
+                            <li>
+                                <NavLink className={classes.headerA} activeClassName={classes.active} to='/Appointments'>Appointments</NavLink>
+                            </li>
+                            {auth.isLoggedIn &&
+                                <li>
+                                    <button onClick={auth.logout} className={classes.logoutButton}><NavLink  to='/'>Logout</NavLink></button>
+                                </li>
+                            }
+                        </ul>
+                    </header>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
     );
 }
-// const SideNavigation = () => {
-//     return (
-//         <header className={classes.header}>
-//             <nav>
-//                 <ul>
-//                     <li>
-//                         <NavLink activeClassName={classes.active} to='/patients'>Patients</NavLink>
-//                     </li>
-//                     <li>
-//                         <NavLink activeClassName={classes.active} to='/Appointments'>Appointments</NavLink>
-//                     </li>
-//                     {/* <li>
-//                         <NavLink  activeClassName={classes.active} to='/dfdaf'>Patients</NavLink>
-//                     </li>
-//                     <li>
-//                         <NavLink activeClassName={classes.active} to='/fdasf'>Appointments</NavLink>
-//                     </li> */}
-//                 </ul>
-//             </nav>
-//         </header>
-//     );
-// }
+
 
 export default SideNavigation;
