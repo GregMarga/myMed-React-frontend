@@ -6,28 +6,59 @@ import classes from './Patients.module.css';
 import Modal from '../components/UI/Modal';
 import DeleteModal from '../components/UI/DeleteModal';
 import EditPatient from '../components/EditPatient';
+import ErrorModal from '../components/UI/ErrorModal';
+import LoadingSpinner from '../components/UI/LoadingSpinner';
 import { useState, useEffect } from 'react';
 
 const Patients = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-    const [editModalIsOpen,setEditModalIsOpen]=useState(false);
+    const [editModalIsOpen, setEditModalIsOpen] = useState(false);
     const [loadedPatients, setLoadedPatients] = useState([]);
-    const [patientToDelete,setPatientToDelete]=useState();
-    const [patientToEdit,setPatientToEdit]=useState();
+    const [patientToDelete, setPatientToDelete] = useState();
+    const [patientToEdit, setPatientToEdit] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
 
     useEffect(() => {
-        fetch("http://localhost:5000/patients"
-        ).then((response) => {
-            return response.json()
-        })
-            .then((data) => {
-                setLoadedPatients(data);
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
+        const sendRequest = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch("http://localhost:5000/patients");
+                const responseData = await response.json();
+                if (!response.ok){
+                    throw new Error(responseData.message);
+                }
+                setLoadedPatients(responseData);
+                setIsLoading(false);
+            }catch(err){
+                setError(err.message);
+                setIsLoading(false);
+            }
+            
+        };
+        sendRequest();
     }, []);
+    const errorHandler=()=>{
+        setError();
+    }
+    //     setIsLoading(true);
+    //     fetch("http://localhost:5000/patients"
+    //     ).then((response) => {
+    //         return response.json()
+    //     })
+    //         .then((data) => {
+    //             if(!response.ok){
+    //                 throw new Error(data.message);
+    //             }
+    //             setLoadedPatients(data);
+    //             setIsLoading(false);
+    //         })
+    //         .catch((err) => {
+    //             setError(err.message);
+    //             console.log(err.message);
+    //         });
+    // }, []);
 
     function addPatientHandler() {
         setModalIsOpen(true);
@@ -40,15 +71,15 @@ const Patients = () => {
         setDeleteModalIsOpen(true);
         setPatientToDelete(patientId);
     }
-    function closeDeleteModal(){
+    function closeDeleteModal() {
         setDeleteModalIsOpen(false);
     }
-    function editHandler(patientId){
+    function editHandler(patientId) {
         setEditModalIsOpen(true);
         setPatientToEdit(patientId);
         console.log(patientId);
     }
-    function closeEditModal(){
+    function closeEditModal() {
         setEditModalIsOpen(false);
     }
     function submitPatientHandler(patient) {
@@ -56,16 +87,16 @@ const Patients = () => {
             return [patient, ...prevPatients];
         });
     }
-    async function deletePatientHandler(patient){
-        const response=await fetch(`http://localhost:5000/patients/${patientToDelete}`, {
+    async function deletePatientHandler(patient) {
+        const response = await fetch(`http://localhost:5000/patients/${patientToDelete}`, {
             method: 'delete',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        const deletedPatient=await response.json();
-        setLoadedPatients(prevPatients=>{
-            return prevPatients.filter(patient=>patient._id!==deletedPatient._id)
+        const deletedPatient = await response.json();
+        setLoadedPatients(prevPatients => {
+            return prevPatients.filter(patient => patient._id !== deletedPatient._id)
         })
         setDeleteModalIsOpen(false);
     }
@@ -73,15 +104,17 @@ const Patients = () => {
         <div className={classes.test}>
 
             <Container>
-                <PatientsListHeader />
-                <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler}/>
+                {!isLoading&&loadedPatients&&<PatientsListHeader />}
+                {isLoading&&<LoadingSpinner/>}
+                {!!error&&<ErrorModal error={error} onClear={errorHandler}/>}
+                {!isLoading&&loadedPatients&&<PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>
                 {modalIsOpen && <Modal onClose={closeHandler} onSubmit={submitPatientHandler} patients={loadedPatients} />}
                 {modalIsOpen && <Backdrop onClick={closeHandler} />}
-                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal}/>}
-                {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal}/>}
-                {editModalIsOpen&&<Backdrop onClick={closeEditModal}/>}
-                {editModalIsOpen&&<EditPatient onClose={closeEditModal} patientId={patientToEdit}/>}
+                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} />}
+                {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
+                {editModalIsOpen && <Backdrop onClick={closeEditModal} />}
+                {editModalIsOpen && <EditPatient onClose={closeEditModal} patientId={patientToEdit} />}
 
             </Container>
         </div>
