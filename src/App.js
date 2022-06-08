@@ -9,11 +9,15 @@ import { useState, useCallback } from 'react';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const login = useCallback(() => {
+  const [userId,setUserId]=useState(null);
+
+  const login = useCallback((uid) => {
     setIsLoggedIn(true);
+    setUserId(uid);
   }, []);
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
   }, []);
 
   let routes;
@@ -53,30 +57,9 @@ function App() {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn,userId:userId, login: login, logout: logout }}>
       <main>
         {routes}
-        {/* <Switch>
-          <Route path='/' exact>
-            <SideNavigation />
-            <Redirect to='/patients' />
-          </Route>
-          <Route path='/patients' exact>
-            <SideNavigation />
-            <Patients />
-          </Route>
-          <Route path='/appointments'>
-            <SideNavigation />
-            <Appointments />
-          </Route>
-          <Route path='/patients/:patientId' >
-            <SideNavigation />
-            <PatientDetail />
-          </Route>
-          <Route path='/auth' >
-            <Auth />
-          </Route>
-        </Switch> */}
       </main>
     </AuthContext.Provider>
   );

@@ -9,12 +9,13 @@ import Visits from '../components/Patient-Details-Pages/Visits/Visits';
 import PatientId from '../components/PatientId';
 import classes from './PatientDetail.module.css';
 import VisitDetail from '../components/Patient-Details-Pages/Visits/VisitDetail';
-import { useState,useEffect } from 'react';
+// import { PatientContext } from '../context/patient-context';
+import { useState,useEffect} from 'react';
 
 
 
 const PatientDetail = () => {
-    const [loadedPatient, setLoadedPatient] = useState({name:'',sirname:'',age:'',amka:''});
+    const [loadedPatient, setLoadedPatient] = useState({name:'',sirname:'',age:'',amka:'',fathersName:'',tel:''});
     const params = useParams();
     const patientId = params.patientId;
     useEffect(() => {
@@ -23,6 +24,7 @@ const PatientDetail = () => {
             return response.json()
         })
             .then((data) => {
+                console.log(data)
                 setLoadedPatient(data);
             })
             .catch((err) => {
@@ -38,7 +40,7 @@ const PatientDetail = () => {
             <h5 className={classes.mytitle}>Τα πεδία με <span>* </span>είναι απαραίτητα</h5>
 
             <Switch>
-                <Route path={`/patients/${params.patientId}/basic`} exact><Basic /></Route>
+                <Route path={`/patients/${params.patientId}/basic`} exact><Basic patient={loadedPatient}/></Route>
                 <Route path={`/patients/${params.patientId}/anamnistiko`}><History /></Route>
                 <Route path={`/patients/${params.patientId}/visits`} exact><div><Visits /></div></Route>
                 <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>

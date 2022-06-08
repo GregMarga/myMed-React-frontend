@@ -8,6 +8,7 @@ import DeleteModal from '../components/UI/DeleteModal';
 import EditPatient from '../components/EditPatient';
 import ErrorModal from '../components/UI/ErrorModal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
+import { useHttpClient } from '../hooks/http-hook';
 import { useState, useEffect } from 'react';
 
 const Patients = () => {
@@ -17,49 +18,20 @@ const Patients = () => {
     const [loadedPatients, setLoadedPatients] = useState([]);
     const [patientToDelete, setPatientToDelete] = useState();
     const [patientToEdit, setPatientToEdit] = useState();
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState();
+    const {isLoading,error,sendRequest,clearError}=useHttpClient();
+   
 
     useEffect(() => {
-        const sendRequest = async () => {
-            setIsLoading(true);
+        const fetchPatients = async () => {
             try {
-                const response = await fetch("http://localhost:5000/patients");
-                const responseData = await response.json();
-                if (!response.ok){
-                    throw new Error(responseData.message);
-                }
+                const responseData = await sendRequest("http://localhost:5000/patients");
                 setLoadedPatients(responseData);
-                setIsLoading(false);
-            }catch(err){
-                setError(err.message);
-                setIsLoading(false);
-            }
+            }catch(err){ }
             
         };
-        sendRequest();
-    }, []);
-    const errorHandler=()=>{
-        setError();
-    }
-    //     setIsLoading(true);
-    //     fetch("http://localhost:5000/patients"
-    //     ).then((response) => {
-    //         return response.json()
-    //     })
-    //         .then((data) => {
-    //             if(!response.ok){
-    //                 throw new Error(data.message);
-    //             }
-    //             setLoadedPatients(data);
-    //             setIsLoading(false);
-    //         })
-    //         .catch((err) => {
-    //             setError(err.message);
-    //             console.log(err.message);
-    //         });
-    // }, []);
-
+        fetchPatients();
+    }, [sendRequest]);
+ 
     function addPatientHandler() {
         setModalIsOpen(true);
     }
@@ -106,7 +78,7 @@ const Patients = () => {
             <Container>
                 {!isLoading&&loadedPatients&&<PatientsListHeader />}
                 {isLoading&&<LoadingSpinner/>}
-                {!!error&&<ErrorModal error={error} onClear={errorHandler}/>}
+                {!!error&&<ErrorModal error={error} onClear={clearError}/>}
                 {!isLoading&&loadedPatients&&<PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>
                 {modalIsOpen && <Modal onClose={closeHandler} onSubmit={submitPatientHandler} patients={loadedPatients} />}

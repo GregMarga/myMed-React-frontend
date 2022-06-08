@@ -1,22 +1,18 @@
 import { useRef } from 'react';
+import { AuthContext } from '../../context/auth-context';
+import { useContext } from 'react';
 import classes from './PatientForm.module.css';
 
+
 const PatientForm = (props) => {
+    const auth=useContext(AuthContext);
     const sirnameInputRef = useRef();
     const nameInputRef = useRef();
     const fathersNameInputRef = useRef();
     const AgeInputRef = useRef();
     const TelInputRef = useRef();
     const amkaInputRef = useRef();
-    // const [patient,setPatient]=useState()
-    // const [userInput,setUserInput]=useState({
-    //     enteredSirname:'',
-    //     enteredName:'',
-    //     enteredFathersName:'',
-    //     enteredAge:'',
-    //     enteredTel:'',
-    //     enteredAmka:''
-    // })
+   
     async function submitHandler(event) {
         event.preventDefault();
         const enteredPatient = {
@@ -25,7 +21,8 @@ const PatientForm = (props) => {
             fathersName: fathersNameInputRef.current.value,
             age: AgeInputRef.current.value,
             tel: TelInputRef.current.value,
-            amka: amkaInputRef.current.value
+            amka: amkaInputRef.current.value,
+            uid:auth.userId
         }
         const response=await fetch('http://localhost:5000/patients', {
             method: 'post',
@@ -36,6 +33,8 @@ const PatientForm = (props) => {
             body: JSON.stringify(enteredPatient)
         });
         const data=await response.json();
+        console.log(enteredPatient);
+        console.log(data);
         props.onSubmit(data);
         props.onClick(); //close form
 

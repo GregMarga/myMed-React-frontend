@@ -77,7 +77,7 @@ const Basic = () => {
                             <select id='family_status' name='family_status'>
                                 <option value='married'>Παντρεμμένος/η</option>
                                 <option value='notmarried'>Ανύπνατρος/η</option>
-                                <option value='divorced'>Χωρισμένος/η</option>
+                                <option value='divorced'>Διαζευγμένος/η</option>
                             </select>
                             {/* <input id='family_status' type='text' /> */}
                         </Col>
