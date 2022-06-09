@@ -24,7 +24,6 @@ const PatientDetail = () => {
             return response.json()
         })
             .then((data) => {
-                console.log(data)
                 setLoadedPatient(data);
             })
             .catch((err) => {
@@ -40,13 +39,14 @@ const PatientDetail = () => {
             <h5 className={classes.mytitle}>Τα πεδία με <span>* </span>είναι απαραίτητα</h5>
 
             <Switch>
-                <Route path={`/patients/${params.patientId}/basic`} exact><Basic patient={loadedPatient}/></Route>
-                <Route path={`/patients/${params.patientId}/anamnistiko`}><History /></Route>
-                <Route path={`/patients/${params.patientId}/visits`} exact><div><Visits /></div></Route>
+                <Route path={`/patients/${params.patientId}/basic`} exact><Basic patient={loadedPatient} patientId={patientId}/></Route>
+                <Route path={`/patients/${params.patientId}/anamnistiko`}><History patientId={patientId}/></Route>
+                <Route path={`/patients/${params.patientId}/visits`} ><div><Visits patientId={patientId}/></div></Route>
                 <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>
-                <Route path={`/patients/${params.patientId}/lab_test`}><LabAnalysis /></Route>
+                <Route path={`/patients/${params.patientId}/lab_test`}><LabAnalysis patientId={patientId}/></Route>
+                {/* <Route path={`/patients/62a0e2f4086903904ac8683e/visits/new`}><p>Please Work motherfuckerrrrrrrrrrrrrrrrrrrrr</p></Route> */}
                 {/* <Route path={`/patients/${params.patientId}/lab_test/:labId`}><NewLabAnalysis/></Route> */}
-                <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail /></Route>
+                {/* <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail /></Route> */}
             </Switch>
         </Fragment>
     );

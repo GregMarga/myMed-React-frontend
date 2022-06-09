@@ -10,6 +10,12 @@
     left:11.5%;
     
 }
+.date{
+    width: 10%;
+}
+.threeInput input{
+    width: 30%;
+}
 .invisible{
     text-decoration: none;
 }
@@ -34,7 +40,7 @@
 }
 .multiInputs input{
     width: 20%;
-    margin-bottom: 2%;
+    margin-bottom: 1%;
 }
 .fullSize{
     width: 60%;

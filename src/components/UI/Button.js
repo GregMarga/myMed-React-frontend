@@ -5,11 +5,8 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 const Button = (props) => {
-    const location = useLocation()
-    function addHandler() {
-        props.addHandler();
-        console.log('clicked');
-    }
+    const location = useLocation();
+
     return (
 
         <Row className='justify-content-md-end'>
@@ -17,7 +14,7 @@ const Button = (props) => {
 
             <Col md='auto'>
                 <Link to={`${location.pathname}/new`} style={{ textDecoration: 'none', color: 'black', hover: 'white' }}>
-                    <button className="addButton" onClick={addHandler}>
+                    <button className="addButton" onClick={props.addHandler}>
 
                         <img src={addLogo} alt='Add ' />
                     </button>

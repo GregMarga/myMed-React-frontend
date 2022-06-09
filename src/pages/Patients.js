@@ -77,7 +77,7 @@ const Patients = () => {
 
             <Container>
                 {!isLoading&&loadedPatients&&<PatientsListHeader />}
-                {isLoading&&<LoadingSpinner/>}
+                {isLoading&&<LoadingSpinner asOverlay/>}
                 {!!error&&<ErrorModal error={error} onClear={clearError}/>}
                 {!isLoading&&loadedPatients&&<PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>
