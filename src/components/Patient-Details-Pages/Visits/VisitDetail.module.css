@@ -1,7 +1,10 @@
 .visitDetail{
     padding-left: 10%;
     padding-top: 7%;
+    font-size: 1.2rem;
+    
 }
+
 /* .label{
     background-color: rgb(215, 229, 242);
 } */
@@ -11,7 +14,8 @@
     
 }
 .date{
-    width: 10%;
+    width: 11%;
+    font-size: 1.1rem;
 }
 .threeInput input{
     width: 30%;
@@ -32,10 +36,9 @@
 .visitDetail label{
     padding: 1%;
     font-weight: bold;
-    font-size: 1.1rem;
+    
 }
 .visitDetail select{
-    width: 3%;
     font-size: 1.1rem;
 }
 .multiInputs input{

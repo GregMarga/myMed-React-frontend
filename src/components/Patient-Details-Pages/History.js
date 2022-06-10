@@ -21,7 +21,6 @@ const History = (props) => {
         const fetchHistory = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/anamnistiko`);
-                console.log(responseData);
                 setLoadAnamnistiko({allergies:responseData.allergies,cleronomical:responseData.cleronomical,personal:responseData.personal,drug_usage:responseData.drug_usage,surgeries:responseData.surgeries,others:responseData.others});
             }catch(err){ }
             

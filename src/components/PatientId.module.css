@@ -8,7 +8,10 @@
 }
 @media only screen and (max-width: 1000px) {
     .myDiv {
-      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+     
+      
       padding-left: auto;
       height: auto;
       position: relative;

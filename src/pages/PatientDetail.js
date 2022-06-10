@@ -41,12 +41,12 @@ const PatientDetail = () => {
             <Switch>
                 <Route path={`/patients/${params.patientId}/basic`} exact><Basic patient={loadedPatient} patientId={patientId}/></Route>
                 <Route path={`/patients/${params.patientId}/anamnistiko`}><History patientId={patientId}/></Route>
-                <Route path={`/patients/${params.patientId}/visits`} ><div><Visits patientId={patientId}/></div></Route>
+                <Route path={`/patients/${params.patientId}/visits`} exact><div><Visits patientId={patientId}/></div></Route>
                 <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>
                 <Route path={`/patients/${params.patientId}/lab_test`}><LabAnalysis patientId={patientId}/></Route>
                 {/* <Route path={`/patients/62a0e2f4086903904ac8683e/visits/new`}><p>Please Work motherfuckerrrrrrrrrrrrrrrrrrrrr</p></Route> */}
                 {/* <Route path={`/patients/${params.patientId}/lab_test/:labId`}><NewLabAnalysis/></Route> */}
-                {/* <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail /></Route> */}
+                <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail patientId={params.patientId}/></Route>
             </Switch>
         </Fragment>
     );

@@ -1,4 +1,3 @@
-import { useLocation, Switch, Route } from 'react-router-dom'
 import ListsHeader from "../../ListsHeader";
 import classes from './Visits.module.css';
 import { Container } from "react-bootstrap";
@@ -6,61 +5,46 @@ import VisitsList from "./VisitsList";
 import Card from "../../UI/Card";
 import Button from "../../UI/Button";
 import LoadingSpinner from "../../UI/LoadingSpinner";
-import { Fragment, useEffect, useState } from "react";
-import VisitDetail from './VisitDetail';
+import {  useEffect, useState } from "react";
+import ErrorModal from '../../UI/ErrorModal';
 import { useHttpClient } from "../../../hooks/http-hook";
 
 
 
 const Visits = (props) => {
-    const { isLoading, sendRequest } = useHttpClient();
+    const { isLoading, sendRequest, error, clearError } = useHttpClient();
     const [loadedVisits, setLoadedVisits] = useState([]);
-    const location = useLocation();
-    console.log(`${location.pathname}/:visitId`)
+  
+    
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits`);
-                console.log(responseData);
                 setLoadedVisits(responseData);
             } catch (err) { }
 
         };
         fetchHistory();
-    }, []);
+    }, [sendRequest]);
 
 
-    function addVisitsHandler() {
-        
+    function addVisitsHandler() { }
 
-    }
+    return (     
 
-
-
-
-
-    return (
-        <Fragment>
-
+            <Container fluid className={classes.visits}>
             {isLoading && <LoadingSpinner asOverlay />}
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
+                <Card className={classes.cardsVisit}>
+                    <ListsHeader type='Τύπος Επίσκεψης' date='Ημερομηνία' diagnosis='Διάγνωση' />
+                    {!isLoading && <VisitsList visits={loadedVisits} />}
 
+                </Card>
+                <Button addHandler={addVisitsHandler} />
+            </Container>
 
-            <Switch>
-                <Route path={'/patients/62a0e2f4086903904ac8683e/visits/new'}><VisitDetail /></Route>
-                <Route paht={'/patients/62a0e2f4086903904ac8683e/visits'} exact>
-                    <Container fluid className={classes.visits}>
-                        <Card className={classes.cardsVisit}>
-                            <ListsHeader type='Τύπος Επίσκεψης' date='Ημερομηνία' diagnosis='Διάγνωση' />
-                            <VisitsList visits={loadedVisits} />
-
-                        </Card>
-                        <Button addHandler={addVisitsHandler} />
-                    </Container>
-
-                </Route>
-            </Switch>
-        </Fragment>
+       
     );
 };
 

@@ -9,7 +9,7 @@ const BMI=(props)=>{
         return bmi.toFixed(2);
     }
     const bmi=calcBMI(props.weight,props.height)
-    console.log(props.weight,props.height)
+   
     return (
         <Fragment>
             <label >ΒΜΙ</label> <input placeholder={bmi} readOnly/>

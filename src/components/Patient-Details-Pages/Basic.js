@@ -11,7 +11,7 @@ import { useHttpClient } from '../../hooks/http-hook';
 
 const Basic = (props) => {
 
-    const [loadedBasics, setLoadedBasics] = useState({ dateOfBirth: '', job: '', gender: 'male', area: '', address: '', postalCode: '', familyStatus: 'married' })
+    const [loadedBasics, setLoadedBasics] = useState({ dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '' })
 
     const { isLoading,error, sendRequest, clearError } = useHttpClient();
 
