@@ -5,8 +5,10 @@ import VisitsList from "./VisitsList";
 import Card from "../../UI/Card";
 import Button from "../../UI/Button";
 import LoadingSpinner from "../../UI/LoadingSpinner";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ErrorModal from '../../UI/ErrorModal';
+import DeleteModal from "../../UI/DeleteModal";
+import Backdrop from "../../UI/Backdrop";
 import { useHttpClient } from "../../../hooks/http-hook";
 
 
@@ -14,8 +16,9 @@ import { useHttpClient } from "../../../hooks/http-hook";
 const Visits = (props) => {
     const { isLoading, sendRequest, error, clearError } = useHttpClient();
     const [loadedVisits, setLoadedVisits] = useState([]);
-  
-    
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [visitToDelete, setVisitToDelete] = useState();
+
 
     useEffect(() => {
         const fetchHistory = async () => {
@@ -28,23 +31,43 @@ const Visits = (props) => {
         fetchHistory();
     }, [sendRequest]);
 
+    function deleteHandler(visitId) {
+        setDeleteModalIsOpen(true);
+        setVisitToDelete(visitId);
+        console.log(visitId)
+    }
+    function closeDeleteModal() {
+        setDeleteModalIsOpen(false);
+    }
+    async function deleteVisitHandler() {
+        const deletedVisit = await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits/${visitToDelete}`, 'DELETE'
+            , {
+                'Content-Type': 'application/json'
+            });
+        setLoadedVisits(prevVisits => {
+            return prevVisits.filter(visit => visit._id !== deletedVisit._id)
+        })
+        setDeleteModalIsOpen(false);
+    }
+
 
     function addVisitsHandler() { }
 
-    return (     
+    return (
 
-            <Container fluid className={classes.visits}>
+        <Container fluid className={classes.visits}>
             {isLoading && <LoadingSpinner asOverlay />}
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-                <Card className={classes.cardsVisit}>
-                    <ListsHeader type='Τύπος Επίσκεψης' date='Ημερομηνία' diagnosis='Διάγνωση' />
-                    {!isLoading && <VisitsList visits={loadedVisits} />}
+            <Card className={classes.cardsVisit}>
+                <ListsHeader type='Τύπος Επίσκεψης' date='Ημερομηνία' diagnosis='Διάγνωση' />
+                {!isLoading && <VisitsList visits={loadedVisits} onDelete={deleteHandler} />}
+                {deleteModalIsOpen && <DeleteModal onConfirm={deleteVisitHandler} onCancel={closeDeleteModal} />}
+                {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
+            </Card>
+            <Button addHandler={addVisitsHandler} />
+        </Container>
 
-                </Card>
-                <Button addHandler={addVisitsHandler} />
-            </Container>
 
-       
     );
 };
 

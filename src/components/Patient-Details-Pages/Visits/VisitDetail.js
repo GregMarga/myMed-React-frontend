@@ -3,11 +3,11 @@ import Card from "../../UI/Card";
 import { Container, Row, Col } from 'react-bootstrap';
 import BMI from './BMI';
 import SaveButton from '../../UI/SaveButton';
-import moment  from 'moment';
+import moment from 'moment';
 import { useState, useRef, useContext, useEffect } from 'react';
 import { useHttpClient } from '../../../hooks/http-hook';
 import { AuthContext } from '../../../context/auth-context';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import ErrorModal from '../../UI/ErrorModal';
 import { Fragment } from 'react';
 
@@ -16,6 +16,7 @@ import { Fragment } from 'react';
 const VisitDetail = (props) => {
     // const [loadVisit,setLoadVisit]=useState({date:'',diagnosis:'',geniki_eikona,piesi,sfiksis,weight,height,test_volume,others})
     const params = useParams();
+    const history = useHistory();
     const auth = useContext(AuthContext);
     const { sendRequest, error, clearError } = useHttpClient();
     const [loadVisit, setLoadVisit] = useState({ date: '', diagnosis: '', geniki_eikona: '', piesi: '', sfiksis: '', weight: '', height: '', test_volume: '', others: '', smkt: '', tekt: '' });
@@ -41,7 +42,7 @@ const VisitDetail = (props) => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits/${params.visitId}`);
             console.log(responseData)
-            setLoadVisit({ diagnosis: responseData.diagnosis, date: moment(responseData.date).format('YYYY-MM-DD'), tekt: responseData.tekt, smkt: responseData.smkt, geniki_eikona: responseData.geniki_eikona, piesi: responseData.piesi, sfiksis: responseData.sfiksis, weight: responseData.weight, height: responseData.height, test_volume: responseData.test_volume , others: responseData.others});
+            setLoadVisit({ diagnosis: responseData.diagnosis, date: moment(responseData.date).format('YYYY-MM-DD'), tekt: responseData.tekt, smkt: responseData.smkt, geniki_eikona: responseData.geniki_eikona, piesi: responseData.piesi, sfiksis: responseData.sfiksis, weight: responseData.weight, height: responseData.height, test_volume: responseData.test_volume, others: responseData.others });
         } catch (err) { }
 
     };
@@ -69,24 +70,47 @@ const VisitDetail = (props) => {
     async function submitHandler(event) {
         event.preventDefault();
         console.log(dateInputRef.current.value)
-        try {
-            await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits`, 'POST',
-                JSON.stringify({
-                    date: dateInputRef.current.value,
-                    diagnosis: diagnosisInputRef.current.value,
-                    piesi: piesiInputRef.current.value,
-                    sfiksis: sfiksisInputRef.current.value,
-                    weight: weightInputRef.current.value,
-                    height: heightInputRef.current.value,
-                    smkt: smktInputRef.current.value,
-                    tekt: tektInputRef.current.value,
-                    test_volume: test_volumeInputRef.current.value,
-                    others: othersInputRef.current.value,
-                    uid: auth.userId
-                }), {
-                'Content-Type': 'application/json'
-            });
-        } catch (err) { }
+        if (params.visitId === 'new') {
+            try {
+                await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits`, 'POST',
+                    JSON.stringify({
+                        date: dateInputRef.current.value,
+                        diagnosis: diagnosisInputRef.current.value,
+                        piesi: piesiInputRef.current.value,
+                        sfiksis: sfiksisInputRef.current.value,
+                        weight: weightInputRef.current.value,
+                        height: heightInputRef.current.value,
+                        smkt: smktInputRef.current.value,
+                        tekt: tektInputRef.current.value,
+                        test_volume: test_volumeInputRef.current.value,
+                        others: othersInputRef.current.value,
+                        uid: auth.userId
+                    }), {
+                    'Content-Type': 'application/json'
+                });
+            } catch (err) { }
+        } else {
+            try {
+                await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits/${params.visitId}`, 'PATCH',
+                    JSON.stringify({
+                        date: dateInputRef.current.value,
+                        diagnosis: diagnosisInputRef.current.value,
+                        piesi: piesiInputRef.current.value,
+                        sfiksis: sfiksisInputRef.current.value,
+                        weight: weightInputRef.current.value,
+                        height: heightInputRef.current.value,
+                        smkt: smktInputRef.current.value,
+                        tekt: tektInputRef.current.value,
+                        test_volume: test_volumeInputRef.current.value,
+                        others: othersInputRef.current.value,
+                    }), {
+                    'Content-Type': 'application/json'
+                });
+            } catch (err) { }
+        }
+        // if (!error) {
+        //     history.push(`/patients/${props.patientId}/visits`);
+        // }
     }
     return (
         <Fragment>

@@ -12,8 +12,8 @@ const VisitsList = (props) => {
         <Container fluid className={classes.visitsList}>
 
             {props.visits.map((visit) => {
-                // console.log(visit.diagnosis)
                 return <VisitsListItems
+                    onDelete={props.onDelete}
                     key={visit._id}
                     visitId={visit._id}
                     visitType='Προληπτική'
@@ -25,38 +25,6 @@ const VisitsList = (props) => {
             {(props.visits.length === 0) && <Row>
                 <Col className='text-center'>List is empty,add a visit.</Col>
             </Row>}
-            {/* {(props.visits.length>0)&&<VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>} */}
-            {/* <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v1'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/>
-            <VisitsListItems visitId='v2'visitType='Προληπτική' date='25/3/2019' diagnosis='Υγιής' clickHandler={clickHandler}/> */}
 
 
         </Container>

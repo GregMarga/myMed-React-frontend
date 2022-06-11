@@ -59,7 +59,7 @@ const Patients = () => {
             return [patient, ...prevPatients];
         });
     }
-    async function deletePatientHandler(patient) {
+    async function deletePatientHandler() {
         const response = await fetch(`http://localhost:5000/patients/${patientToDelete}`, {
             method: 'delete',
             headers: {
