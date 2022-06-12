@@ -1,5 +1,5 @@
 import classes from './PatientsList.module.css';
-import { Container } from 'react-bootstrap';
+import { Container,Row,Col } from 'react-bootstrap';
 import PatientsListItems from './PatientsListItem';
 import Card from './UI/Card';
 

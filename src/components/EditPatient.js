@@ -1,6 +1,11 @@
-import { useState,  useRef} from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import classes from './EditPatient.module.css';
+import { AuthContext } from '../context/auth-context';
+import ErrorModal from './UI/ErrorModal';
+import { useHttpClient } from '../hooks/http-hook';
+
+
 
 const EditPatient = (props) => {
     const [loadedPatient, setLoadedPatient] = useState({ sirname: "", name: "", fathersName: "", age: "", tel: "", amka: "" });
@@ -10,18 +15,38 @@ const EditPatient = (props) => {
     const AgeInputRef = useRef();
     const TelInputRef = useRef();
     const amkaInputRef = useRef();
-    const history=useHistory();
+    const history = useHistory();
 
-    fetch(`http://localhost:5000/patients/${props.patientId}`
-    ).then((response) => {
-        return response.json()
-    })
-        .then((data) => {
-            setLoadedPatient({ sirname: data.sirname, name: data.name, fathersName: data.fathersName, age: data.age, tel: data.tel, amka: data.amka });
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });
+    const { error, clearError, sendRequest } = useHttpClient();
+
+    const auth = useContext(AuthContext);
+
+
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const data = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'GET', null, {
+                    Authorization: 'Bearer ' + auth.token
+                });
+                setLoadedPatient({ sirname: data.sirname, name: data.name, fathersName: data.fathersName, age: data.age, tel: data.tel, amka: data.amka })
+            } catch (err) { }
+
+        };
+        fetchPatients();
+    }, [sendRequest]);
+
+
+
+    // fetch(`http://localhost:5000/patients/${props.patientId}`
+    // ).then((response) => {
+    //     return response.json()
+    // })
+    //     .then((data) => {
+    //         setLoadedPatient({ sirname: data.sirname, name: data.name, fathersName: data.fathersName, age: data.age, tel: data.tel, amka: data.amka });
+    //     })
+    //     .catch((err) => {
+    //         console.log(err.message);
+    //     });
 
     async function submitHandler(event) {
         event.preventDefault();
@@ -33,22 +58,20 @@ const EditPatient = (props) => {
             tel: TelInputRef.current.value,
             amka: amkaInputRef.current.value
         };
-        const response = await fetch(`http://localhost:5000/patients/${props.patientId}`, {
-            method: 'PATCH',
-            headers: {
-                'Accept': 'application/json',
+        const response = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'PATCH', JSON.stringify(updatedPatient),
+            {
+                Authorization: 'Bearer ' + auth.token,
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedPatient)
-        });
-        const data = await response.json();
-       history.push('/');
+            })
+        history.push('/');
     }
+
     return (
         <div className="my_modal">
             <div className={classes.form_style_5}>
                 <form onSubmit={submitHandler}>
                     <fieldset>
+                        {!!error && <ErrorModal error={error} onClose={clearError} />}
                         <legend>Patient Info</legend>
                         <input ref={sirnameInputRef} type="text" name="sirname" placeholder="Επώνυμο *" defaultValue={loadedPatient.sirname} required />
                         <input ref={nameInputRef} type="text" name="name" placeholder="Όνομα *" defaultValue={loadedPatient.name} required />

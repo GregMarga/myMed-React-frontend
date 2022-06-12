@@ -9,7 +9,8 @@ import EditPatient from '../components/EditPatient';
 import ErrorModal from '../components/UI/ErrorModal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import { useHttpClient } from '../hooks/http-hook';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useContext } from 'react';
+import { AuthContext } from '../context/auth-context';
 
 const Patients = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -19,12 +20,15 @@ const Patients = () => {
     const [patientToDelete, setPatientToDelete] = useState();
     const [patientToEdit, setPatientToEdit] = useState();
     const {isLoading,error,sendRequest,clearError}=useHttpClient();
+    const auth=useContext(AuthContext);
    
 
     useEffect(() => {
         const fetchPatients = async () => {
             try {
-                const responseData = await sendRequest("http://localhost:5000/patients");
+                const responseData = await sendRequest("http://localhost:5000/patients",'GET',null,{
+                    Authorization:'Bearer '+auth.token
+                });
                 setLoadedPatients(responseData);
             }catch(err){ }
             
@@ -63,7 +67,8 @@ const Patients = () => {
         const response = await fetch(`http://localhost:5000/patients/${patientToDelete}`, {
             method: 'delete',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization:'Bearer '+auth.token
             }
         });
         const deletedPatient = await response.json();

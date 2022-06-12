@@ -28,7 +28,8 @@ const PatientForm = (props) => {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization:'Bearer '+ auth.token
             },
             body: JSON.stringify(enteredPatient)
         });

@@ -1,5 +1,5 @@
 .deleteModal {
-    z-index: 100;
+    z-index: 99;
     position: fixed;
     top: 15vh;
     left: 15%;
