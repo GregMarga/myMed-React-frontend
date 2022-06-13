@@ -3,10 +3,14 @@ import classes from './History.module.css';
 import SaveButton from '../UI/SaveButton'
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { useHttpClient } from "../../hooks/http-hook";
-import { useState,useEffect,useRef, Fragment } from "react";
+import { useState,useEffect,useRef,useContext, Fragment } from "react";
+import ErrorModal from "../UI/ErrorModal";
+import { AuthContext } from "../../context/auth-context";
 
 const History = (props) => {
-    const {isLoading,sendRequest}=useHttpClient();
+    const {isLoading,sendRequest,error,clearError}=useHttpClient();
+
+    const auth=useContext(AuthContext);
 
     const [loadAnamnistiko,setLoadAnamnistiko]=useState({allergies:'',cleronomical:'',personal:'',surgeries:'',drug_usage:'',others:''})
     const allergiesInputRef=useRef();
@@ -20,7 +24,7 @@ const History = (props) => {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/anamnistiko`);
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/anamnistiko`,'GET',null,{Authorization:'Bearer '+auth.token});
                 setLoadAnamnistiko({allergies:responseData.allergies,cleronomical:responseData.cleronomical,personal:responseData.personal,drug_usage:responseData.drug_usage,surgeries:responseData.surgeries,others:responseData.others});
             }catch(err){ }
             
@@ -42,7 +46,8 @@ const History = (props) => {
                     
 
                 }), {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization:'Bearer '+auth.token
             });
         } catch (err) {}
     }
@@ -50,6 +55,7 @@ const History = (props) => {
     return (
         <Fragment>
              {isLoading&&<LoadingSpinner asOverlay/>}
+             {!!error && <ErrorModal error={error} onClear={clearError} />}
        
         <form className={classes.history} onSubmit={submitHandler}>
             <Container >

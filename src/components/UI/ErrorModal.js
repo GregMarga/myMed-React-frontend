@@ -12,7 +12,9 @@ const ErrorModal = props => {
           <h3> An Error Occured!</h3>
         </header>
         <div>{props.error}</div>
-        <button className={classes.delete} onClick={props.onClear}>Okay</button>
+        <span className={classes.myButton}>
+          <button className={classes.delete} onClick={props.onClear}>Okay</button>
+        </span>
       </div>
     </Fragment>
   );

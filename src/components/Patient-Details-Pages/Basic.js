@@ -2,18 +2,23 @@ import { Fragment } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import classes from './Basic.module.css';
 import SaveButton from '../UI/SaveButton';
-// import ErrorModal from '../components/UI/ErrorModal';
+import ErrorModal from '../UI/ErrorModal';
 import LoadingSpinner from "../UI/LoadingSpinner";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useHttpClient } from '../../hooks/http-hook';
-
+import { AuthContext } from "../../context/auth-context";
+import { useHistory } from "react-router-dom";
 
 
 const Basic = (props) => {
 
     const [loadedBasics, setLoadedBasics] = useState({ dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '' })
 
-    const { isLoading,error, sendRequest, clearError } = useHttpClient();
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    const auth = useContext(AuthContext);
+
+    const history=useHistory();
 
     const sirnameInputRef = useRef();
     const nameInputRef = useRef();
@@ -35,7 +40,7 @@ const Basic = (props) => {
     useEffect(() => {
         const fetchPatients = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`);
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setLoadedBasics({ placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode });
             } catch (err) { }
 
@@ -47,45 +52,55 @@ const Basic = (props) => {
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        console.log(placeOfBirthInputRef.current.value)
         try {
-            await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'PATCH',
-                JSON.stringify({
+            await fetch(`http://localhost:5000/patients/${props.patientId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({
                     name: nameInputRef.current.value,
                     sirname: sirnameInputRef.current.value,
                     fathersName: fathersNameInputRef.current.value,
                     age: AgeInputRef.current.value,
                     amka: amkaInputRef.current.value,
                     tel: TelInputRef.current.value
-                }), {
-                'Content-Type': 'application/json'
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
+                }
             });
-        } catch (err) { }
+
+        } catch (err) { throw new Error(err)}
+
 
         try {
-            await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`, 'POST',
-                JSON.stringify({
-                    placeOfBirth: placeOfBirthInputRef.current.value,
-                    job: jobInputRef.current.value,
-                    familyStatus: familyStatusInputRef.current.value,
-                    gender: genderInputRef.current.value,
-                    address: addressInputRef.current.value,
-                    area: areaInputRef.current.value,
-                    postalCode: postalCodeRef.current.value,
+            await fetch(`http://localhost:5000/patients/${props.patientId}/basic`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        placeOfBirth: placeOfBirthInputRef.current.value,
+                        job: jobInputRef.current.value,
+                        familyStatus: familyStatusInputRef.current.value,
+                        gender: genderInputRef.current.value,
+                        address: addressInputRef.current.value,
+                        area: areaInputRef.current.value,
+                        postalCode: postalCodeRef.current.value,
 
-                }), {
-                'Content-Type': 'application/json'
-            });
-        } catch (err) { }
+                    }), headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + auth.token
+                    }
+                });
+        } catch (err) { throw new Error(err)}
+
     }
 
 
     return (
         <Fragment>
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
+            {isLoading && <LoadingSpinner asOverlay />}
 
-            {isLoading&&<LoadingSpinner asOverlay/>}
-
-            {!isLoading &&<form className={classes.basicForm} onSubmit={submitHandler}>
+            {!isLoading && <form className={classes.basicForm} onSubmit={submitHandler}>
 
                 <Container >
 
@@ -152,9 +167,9 @@ const Basic = (props) => {
                         <Col className='text-sm-end '>
                             <select ref={familyStatusInputRef} id='family_status' name='family_status'>
                                 <option value="none" selected disabled hidden>Select an Option</option>
-                                <option value='married'selected={loadedBasics.familyStatus ==='married'} >Παντρεμμένος/η</option>
-                                <option value='notmarried'selected={loadedBasics.familyStatus ==='notmarried'}>Ανύπνατρος/η</option>
-                                <option value='divorced' selected={loadedBasics.familyStatus ==='divorced'}>Διαζευγμένος/η</option>
+                                <option value='married' selected={loadedBasics.familyStatus === 'married'} >Παντρεμμένος/η</option>
+                                <option value='notmarried' selected={loadedBasics.familyStatus === 'notmarried'}>Ανύπνατρος/η</option>
+                                <option value='divorced' selected={loadedBasics.familyStatus === 'divorced'}>Διαζευγμένος/η</option>
                             </select>
                             {/* <input id='family_status' type='text' /> */}
                         </Col>
@@ -164,9 +179,9 @@ const Basic = (props) => {
                         <Col className='text-start'>
                             <select ref={genderInputRef} name='gender' id='gender'  >
                                 <option value="none" selected disabled hidden>Select an Option</option>
-                                <option value='male'selected={loadedBasics.gender ==='male'}>Άρρεν</option>
-                                <option value='female' selected={loadedBasics.gender ==='female'}>Θήλυ</option>
-                                <option value='other' selected={loadedBasics.gender ==='other'}>Άλλο</option>
+                                <option value='male' selected={loadedBasics.gender === 'male'}>Άρρεν</option>
+                                <option value='female' selected={loadedBasics.gender === 'female'}>Θήλυ</option>
+                                <option value='other' selected={loadedBasics.gender === 'other'}>Άλλο</option>
                             </select>
                         </Col>
                     </Row>

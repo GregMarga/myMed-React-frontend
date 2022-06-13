@@ -10,15 +10,15 @@ import { AuthContext } from '../../../context/auth-context';
 import { useParams, useHistory } from 'react-router-dom';
 import ErrorModal from '../../UI/ErrorModal';
 import { Fragment } from 'react';
+import LoadingSpinner from '../../UI/LoadingSpinner';
 
 
 
 const VisitDetail = (props) => {
     // const [loadVisit,setLoadVisit]=useState({date:'',diagnosis:'',geniki_eikona,piesi,sfiksis,weight,height,test_volume,others})
     const params = useParams();
-    const history = useHistory();
     const auth = useContext(AuthContext);
-    const { sendRequest, error, clearError } = useHttpClient();
+    const { isLoading,sendRequest, error, clearError } = useHttpClient();
     const [loadVisit, setLoadVisit] = useState({ date: '', diagnosis: '', geniki_eikona: '', piesi: '', sfiksis: '', weight: '', height: '', test_volume: '', others: '', smkt: '', tekt: '' });
     const [bmiParams, setBmiParams] = useState({
         weight: 1,
@@ -40,7 +40,7 @@ const VisitDetail = (props) => {
 
     const fetchVisit = async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits/${params.visitId}`);
+            const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits/${params.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             console.log(responseData)
             setLoadVisit({ diagnosis: responseData.diagnosis, date: moment(responseData.date).format('YYYY-MM-DD'), tekt: responseData.tekt, smkt: responseData.smkt, geniki_eikona: responseData.geniki_eikona, piesi: responseData.piesi, sfiksis: responseData.sfiksis, weight: responseData.weight, height: responseData.height, test_volume: responseData.test_volume, others: responseData.others });
         } catch (err) { }
@@ -86,7 +86,8 @@ const VisitDetail = (props) => {
                         others: othersInputRef.current.value,
                         uid: auth.userId
                     }), {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
                 });
             } catch (err) { }
         } else {
@@ -104,7 +105,8 @@ const VisitDetail = (props) => {
                         test_volume: test_volumeInputRef.current.value,
                         others: othersInputRef.current.value,
                     }), {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
                 });
             } catch (err) { }
         }
@@ -115,6 +117,7 @@ const VisitDetail = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
+            {isLoading&&<LoadingSpinner asOverlay/>}
 
             <Container fluid className={classes.visitDetail}>
                 <Card className={classes.cardsVisitDetail}>

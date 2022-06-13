@@ -4,9 +4,11 @@ import saveLogo from './diskette.png';
 const EditButton = () => {
 
     return (
-        <button className={classes.saveButton} type='submit'>
-            <img src={saveLogo} alt='save ' />
-        </button>
+        <span className={classes.buttonSpan}>
+            <button className={classes.saveButton} type='submit'>
+                <img src={saveLogo} alt='save ' />
+            </button>
+        </span>
     );
 };
 

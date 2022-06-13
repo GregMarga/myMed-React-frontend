@@ -9,7 +9,7 @@ import EditPatient from '../components/EditPatient';
 import ErrorModal from '../components/UI/ErrorModal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import { useHttpClient } from '../hooks/http-hook';
-import { useState, useEffect,useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/auth-context';
 
 const Patients = () => {
@@ -19,23 +19,23 @@ const Patients = () => {
     const [loadedPatients, setLoadedPatients] = useState([]);
     const [patientToDelete, setPatientToDelete] = useState();
     const [patientToEdit, setPatientToEdit] = useState();
-    const {isLoading,error,sendRequest,clearError}=useHttpClient();
-    const auth=useContext(AuthContext);
-   
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    const auth = useContext(AuthContext);
+
 
     useEffect(() => {
         const fetchPatients = async () => {
             try {
-                const responseData = await sendRequest("http://localhost:5000/patients",'GET',null,{
-                    Authorization:'Bearer '+auth.token
+                const responseData = await sendRequest("http://localhost:5000/patients", 'GET', null, {
+                    Authorization: 'Bearer ' + auth.token
                 });
                 setLoadedPatients(responseData);
-            }catch(err){ }
-            
+            } catch (err) { }
+
         };
         fetchPatients();
     }, [sendRequest]);
- 
+
     function addPatientHandler() {
         setModalIsOpen(true);
     }
@@ -53,7 +53,6 @@ const Patients = () => {
     function editHandler(patientId) {
         setEditModalIsOpen(true);
         setPatientToEdit(patientId);
-        console.log(patientId);
     }
     function closeEditModal() {
         setEditModalIsOpen(false);
@@ -64,31 +63,28 @@ const Patients = () => {
         });
     }
     async function deletePatientHandler() {
-        const response = await fetch(`http://localhost:5000/patients/${patientToDelete}`, {
-            method: 'delete',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization:'Bearer '+auth.token
-            }
-        });
-        const deletedPatient = await response.json();
+        const responseDeletedPatient = await sendRequest(`http://localhost:5000/patients/${patientToDelete}`, 'DELETE', null, {
+            Authorization: 'Bearer ' + auth.token
+        }
+        );
         setLoadedPatients(prevPatients => {
-            return prevPatients.filter(patient => patient._id !== deletedPatient._id)
+            return prevPatients.filter(patient => patient._id !== responseDeletedPatient._id)
         })
         setDeleteModalIsOpen(false);
     }
     return (
         <div className={classes.test}>
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
 
             <Container>
-                {!isLoading&&loadedPatients&&<PatientsListHeader />}
-                {isLoading&&<LoadingSpinner asOverlay/>}
-                {!!error&&<ErrorModal error={error} onClear={clearError}/>}
-                {!isLoading&&loadedPatients&&<PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
+                {!isLoading && loadedPatients && <PatientsListHeader />}
+                {isLoading && <LoadingSpinner asOverlay />}
+
+                {!isLoading && loadedPatients && <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>
                 {modalIsOpen && <Modal onClose={closeHandler} onSubmit={submitPatientHandler} patients={loadedPatients} />}
                 {modalIsOpen && <Backdrop onClick={closeHandler} />}
-                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} />}
+                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this patient?Please note that it can't be undone once thereafter."/>}
                 {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
                 {editModalIsOpen && <Backdrop onClick={closeEditModal} />}
                 {editModalIsOpen && <EditPatient onClose={closeEditModal} patientId={patientToEdit} />}
