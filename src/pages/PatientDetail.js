@@ -12,6 +12,7 @@ import VisitDetail from '../components/Patient-Details-Pages/Visits/VisitDetail'
 import { AuthContext } from '../context/auth-context';
 import { useHttpClient } from '../hooks/http-hook';
 import ErrorModal from '../components/UI/ErrorModal';
+import NewLabAnalysis from '../components/Patient-Details-Pages/LabAnalysis/NewLabAnalysis';
 import { useState, useEffect, useContext } from 'react';
 
 
@@ -50,9 +51,10 @@ const PatientDetail = () => {
                 <Route path={`/patients/${params.patientId}/anamnistiko`}><History patientId={patientId} /></Route>
                 <Route path={`/patients/${params.patientId}/visits`} exact><div><Visits patientId={patientId} /></div></Route>
                 <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>
-                <Route path={`/patients/${params.patientId}/lab_test`}><LabAnalysis patientId={patientId} /></Route>
+                <Route path={`/patients/${params.patientId}/lab_test`} exact><LabAnalysis patientId={patientId} /></Route>
                 {/* <Route path={`/patients/62a0e2f4086903904ac8683e/visits/new`}><p>Please Work motherfuckerrrrrrrrrrrrrrrrrrrrr</p></Route> */}
-                {/* <Route path={`/patients/${params.patientId}/lab_test/:labId`}><NewLabAnalysis/></Route> */}
+                <Route path={`/patients/${params.patientId}/lab_test/:type/:labId`}><NewLabAnalysis patientId={params.patientId}/></Route>
+                <Route path={`/patients/${params.patientId}/lab_test/:labId`}><NewLabAnalysis patientId={params.patientId}/></Route>
                 <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail patientId={params.patientId} /></Route>
             </Switch>
         </Fragment>

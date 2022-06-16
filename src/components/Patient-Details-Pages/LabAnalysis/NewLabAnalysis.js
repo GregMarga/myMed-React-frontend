@@ -1,14 +1,16 @@
 import classes from './NewLabAnalysis.module.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useState,useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import GeneralBlood from './GeneralBlood';
 import Thyro from './Thyro';
 import Ypofysi from './Ypofysi';
 import Parathyro from './Parathyro';
+import { useParams } from 'react-router-dom';
+
 
 const NewLabAnalysis = (props) => {
-    const defaultState={
+    const type = useParams().type;
+    const defaultState = {
         blood: false,
         thyro: false,
         parathyro: false,
@@ -16,67 +18,77 @@ const NewLabAnalysis = (props) => {
         epinefridio: false,
         eggs: false,
         balls: false
-      }
-    const [labAnalysisType, setLabAnalysisType] = useState({...defaultState,blood:true});
-    const [locationKeys, setLocationKeys] = useState([]);
-    const history=useHistory();
-    useEffect(() => {
-        return history.listen((location) => {
-          if (history.action === "PUSH") {
-            setLocationKeys([location.key]);
-          }
-    
-          if (history.action === "POP") {
-            if (locationKeys[1] === location.key) {
-              setLocationKeys(([_, ...keys]) => keys);
-    
-              // Handle forward event
-            } else {
-              setLocationKeys((keys) => [location.key, ...keys]);
-              props.onBack(locationKeys)
-    
-              // Handle back event
-            }
-          }
-        });
-      }, [locationKeys]);
-    
+    }
+    let initialState = {
+        blood: false,
+        thyro: false,
+        parathyro: false,
+        ypofysi: false,
+        epinefridio: false,
+        eggs: false,
+        balls: false
+    }
+    Object.keys(initialState).map((key) => {
+        if (key === type) {
+            initialState[key] = true;
+        }
+    })
+    if (typeof(type) === 'undefined') {
+        console.log(true)
+        initialState = { ...defaultState, blood: true };
+    }
 
-   
+    const [labAnalysisType, setLabAnalysisType] = useState(initialState);
+
+
     function changeHandler(event) {
         const selectValue = event.target.value;
 
         if (selectValue === 'blood') {
             setLabAnalysisType({
-                ...defaultState,blood:true} 
-                );}
+                ...defaultState, blood: true
+            }
+            );
+        }
         if (selectValue === 'thyro') {
             setLabAnalysisType({
-                ...defaultState,thyro:true} 
-                );}
+                ...defaultState, thyro: true
+            }
+            );
+        }
         if (selectValue === 'parathyro') {
             setLabAnalysisType({
-                ...defaultState,parathyro:true} 
-                );}
+                ...defaultState, parathyro: true
+            }
+            );
+        }
         if (selectValue === 'ypofysi') {
             setLabAnalysisType({
-                ...defaultState,ypofysi:true} 
-                );}
+                ...defaultState, ypofysi: true
+            }
+            );
+        }
         if (selectValue === 'epinefridia') {
             setLabAnalysisType({
-                ...defaultState,epinefridio:true} 
-                );}
+                ...defaultState, epinefridio: true
+            }
+            );
+        }
         if (selectValue === 'eggs') {
             setLabAnalysisType({
-                ...defaultState,eggs:true} 
-                );}
+                ...defaultState, eggs: true
+            }
+            );
+        }
         if (selectValue === 'balls') {
             setLabAnalysisType({
-                ...defaultState,balls:true} 
-                );}
+                ...defaultState, balls: true
+            }
+            );
+        }
     }
     return (
-        <Container  className={classes.mylab}>
+        <Container className={classes.mylab}>
             <Row>
                 <Col>
                     <label className={classes.myselect}>Επίσκεψη</label>
@@ -89,21 +101,22 @@ const NewLabAnalysis = (props) => {
                 <Col>
                     <label className={classes.myselect} htmlFor='labifo'>Τύπος Εξέτασης</label>
                     <select onChange={changeHandler} id='labinfo'>
-                        <option value='blood'>Γενική Αίματος</option>
-                        <option value='thyro'>Θυρεοειδής</option>                        <option value='parathyro'>Παραθυρεοειδής</option>
-                        <option value='ypofysi'>Υπόφυση</option>
-                        <option value='epinefridia'>Επινεφρίδια</option>
-                        <option value='eggs'>Ωοθήκες</option>
+                        <option value='blood' selected={type === 'blood'}>Γενική Αίματος</option>
+                        <option value='thyro' selected={type === 'thyro'}>Θυρεοειδής</option>
+                        <option value='parathyro' selected={type === 'parathyro'}>Παραθυρεοειδής</option>
+                        <option value='ypofysi' selected={type === 'ypofysi'}>Υπόφυση</option>
+                        <option value='epinefridia' selected={type === 'epinefridia'}>Επινεφρίδια</option>
+                        <option value='eggs' selected={type === 'eggs'}>Ωοθήκες</option>
                         <option value='balls'>Όρχεις</option>
                     </select>
                 </Col>
             </Row>
             <Row>
-                {labAnalysisType.blood && <GeneralBlood />}
-                {labAnalysisType.thyro && <Thyro />}
-                {labAnalysisType.ypofysi && <Ypofysi />}
-                {labAnalysisType.parathyro && <Parathyro />}
-                {labAnalysisType.epinefridia && <Parathyro />}
+                {labAnalysisType.blood && <GeneralBlood patientId={props.patientId} />}
+                {labAnalysisType.thyro && <Thyro patientId={props.patientId} />}
+                {labAnalysisType.ypofysi && <Ypofysi patientId={props.patientId} />}
+                {labAnalysisType.parathyro && <Parathyro patientId={props.patientId} />}
+                {labAnalysisType.epinefridia && <Parathyro patientId={props.patientId} />}
             </Row>
         </Container>
 

@@ -4,30 +4,84 @@ import ListsHeader from '../../ListsHeader';
 import LabsList from './LabsList';
 import Card from "../../UI/Card";
 import Button from '../../UI/Button';
-import NewLabAnalysis from './NewLabAnalysis';
-import { useState } from 'react';
+import LoadingSpinner from "../../UI/LoadingSpinner";
+import { useEffect, useState, useContext, Fragment } from "react";
+import { AuthContext } from "../../../context/auth-context";
+import ErrorModal from '../../UI/ErrorModal';
+import DeleteModal from "../../UI/DeleteModal";
+import Backdrop from "../../UI/Backdrop";
+import { useHttpClient } from "../../../hooks/http-hook";
 
-const LabAnalysis = () => {
-    const [newVisitIsOpen,setNewVisitIsOpen]=useState(false);
 
-    function addLabTestHandler(){
-        setNewVisitIsOpen(true);
+
+const LabAnalysis = (props) => {
+    const { isLoading, sendRequest, error, clearError } = useHttpClient();
+    const [loadedLabs, setLoadedLabs] = useState([]);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [labTestToDelete, setLabTestToDelete] = useState({ id: '', type: '' });
+
+    const auth = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchLabTests = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                setLoadedLabs(responseData);
+            } catch (err) {
+                console.log(err);
+            }
+
+        };
+        fetchLabTests();
+    }, [sendRequest]);
+
+    function deleteHandler(id, type) {
+        setDeleteModalIsOpen(true);
+        setLabTestToDelete({ id: id, type: type });
     }
-    function goBacktoVisits(){
-        setNewVisitIsOpen(false);
+
+    async function deleteLabTestHandler() {
+        let deletedLabTest
+        if (labTestToDelete.type === 'blood') {
+            deletedLabTest = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/blood/${labTestToDelete.id}`, 'DELETE', null,
+                {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
+                });
+        }
+        else if(labTestToDelete.type==='parathyro'){
+            deletedLabTest = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/parathyro/${labTestToDelete.id}`, 'DELETE', null,
+                {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
+                });
+
+        }
+        setLoadedLabs(prevTests => {
+            return prevTests.filter(test => test._doc._id !== deletedLabTest._id);
+        })
+        setDeleteModalIsOpen(false);
     }
-    if(newVisitIsOpen){
-        return <NewLabAnalysis onBack={goBacktoVisits}/>
+    function closeDeleteModal() {
+        setDeleteModalIsOpen(false);
     }
+
+
     return (
-        <Container fluid className={classes.labAnalysis}>
-            <Card className={classes.cardLab}>
-                <ListsHeader type='Τύπος Εξέτασης' date='Ημερομηνία Εξέτασης' diagnosis='Ημερομηνία Επίσκεψης' />
-                <LabsList/>
-            </Card>
-            <Button addHandler={addLabTestHandler}/>
-            
-        </Container>
+        <Fragment>
+            {isLoading && <LoadingSpinner asOverlay />}
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
+            <Container fluid className={classes.labAnalysis}>
+                <Card className={classes.cardLab}>
+                    <ListsHeader type='Τύπος Εξέτασης' date='Ημερομηνία Εξέτασης' diagnosis='Ημερομηνία Επίσκεψης' />
+                    <LabsList labs={loadedLabs} onDelete={deleteHandler} />
+                    {deleteModalIsOpen && <DeleteModal onConfirm={deleteLabTestHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this visit?Please note that it can't be undone once thereafter." />}
+                    {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
+                </Card>
+                <Button />
+
+            </Container>
+        </Fragment>
     );
 };
 

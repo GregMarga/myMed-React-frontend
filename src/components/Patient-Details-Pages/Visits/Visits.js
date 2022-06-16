@@ -53,8 +53,6 @@ const Visits = (props) => {
     }
 
 
-    function addVisitsHandler() { }
-
     return (
 
         <Container fluid className={classes.visits}>
@@ -66,7 +64,7 @@ const Visits = (props) => {
                 {deleteModalIsOpen && <DeleteModal onConfirm={deleteVisitHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this visit?Please note that it can't be undone once thereafter."/>}
                 {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
             </Card>
-            <Button addHandler={addVisitsHandler} />
+            <Button />
         </Container>
 
 

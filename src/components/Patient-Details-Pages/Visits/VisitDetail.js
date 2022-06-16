@@ -41,7 +41,6 @@ const VisitDetail = (props) => {
     const fetchVisit = async () => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits/${params.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            console.log(responseData)
             setLoadVisit({ diagnosis: responseData.diagnosis, date: moment(responseData.date).format('YYYY-MM-DD'), tekt: responseData.tekt, smkt: responseData.smkt, geniki_eikona: responseData.geniki_eikona, piesi: responseData.piesi, sfiksis: responseData.sfiksis, weight: responseData.weight, height: responseData.height, test_volume: responseData.test_volume, others: responseData.others });
         } catch (err) { }
 
@@ -69,7 +68,6 @@ const VisitDetail = (props) => {
     }
     async function submitHandler(event) {
         event.preventDefault();
-        console.log(dateInputRef.current.value)
         if (params.visitId === 'new') {
             try {
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits`, 'POST',

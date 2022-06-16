@@ -17,6 +17,12 @@ const Thyro = () => {
                                 <span>Τιμές(mg)</span>
                             </Col>
                         </Row>
+                        <Row>
+                            <Col className={classes.myCol}>
+                                <label>Ημ/νία</label>
+                                <input  name='date' type='date' required/>
+                            </Col>
+                        </Row>
 
                         <Row >
                             <Col className={classes.myCol}>
