@@ -31,19 +31,19 @@ const Parathyro = (props) => {
     const fetchVisit = async () => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/parathyro/${params.labId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            setLoadParathyro({ date: moment(responseData.date).format('YYYY-MM-DD'), visitDate: moment(responseData.visitDate).format('YYYY-MM-DD'), pth: responseData.pth, vitd: responseData.vitd, ca: responseData.ca, p: responseData.p, alvoumini: responseData.alvoumini, kreatanini: responseData.kreatanini});
+            setLoadParathyro({ date: moment(responseData.date).format('YYYY-MM-DD'), visitDate: moment(responseData.visitDate).format('YYYY-MM-DD'), pth: responseData.pth, vitd: responseData.vitd, ca: responseData.ca, p: responseData.p, alvoumini: responseData.alvoumini, kreatanini: responseData.kreatanini });
         } catch (err) { }
 
     };
     useEffect(() => {
-        if (params.labId !== 'new'&&params.type==='parathyro') {
+        if (params.labId !== 'new' && params.type === 'parathyro') {
             fetchVisit()
         }
     }, [props.patientId, auth.token]);
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        if (params.labId === 'new') {
+        if (params.labId === 'new' || loadParathyro.date === '') {
             try {
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests`, 'POST',
                     JSON.stringify({
@@ -60,6 +60,24 @@ const Parathyro = (props) => {
                     Authorization: 'Bearer ' + auth.token
                 });
             } catch (err) { }
+        } else {
+            try {
+                await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/${params.labId}`, 'PATCH',
+                    JSON.stringify({
+                        type: 'parathyro',
+                        date: dateInputRef.current.value,
+                        pth: pthInputRef.current.value,
+                        vitd: vitdInputRef.current.value,
+                        ca: caInputRef.current.value,
+                        p: pInputRef.current.value,
+                        alvoumini: alvouminiInputRef.current.value,
+                        kreatanini: kreataniniInputRef.current.value
+                    }), {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
+                });
+            } catch (err) { }
+
         }
     }
 
@@ -67,7 +85,7 @@ const Parathyro = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading && <LoadingSpinner asOveraly />}
+            {isLoading && <LoadingSpinner asOverlay />}
             <Card>
                 <form className={classes.thyroForm} onSubmit={submitHandler}>
 
@@ -88,7 +106,7 @@ const Parathyro = (props) => {
                         <Row >
                             <Col className={classes.myCol}>
                                 <label>PTH</label>
-                                <input ref={pthInputRef} name='pth' defaultValue={loadParathyro.pth}/>
+                                <input ref={pthInputRef} name='pth' defaultValue={loadParathyro.pth} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
@@ -100,28 +118,28 @@ const Parathyro = (props) => {
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Ca</label>
-                                <input ref={caInputRef} name='ca'  defaultValue={loadParathyro.ca}/>
+                                <input ref={caInputRef} name='ca' defaultValue={loadParathyro.ca} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>P</label>
-                                <input ref={pInputRef} name='p'  defaultValue={loadParathyro.p}/>
+                                <input ref={pInputRef} name='p' defaultValue={loadParathyro.p} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Αλβουμίνη</label>
-                                <input ref={alvouminiInputRef} name='alvoumini'  defaultValue={loadParathyro.alvoumini}/>
+                                <input ref={alvouminiInputRef} name='alvoumini' defaultValue={loadParathyro.alvoumini} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Κρεατινίνη</label>
-                                <input ref={kreataniniInputRef} name='kreatinini'  defaultValue={loadParathyro.kreatanini}/>
+                                <input ref={kreataniniInputRef} name='kreatinini' defaultValue={loadParathyro.kreatanini} />
                             </Col>
                         </Row>
-                        <Row><Col><SaveButton/></Col></Row>
+                        <Row><Col><SaveButton /></Col></Row>
 
                     </Container>
                 </form>

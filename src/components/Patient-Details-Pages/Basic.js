@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 
 
 const Basic = (props) => {
-
+    const [loading,SetLoading]=useState(false);
     const [loadedBasics, setLoadedBasics] = useState({ dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '' })
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -46,12 +46,13 @@ const Basic = (props) => {
 
         };
         fetchPatients();
-    }, []);
+    }, [sendRequest]);
 
 
 
     const submitHandler = async (event) => {
         event.preventDefault();
+        SetLoading(true);
         try {
             await fetch(`http://localhost:5000/patients/${props.patientId}`, {
                 method: 'PATCH',
@@ -88,8 +89,11 @@ const Basic = (props) => {
                     }), headers: {
                         'Content-Type': 'application/json',
                         Authorization: 'Bearer ' + auth.token
-                    }
+                    }                    
                 });
+
+                SetLoading(false);
+
         } catch (err) { throw new Error(err)}
 
     }
@@ -98,7 +102,7 @@ const Basic = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading && <LoadingSpinner asOverlay />}
+            {isLoading||loading && <LoadingSpinner asOverlay />}
 
             {!isLoading && <form className={classes.basicForm} onSubmit={submitHandler}>
 

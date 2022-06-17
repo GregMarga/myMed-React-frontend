@@ -17,8 +17,8 @@ const LabsListItem=(props)=>{
                 <Row className='myLabs' >
 
                     <Col className='text-sm-end'><Link to={`${location.pathname}/${props.labType}/${props.labTestId}`} style={{ textDecoration: 'none', color: 'black'}}><span>{props.labType}</span></Link></Col>
-                    <Col className='text-sm-end'><Link to={`${location.pathname}/${props.labType}/${props.labTestId}`} style={{ textDecoration: 'none', color: 'black'}}><span>{moment(props.labDate).format('MM/DD/YYYY')}</span></Link></Col>
-                    <Col className='text-sm-end'><Link to={`${location.pathname}/${props.labType}/${props.labTestId}`} style={{ textDecoration: 'none', color: 'black'}}><span>{moment(props.visitDate).format('MM/DD/YYYY')}</span></Link></Col>  
+                    <Col className='text-sm-end'><Link to={`${location.pathname}/${props.labType}/${props.labTestId}`} style={{ textDecoration: 'none', color: 'black'}}><span>{moment(props.labDate).format('DD/MM/YYYY')}</span></Link></Col>
+                    <Col className='text-sm-end'><Link to={`${location.pathname}/${props.labType}/${props.labTestId}`} style={{ textDecoration: 'none', color: 'black'}}><span>{moment(props.visitDate).format('DD/MM/YYYY')}</span></Link></Col>  
                     <Col className='text-end' sm='2'><DeleteButton onClick={deleteHandler}/></Col>                 
 
                 </Row>           

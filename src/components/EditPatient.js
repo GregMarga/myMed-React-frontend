@@ -29,6 +29,7 @@ const EditPatient = (props) => {
                     Authorization: 'Bearer ' + auth.token
                 });
                 setLoadedPatient({ sirname: data.sirname, name: data.name, fathersName: data.fathersName, age: data.age, tel: data.tel, amka: data.amka })
+                console.log(data)
             } catch (err) { }
 
         };

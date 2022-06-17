@@ -5,6 +5,7 @@ import GeneralBlood from './GeneralBlood';
 import Thyro from './Thyro';
 import Ypofysi from './Ypofysi';
 import Parathyro from './Parathyro';
+import NewLabSelect from './NewLabSelect';
 import { useParams } from 'react-router-dom';
 
 
@@ -33,7 +34,7 @@ const NewLabAnalysis = (props) => {
             initialState[key] = true;
         }
     })
-    if (typeof(type) === 'undefined') {
+    if (typeof (type) === 'undefined') {
         console.log(true)
         initialState = { ...defaultState, blood: true };
     }
@@ -91,11 +92,12 @@ const NewLabAnalysis = (props) => {
         <Container className={classes.mylab}>
             <Row>
                 <Col>
-                    <label className={classes.myselect}>Επίσκεψη</label>
+                    <NewLabSelect clasname={classes.myselect} patientId={props.patientId}/>
+                    {/* <label className={classes.myselect}>Επίσκεψη</label>
                     <select>
                         <option>Πρώτη Επίσκεψη</option>
                         <option>Δεύτερη Επίσκεψη</option>
-                    </select>
+                    </select> */}
                 </Col>
 
                 <Col>

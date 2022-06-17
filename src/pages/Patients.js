@@ -26,7 +26,7 @@ const Patients = () => {
     useEffect(() => {
         const fetchPatients = async () => {
             try {
-                const responseData = await sendRequest("http://localhost:5000/patients", 'GET', null, {
+                const responseData = await sendRequest(`http://localhost:5000/patients/getPatients/${auth.userId}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
                 setLoadedPatients(responseData);
@@ -83,10 +83,10 @@ const Patients = () => {
                 {!isLoading && loadedPatients && <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>
                 {modalIsOpen && <Modal onClose={closeHandler} onSubmit={submitPatientHandler} patients={loadedPatients} />}
-                {modalIsOpen && <Backdrop onClick={closeHandler} />}
+                {modalIsOpen&&!error && <Backdrop onClick={closeHandler} />}
                 {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this patient?Please note that it can't be undone once thereafter."/>}
-                {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
-                {editModalIsOpen && <Backdrop onClick={closeEditModal} />}
+                {deleteModalIsOpen&&!error && <Backdrop onClick={closeDeleteModal} />}
+                {editModalIsOpen&&!error && <Backdrop onClick={closeEditModal} />}
                 {editModalIsOpen && <EditPatient onClose={closeEditModal} patientId={patientToEdit} />}
 
             </Container>

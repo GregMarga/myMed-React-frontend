@@ -44,7 +44,7 @@ const GeneralBlood = (props) => {
     const submitHandler = async (event) => {
         event.preventDefault();
         console.log(dateInputRef.current.value)
-        if (params.labId === 'new') {
+        if (params.labId === 'new'||loadBlood.date==='') {
             try {
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests`, 'POST',
                     JSON.stringify({
@@ -66,7 +66,7 @@ const GeneralBlood = (props) => {
         }
         else {
             try {
-                console.log('try')
+                
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/${params.labId}`, 'PATCH',
                     JSON.stringify({
                         type: 'blood',
@@ -93,7 +93,7 @@ const GeneralBlood = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading && <LoadingSpinner asOveraly />}
+            {isLoading && <LoadingSpinner asOverlay />}
             <Card>
                 <form className={classes.bloodForm} onSubmit={submitHandler}>
                     <Container >
