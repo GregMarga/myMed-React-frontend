@@ -20,7 +20,7 @@ const PatientsListHeader = (props) => {
         props.dispatch({ type: 'amka', payload: { amka: event.target.valuelue } })
     }
     function clearHandler(event){
-        history.push(`/patients/62aa19495a6877632fd7d9e8/lab_test?q=lol`)
+        history.push(`/patients/62aa19495a6877632fd7d9e8/lab_test?q=2022-06-16`)
 
     }
 

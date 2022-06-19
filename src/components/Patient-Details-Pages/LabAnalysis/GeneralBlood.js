@@ -43,7 +43,7 @@ const GeneralBlood = (props) => {
     const submitHandler = async (event) => {
         event.preventDefault();
         console.log(dateInputRef.current.value)
-        if (params.labId === 'new'||loadBlood.date==='') {
+        if (params.labId === 'new'||loadBlood.date==='') {   //neo document giati date required ara den yparxei eggrafi gia ayto to typo eksetasis
             try {
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests`, 'POST',
                     JSON.stringify({
