@@ -9,8 +9,28 @@ import EditPatient from '../components/EditPatient';
 import ErrorModal from '../components/UI/ErrorModal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import { useHttpClient } from '../hooks/http-hook';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useReducer } from 'react';
 import { AuthContext } from '../context/auth-context';
+
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'name':
+            return { ...state, name: action.payload.name };
+        case 'sirname':
+            return { ...state, sirname: action.payload.sirname };
+        case 'fathersName':
+            return { ...state, fathersName: action.payload.fathersName };
+        case 'tel':
+            return { ...state, tel: action.payload.tel };
+        case 'amka':
+            return { ...state, amka: action.payload.amka };
+        default:
+            return state;
+    }
+
+
+}
 
 const Patients = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -19,47 +39,28 @@ const Patients = () => {
     const [loadedPatients, setLoadedPatients] = useState([]);
     const [patientToDelete, setPatientToDelete] = useState();
     const [patientToEdit, setPatientToEdit] = useState();
-    const [searchParams, setSearchParams] = useState({ sirname: '', name: '', fathersName: '', age: '', tel: '', amka: '' })
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const auth = useContext(AuthContext);
+
+    const defaultSearch={ sirname: '', name: '', fathersName: '', age: '', tel: '', amka: '' };
+
+    const [state, dispatch] = useReducer(reducer,defaultSearch);
 
 
     useEffect(() => {
         const fetchPatients = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/getPatients/${auth.userId}`, 'GET', null, {
+                const responseData = await sendRequest(
+                    `http://localhost:5000/patients/getPatients/${auth.userId}?name=${state.name}&sirname=${state.sirname}&fathersName=${state.fathersName}&tel=${state.tel}&amka=${state.amka}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
                 setLoadedPatients(responseData);
             } catch (err) { }
 
         };
-        fetchPatients();
-    }, [sendRequest]);
+        setTimeout(fetchPatients);
+    }, [sendRequest, state]);
 
-
-
-
-
-    async function findPatient(sirname, name, tel, amka, fathersName, age) {
-        try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/getPatients/${auth.userId}/test`, 'POST',
-                JSON.stringify(
-                    {
-                        name: name,
-                        sirname: sirname,
-                        fathersName: fathersName,
-                        tel: tel,
-                        amka: amka
-                    }), {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + auth.token
-            });
-            setLoadedPatients(responseData)
-            console.log(responseData)
-        } catch (err) { }
-
-    }
 
     function addPatientHandler() {
         setModalIsOpen(true);
@@ -102,8 +103,8 @@ const Patients = () => {
             {!!error && <ErrorModal error={error} onClear={clearError} />}
 
             <Container>
-                {!isLoading && loadedPatients && <PatientsListHeader changeSearchParams={findPatient} />}
-                {isLoading && <LoadingSpinner asOverlay />}
+                <PatientsListHeader  dispatch={dispatch}/>
+                {isLoading && <LoadingSpinner />}
 
                 {!isLoading && loadedPatients && <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>

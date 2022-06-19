@@ -7,3 +7,12 @@ input{
     width: 95%;
 }
 
+.button{
+    font-size: 1rem;
+    /* border: none; */
+    background-color: #889dbf;
+    color:white;
+    width: 90%;
+    border-color: white;
+    border-radius: 4px;
+}

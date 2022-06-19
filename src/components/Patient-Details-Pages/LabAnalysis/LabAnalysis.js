@@ -11,6 +11,8 @@ import ErrorModal from '../../UI/ErrorModal';
 import DeleteModal from "../../UI/DeleteModal";
 import Backdrop from "../../UI/Backdrop";
 import { useHttpClient } from "../../../hooks/http-hook";
+import { useLocation } from 'react-router-dom';
+
 
 
 
@@ -22,18 +24,20 @@ const LabAnalysis = (props) => {
 
     const auth = useContext(AuthContext);
 
+    const location=useLocation();
+    const query=new URLSearchParams(location.search).get('q');
+
     useEffect(() => {
         const fetchLabTests = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests?q=${query}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setLoadedLabs(responseData);
             } catch (err) {
                 console.log(err);
             }
-
         };
         fetchLabTests();
-    }, [sendRequest]);
+    }, [sendRequest,query]);
 
     function deleteHandler(id, type) {
         setDeleteModalIsOpen(true);

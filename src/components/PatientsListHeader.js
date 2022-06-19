@@ -1,18 +1,27 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { useRef } from 'react';
 import classes from './PatientsListHeader.module.css';
+import { useHistory } from 'react-router-dom';
 
 const PatientsListHeader = (props) => {
-    const nameInputRef = useRef();
-    const sirnameInputRef = useRef();
-    const fathersNameInputRef = useRef();
-    const ageInputRef = useRef();
-    const telInputRef = useRef();
-    const amkaInputRef = useRef();
+    const history=useHistory()
+    function changeNameHandler(event) {
+        props.dispatch({ type: 'name', payload: { name: event.target.value } })
+    }
+    function changeSirnameHandler(event) {
+        props.dispatch({ type: 'sirname', payload: { sirname: event.target.value } })
+    }
+    function changeFathersNameHandler(event) {
+        props.dispatch({ type: 'fathersName', payload: { fathersName: event.target.value } })
+    }
+    function changeTelHandler(event) {
+        props.dispatch({ type: 'tel', payload: { tel: event.target.value } })
+    }
+    function changeAmkaHandler(event) {
+        props.dispatch({ type: 'amka', payload: { amka: event.target.valuelue } })
+    }
+    function clearHandler(event){
+        history.push(`/patients/62aa19495a6877632fd7d9e8/lab_test?q=lol`)
 
-    function submitHandler(event) {
-        event.preventDefault();
-        props.changeSearchParams(sirnameInputRef.current.value, nameInputRef.current.value, telInputRef.current.value, amkaInputRef.current.value, ageInputRef.current.value, fathersNameInputRef.current.value)
     }
 
     return (
@@ -27,16 +36,16 @@ const PatientsListHeader = (props) => {
                 <Col className='text-center'><label className={classes.labels} htmlFor='amka'>ΑΜΚΑ</label></Col>
                 <Col></Col>
             </Row>
-            <form onSubmit={submitHandler}>
+            <form>
                 <Row className='justify-content-sm-space-around'>
 
-                    <Col className='text-center'><input ref={sirnameInputRef} name='sirname' type='text' id='sirname' /></Col>
-                    <Col className='text-center'><input ref={nameInputRef} name='name' type='text' id='name' /></Col>
-                    <Col className='text-center'><input ref={fathersNameInputRef} name='fathersName' type='text' id='fathers_name' /></Col>
-                    <Col className='text-center'><input ref={ageInputRef} name='age' type='text' id='age' /></Col>
-                    <Col className='text-center'><input ref={telInputRef} name='tel' type='text' id='tel' /></Col>
-                    <Col className='text-center'><input ref={amkaInputRef} name='amka' type='text' id='amka' /></Col>
-                    <Col><button type='submit'>search</button></Col>
+                    <Col className='text-center'><input onChange={changeSirnameHandler} name='sirname' type='text' id='sirname' /></Col>
+                    <Col className='text-center'><input onChange={changeNameHandler} name='name' type='text' id='name' /></Col>
+                    <Col className='text-center'><input onChange={changeFathersNameHandler} name='fathersName' type='text' id='fathers_name' /></Col>
+                    <Col className='text-center'><input name='age' type='text' id='age' /></Col>
+                    <Col className='text-center'><input onChange={changeTelHandler} name='tel' type='text' id='tel' /></Col>
+                    <Col className='text-center'><input onChange={changeAmkaHandler} name='amka' type='text' id='amka' /></Col>
+                    <Col><button type='button' className={classes.button} onClick={clearHandler}>Clear filters</button></Col>
 
                 </Row>
             </form>

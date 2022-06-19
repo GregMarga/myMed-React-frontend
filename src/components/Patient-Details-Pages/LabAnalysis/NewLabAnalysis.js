@@ -1,6 +1,6 @@
 import classes from './NewLabAnalysis.module.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useState} from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import GeneralBlood from './GeneralBlood';
 import Thyro from './Thyro';
 import Ypofysi from './Ypofysi';
@@ -9,8 +9,39 @@ import NewLabSelect from './NewLabSelect';
 import { useParams } from 'react-router-dom';
 
 
+const defaultState = {
+    blood: false,
+    thyro: false,
+    parathyro: false,
+    ypofysi: false,
+    epinefridio: false,
+    eggs: false,
+    balls: false
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'blood':
+            return { ...defaultState, blood: true };
+        case 'thyro':
+            return { ...defaultState, thyro: true };
+        case 'parathyro':
+            return { ...defaultState, parathyro: true };
+        case 'epinefridia':
+            return { ...defaultState, epinefridia: true };
+        case 'ypofysi':
+            return { ...defaultState, ypofysi: true };
+        case 'eggs':
+            return { ...defaultState, eggs: true };
+        case 'balls':
+            return { ...defaultState, balss: true };
+
+    }
+}
+
+
 const NewLabAnalysis = (props) => {
-    const [visitDate,setVisitDate]=useState();
+    const [visitDate, setVisitDate] = useState();
     const type = useParams().type;
     const defaultState = {
         blood: false,
@@ -21,89 +52,55 @@ const NewLabAnalysis = (props) => {
         eggs: false,
         balls: false
     }
-    let initialState = {
-        blood: false,
-        thyro: false,
-        parathyro: false,
-        ypofysi: false,
-        epinefridio: false,
-        eggs: false,
-        balls: false
-    }
-    Object.keys(initialState).map((key) => {
-        if (key === type) {
-            initialState[key] = true;
+    const [state, dispatch] = useReducer(reducer, defaultState)
+
+    useEffect(() => {
+        if (typeof (type) === 'undefined') {
+            dispatch({ type: 'blood' })
+        } else {
+            dispatch({ type: type })
         }
-    })
-    if (typeof (type) === 'undefined') {
-        initialState = { ...defaultState, blood: true };
-    }
+    }, [type])
 
-    const [labAnalysisType, setLabAnalysisType] = useState(initialState);
-    
 
-    function changeVisitDateHandler(visitDate){
+    function changeVisitDateHandler(visitDate) {
         setVisitDate(visitDate);
     }
 
 
     function changeHandler(event) {
         const selectValue = event.target.value;
-
-        if (selectValue === 'blood') {
-            setLabAnalysisType({
-                ...defaultState, blood: true
-            }
-            );
-        }
-        if (selectValue === 'thyro') {
-            setLabAnalysisType({
-                ...defaultState, thyro: true
-            }
-            );
-        }
-        if (selectValue === 'parathyro') {
-            setLabAnalysisType({
-                ...defaultState, parathyro: true
-            }
-            );
-        }
-        if (selectValue === 'ypofysi') {
-            setLabAnalysisType({
-                ...defaultState, ypofysi: true
-            }
-            );
-        }
-        if (selectValue === 'epinefridia') {
-            setLabAnalysisType({
-                ...defaultState, epinefridio: true
-            }
-            );
-        }
-        if (selectValue === 'eggs') {
-            setLabAnalysisType({
-                ...defaultState, eggs: true
-            }
-            );
-        }
-        if (selectValue === 'balls') {
-            setLabAnalysisType({
-                ...defaultState, balls: true
-            }
-            );
-        }
+        switch (selectValue) {
+            case 'blood':
+                return dispatch({ type: 'blood' });
+            case 'thyro':
+                return dispatch({ type: 'thyro' });
+            case 'parathyro':
+                return dispatch({ type: 'parathyro' });
+            case 'epinefridia':
+                return dispatch({ type: 'epinefridia' });
+            case 'ypofysi':
+                return dispatch({ type: 'ypofysi' });
+            case 'eggs':
+                return dispatch({ type: 'eggs' });
+            case 'balls':
+                return dispatch({ type: 'balls' });
+            case '':
+                return dispatch({ type: '' });
+        };
     }
+
     return (
         <Container className={classes.mylab}>
             <Row>
                 <Col>
-                    <NewLabSelect clasname={classes.myselect} patientId={props.patientId} changeHandler={changeVisitDateHandler}/>
+                    <NewLabSelect clasname={classes.myselect} patientId={props.patientId} changeHandler={changeVisitDateHandler} />
                 </Col>
 
                 <Col>
                     <label className={classes.myselect} htmlFor='labifo'>Τύπος Εξέτασης</label>
                     <select onChange={changeHandler} id='labinfo'>
-                        <option value='blood' selected={type === 'blood' }>Γενική Αίματος</option>
+                        <option value='blood' selected={type === 'blood'}>Γενική Αίματος</option>
                         <option value='thyro' selected={type === 'thyro'}>Θυρεοειδής</option>
                         <option value='parathyro' selected={type === 'parathyro'}>Παραθυρεοειδής</option>
                         <option value='ypofysi' selected={type === 'ypofysi'}>Υπόφυση</option>
@@ -114,11 +111,11 @@ const NewLabAnalysis = (props) => {
                 </Col>
             </Row>
             <Row>
-                {labAnalysisType.blood && <GeneralBlood patientId={props.patientId} visitDate={visitDate}/>}
-                {labAnalysisType.thyro && <Thyro patientId={props.patientId} visitDate={visitDate}/>}
-                {labAnalysisType.ypofysi && <Ypofysi patientId={props.patientId} visitDate={visitDate}/>}
-                {labAnalysisType.parathyro && <Parathyro patientId={props.patientId} visitDate={visitDate}/>}
-                {labAnalysisType.epinefridia && <Parathyro patientId={props.patientId} visitDate={visitDate}/>}
+                {state.blood && <GeneralBlood patientId={props.patientId} visitDate={visitDate} />}
+                {state.thyro && <Thyro patientId={props.patientId} visitDate={visitDate} />}
+                {state.ypofysi && <Ypofysi patientId={props.patientId} visitDate={visitDate} />}
+                {state.parathyro && <Parathyro patientId={props.patientId} visitDate={visitDate} />}
+                {state.epinefridia && <Parathyro patientId={props.patientId} visitDate={visitDate} />}
             </Row>
         </Container>
 

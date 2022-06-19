@@ -5,7 +5,6 @@ import Card from './UI/Card';
 
 
 const PatientsList = (props) => {
-
     return (
         <Container>
             <div className={classes.patientsList}>
