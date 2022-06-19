@@ -1,6 +1,6 @@
 import classes from './NewLabAnalysis.module.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import GeneralBlood from './GeneralBlood';
 import Thyro from './Thyro';
 import Ypofysi from './Ypofysi';
@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 
 
 const NewLabAnalysis = (props) => {
+    const [visitDate,setVisitDate]=useState();
     const type = useParams().type;
     const defaultState = {
         blood: false,
@@ -35,11 +36,15 @@ const NewLabAnalysis = (props) => {
         }
     })
     if (typeof (type) === 'undefined') {
-        console.log(true)
         initialState = { ...defaultState, blood: true };
     }
 
     const [labAnalysisType, setLabAnalysisType] = useState(initialState);
+    
+
+    function changeVisitDateHandler(visitDate){
+        setVisitDate(visitDate);
+    }
 
 
     function changeHandler(event) {
@@ -92,18 +97,13 @@ const NewLabAnalysis = (props) => {
         <Container className={classes.mylab}>
             <Row>
                 <Col>
-                    <NewLabSelect clasname={classes.myselect} patientId={props.patientId}/>
-                    {/* <label className={classes.myselect}>Επίσκεψη</label>
-                    <select>
-                        <option>Πρώτη Επίσκεψη</option>
-                        <option>Δεύτερη Επίσκεψη</option>
-                    </select> */}
+                    <NewLabSelect clasname={classes.myselect} patientId={props.patientId} changeHandler={changeVisitDateHandler}/>
                 </Col>
 
                 <Col>
                     <label className={classes.myselect} htmlFor='labifo'>Τύπος Εξέτασης</label>
                     <select onChange={changeHandler} id='labinfo'>
-                        <option value='blood' selected={type === 'blood'}>Γενική Αίματος</option>
+                        <option value='blood' selected={type === 'blood' }>Γενική Αίματος</option>
                         <option value='thyro' selected={type === 'thyro'}>Θυρεοειδής</option>
                         <option value='parathyro' selected={type === 'parathyro'}>Παραθυρεοειδής</option>
                         <option value='ypofysi' selected={type === 'ypofysi'}>Υπόφυση</option>
@@ -114,11 +114,11 @@ const NewLabAnalysis = (props) => {
                 </Col>
             </Row>
             <Row>
-                {labAnalysisType.blood && <GeneralBlood patientId={props.patientId} />}
-                {labAnalysisType.thyro && <Thyro patientId={props.patientId} />}
-                {labAnalysisType.ypofysi && <Ypofysi patientId={props.patientId} />}
-                {labAnalysisType.parathyro && <Parathyro patientId={props.patientId} />}
-                {labAnalysisType.epinefridia && <Parathyro patientId={props.patientId} />}
+                {labAnalysisType.blood && <GeneralBlood patientId={props.patientId} visitDate={visitDate}/>}
+                {labAnalysisType.thyro && <Thyro patientId={props.patientId} visitDate={visitDate}/>}
+                {labAnalysisType.ypofysi && <Ypofysi patientId={props.patientId} visitDate={visitDate}/>}
+                {labAnalysisType.parathyro && <Parathyro patientId={props.patientId} visitDate={visitDate}/>}
+                {labAnalysisType.epinefridia && <Parathyro patientId={props.patientId} visitDate={visitDate}/>}
             </Row>
         </Container>
 

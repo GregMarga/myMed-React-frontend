@@ -18,7 +18,6 @@ const GeneralBlood = (props) => {
     const { error, clearError, isLoading, sendRequest } = useHttpClient();
 
     const dateInputRef = useRef();
-    const visitDateInputRef = useRef();
     const kallioInputRef = useRef();
     const natrioInputRef = useRef();
     const asbestioInputRef = useRef();
@@ -50,6 +49,7 @@ const GeneralBlood = (props) => {
                     JSON.stringify({
                         type: 'blood',
                         date: dateInputRef.current.value,
+                        visitDate:props.visitDate,
                         kallio: kallioInputRef.current.value,
                         natrio: natrioInputRef.current.value,
                         asbestio: asbestioInputRef.current.value,

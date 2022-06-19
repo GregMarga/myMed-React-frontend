@@ -19,6 +19,7 @@ const Patients = () => {
     const [loadedPatients, setLoadedPatients] = useState([]);
     const [patientToDelete, setPatientToDelete] = useState();
     const [patientToEdit, setPatientToEdit] = useState();
+    const [searchParams, setSearchParams] = useState({ sirname: '', name: '', fathersName: '', age: '', tel: '', amka: '' })
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const auth = useContext(AuthContext);
 
@@ -35,6 +36,30 @@ const Patients = () => {
         };
         fetchPatients();
     }, [sendRequest]);
+
+
+
+
+
+    async function findPatient(sirname, name, tel, amka, fathersName, age) {
+        try {
+            const responseData = await sendRequest(`http://localhost:5000/patients/getPatients/${auth.userId}/test`, 'POST',
+                JSON.stringify(
+                    {
+                        name: name,
+                        sirname: sirname,
+                        fathersName: fathersName,
+                        tel: tel,
+                        amka: amka
+                    }), {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + auth.token
+            });
+            setLoadedPatients(responseData)
+            console.log(responseData)
+        } catch (err) { }
+
+    }
 
     function addPatientHandler() {
         setModalIsOpen(true);
@@ -77,16 +102,16 @@ const Patients = () => {
             {!!error && <ErrorModal error={error} onClear={clearError} />}
 
             <Container>
-                {!isLoading && loadedPatients && <PatientsListHeader />}
+                {!isLoading && loadedPatients && <PatientsListHeader changeSearchParams={findPatient} />}
                 {isLoading && <LoadingSpinner asOverlay />}
 
                 {!isLoading && loadedPatients && <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>
                 {modalIsOpen && <Modal onClose={closeHandler} onSubmit={submitPatientHandler} patients={loadedPatients} />}
-                {modalIsOpen&&!error && <Backdrop onClick={closeHandler} />}
-                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this patient?Please note that it can't be undone once thereafter."/>}
-                {deleteModalIsOpen&&!error && <Backdrop onClick={closeDeleteModal} />}
-                {editModalIsOpen&&!error && <Backdrop onClick={closeEditModal} />}
+                {modalIsOpen && !error && <Backdrop onClick={closeHandler} />}
+                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this patient?Please note that it can't be undone once thereafter." />}
+                {deleteModalIsOpen && !error && <Backdrop onClick={closeDeleteModal} />}
+                {editModalIsOpen && !error && <Backdrop onClick={closeEditModal} />}
                 {editModalIsOpen && <EditPatient onClose={closeEditModal} patientId={patientToEdit} />}
 
             </Container>

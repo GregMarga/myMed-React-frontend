@@ -7,7 +7,7 @@ import { useState, useContext, useEffect } from "react";
 import moment from 'moment';
 import ErrorModal from "../../UI/ErrorModal";
 import LoadingSpinner from "../../UI/LoadingSpinner";
-import Backdrop from "../../UI/Backdrop";
+
 
 
 const NewLabSelect = (props) => {
@@ -28,15 +28,20 @@ const NewLabSelect = (props) => {
         fetchVisitDates();
     }, [sendRequest]);
 
+    function changeHandler(event){
+        props.changeHandler(event.target.value);
+    }
+
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
             {isLoading && <LoadingSpinner asOverlay />}
             <label htmlFor="visit" className={classes.label}>Επίσκεψη</label>
-            <select id='visit' name='visitDate'className={classes.select}>
-                {loadVisits.length===0&&<option >No visits</option>}
+            <select id='visit' name='visitDate' className={classes.select} onChange={changeHandler}>
+                <option value={0} selected disabled hidden>Select an Option</option>
+                {loadVisits.length === 0 && <option disabled>No visits</option>}
                 {loadVisits.map((date) => {
-                    return (<option value={date._id}>{moment(date.date).format('DD/MM/YYYY')}</option>);
+                    return (<option value={date._id} key={date._id}>{moment(date.date).format('DD/MM/YYYY')}</option>);
                 })}
             </select>
         </Fragment>);
