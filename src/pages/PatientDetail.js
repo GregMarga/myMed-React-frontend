@@ -9,10 +9,12 @@ import Visits from '../components/Patient-Details-Pages/Visits/Visits';
 import PatientId from '../components/PatientId';
 import classes from './PatientDetail.module.css';
 import VisitDetail from '../components/Patient-Details-Pages/Visits/VisitDetail';
+import FileEdit from '../components/Patient-Details-Pages/files/FileEdit';
 import { AuthContext } from '../context/auth-context';
 import { useHttpClient } from '../hooks/http-hook';
 import ErrorModal from '../components/UI/ErrorModal';
 import NewLabAnalysis from '../components/Patient-Details-Pages/LabAnalysis/NewLabAnalysis';
+import Files from '../components/Patient-Details-Pages/files/Files';
 import { useState, useEffect, useContext } from 'react';
 
 
@@ -52,7 +54,8 @@ const PatientDetail = () => {
                 <Route path={`/patients/${params.patientId}/visits`} exact><div><Visits patientId={patientId} /></div></Route>
                 <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>
                 <Route path={`/patients/${params.patientId}/lab_test`} exact><LabAnalysis patientId={patientId} /></Route>
-                {/* <Route path={`/patients/62a0e2f4086903904ac8683e/visits/new`}><p>Please Work motherfuckerrrrrrrrrrrrrrrrrrrrr</p></Route> */}
+                <Route path={`/patients/${params.patientId}/aad`} exact><Files patientId={patientId}/></Route>
+                <Route path={`/patients/${params.patientId}/aad/:fileId`} ><FileEdit  patientId={patientId}/></Route>
                 <Route path={`/patients/${params.patientId}/lab_test/:type/:labId`}><NewLabAnalysis patientId={params.patientId}/></Route>
                 <Route path={`/patients/${params.patientId}/lab_test/:labId`}><NewLabAnalysis patientId={params.patientId}/></Route>
                 <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail patientId={params.patientId} /></Route>

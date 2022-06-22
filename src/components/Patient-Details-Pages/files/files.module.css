@@ -1,0 +1,16 @@
+.files{
+    padding-left: 10%;
+    padding-top: 7%;
+}
+.cardsFiles{
+    width: 88%;
+    left: 6%;
+}
+
+@media only screen and (max-width: 1000px) {
+    .files {
+       padding-left: 0;
+     
+
+    }
+  }

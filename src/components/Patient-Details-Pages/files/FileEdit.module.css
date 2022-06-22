@@ -1,0 +1,21 @@
+.cardFiles{
+    width: 77%;
+    left:11.5%;
+   
+}
+.fileEdit{
+    padding-left: 10%;
+    padding-top: 7%;
+    font-size: 1.2rem;
+  
+}
+.fileEdit label{
+    margin-top: 2%;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+.fileEdit input{
+   font-size: 1.25rem;
+   width: 150px;
+   margin-left: 10px;
+}
