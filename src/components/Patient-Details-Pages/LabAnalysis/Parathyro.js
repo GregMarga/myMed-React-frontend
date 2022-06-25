@@ -85,7 +85,7 @@ const Parathyro = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading && <LoadingSpinner asOverlay />}
+            {isLoading && <LoadingSpinner />}
             <Card>
                 <form className={classes.thyroForm} onSubmit={submitHandler}>
 

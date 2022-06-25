@@ -11,6 +11,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import ErrorModal from '../../UI/ErrorModal';
 import { Fragment } from 'react';
 import LoadingSpinner from '../../UI/LoadingSpinner';
+import { Link, useLocation } from "react-router-dom";
+
 
 
 
@@ -18,7 +20,9 @@ const VisitDetail = (props) => {
     // const [loadVisit,setLoadVisit]=useState({date:'',diagnosis:'',geniki_eikona,piesi,sfiksis,weight,height,test_volume,others})
     const params = useParams();
     const auth = useContext(AuthContext);
-    const { isLoading,sendRequest, error, clearError } = useHttpClient();
+    const location = useLocation();
+    const path = (params.visitId !== 'new') ? location.pathname.split('/visits')[0] + '/lab_test' : location.pathname.split('/visits')[0] + '/lab_test/new';
+    const { isLoading, sendRequest, error, clearError } = useHttpClient();
     const [loadVisit, setLoadVisit] = useState({ date: '', diagnosis: '', geniki_eikona: '', piesi: '', sfiksis: '', weight: '', height: '', test_volume: '', others: '', smkt: '', tekt: '' });
     const [bmiParams, setBmiParams] = useState({
         weight: 1,
@@ -38,21 +42,29 @@ const VisitDetail = (props) => {
     const tektInputRef = useRef();
     const smktInputRef = useRef();
 
+    useEffect(() => {
+        const createVisitId = async () => {
+            const visitId = await sendRequest(`http://localhost:5000/patients/visits/createVisitId`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            setLoadVisit({ ...loadVisit, visitId: visitId })
+        }
+        createVisitId();
+    }, []);
+
     const fetchVisit = async () => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits/${params.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            setLoadVisit({ diagnosis: responseData.diagnosis, date: moment(responseData.date).format('YYYY-MM-DD'), tekt: responseData.tekt, smkt: responseData.smkt, geniki_eikona: responseData.geniki_eikona, piesi: responseData.piesi, sfiksis: responseData.sfiksis, weight: responseData.weight, height: responseData.height, test_volume: responseData.test_volume, others: responseData.others });
+            console.log(responseData._id)
+            setLoadVisit({ diagnosis: responseData.diagnosis, date: moment(responseData.date).format('YYYY-MM-DD'), tekt: responseData.tekt, smkt: responseData.smkt, geniki_eikona: responseData.geniki_eikona, piesi: responseData.piesi, sfiksis: responseData.sfiksis, weight: responseData.weight, height: responseData.height, test_volume: responseData.test_volume, others: responseData.others, visitId: responseData._id });
         } catch (err) { }
+        console.log(loadVisit.visitId)
 
     };
 
     useEffect(() => {
         if (params.visitId !== 'new') {
-            fetchVisit()
+            fetchVisit();
         }
     }, []);
-
-
 
     function changeHeightHandler(event) {
         setBmiParams({
@@ -69,9 +81,11 @@ const VisitDetail = (props) => {
     async function submitHandler(event) {
         event.preventDefault();
         if (params.visitId === 'new') {
+            console.log(loadVisit.visitId)
             try {
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/visits`, 'POST',
                     JSON.stringify({
+                        id: loadVisit.visitId,
                         date: dateInputRef.current.value,
                         diagnosis: diagnosisInputRef.current.value,
                         piesi: piesiInputRef.current.value,
@@ -108,14 +122,12 @@ const VisitDetail = (props) => {
                 });
             } catch (err) { }
         }
-        // if (!error) {
-        //     history.push(`/patients/${props.patientId}/visits`);
-        // }
+
     }
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading&&<LoadingSpinner asOverlay/>}
+            {isLoading && <LoadingSpinner asOverlay />}
 
             <Container fluid className={classes.visitDetail}>
                 <Card className={classes.cardsVisitDetail}>
@@ -123,7 +135,7 @@ const VisitDetail = (props) => {
                         <Row className={` justify-content-md-start`}>
                             <Col className={classes.label} lg='2'><h5>Στοιχεία Επίσκεψης</h5></Col>
 
-                            <Col className={classes.label} lg='2'><h5>Εργαστηριακές</h5></Col>
+                            <Col className={classes.label} lg='2'><h5><Link to={`${path}?visitId=${loadVisit.visitId}`}>Εργαστηριακές</Link></h5></Col>
                         </Row>
                         <Row>
                             <Col>

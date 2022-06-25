@@ -41,7 +41,8 @@ function reducer(state, action) {
 
 
 const NewLabAnalysis = (props) => {
-    const [visitDate, setVisitDate] = useState();
+    const [visitId, setVisitId] = useState();
+    const [loadVisitId, setLoadVisitId] = useState('');
     const type = useParams().type;
     const defaultState = {
         blood: false,
@@ -63,8 +64,8 @@ const NewLabAnalysis = (props) => {
     }, [type])
 
 
-    function changeVisitDateHandler(visitDate) {
-        setVisitDate(visitDate);
+    function changeVisitDateHandler(visitId) {
+        setVisitId(visitId);
     }
 
 
@@ -94,14 +95,14 @@ const NewLabAnalysis = (props) => {
         <Container className={classes.mylab}>
             <Row>
                 <Col>
-                    <NewLabSelect clasname={classes.myselect} patientId={props.patientId} changeHandler={changeVisitDateHandler} />
+                    <NewLabSelect clasname={classes.myselect} loadVisitId={loadVisitId} patientId={props.patientId} changeHandler={changeVisitDateHandler} />
                 </Col>
 
                 <Col>
                     <label className={classes.myselect} htmlFor='labifo'>Τύπος Εξέτασης</label>
                     <select onChange={changeHandler} id='labinfo'>
                         <option value='blood' selected={type === 'blood'}>Γενική Αίματος</option>
-                        <option value='thyro' selected={type === 'thyro'}>Θυρεοειδής</option>
+                        <option value='thyro' selected={type === 'thyro'} >Θυρεοειδής</option>
                         <option value='parathyro' selected={type === 'parathyro'}>Παραθυρεοειδής</option>
                         <option value='ypofysi' selected={type === 'ypofysi'}>Υπόφυση</option>
                         <option value='epinefridia' selected={type === 'epinefridia'}>Επινεφρίδια</option>
@@ -111,11 +112,11 @@ const NewLabAnalysis = (props) => {
                 </Col>
             </Row>
             <Row>
-                {state.blood && <GeneralBlood patientId={props.patientId} visitDate={visitDate} />}
-                {state.thyro && <Thyro patientId={props.patientId} visitDate={visitDate} />}
-                {state.ypofysi && <Ypofysi patientId={props.patientId} visitDate={visitDate} />}
-                {state.parathyro && <Parathyro patientId={props.patientId} visitDate={visitDate} />}
-                {state.epinefridia && <Parathyro patientId={props.patientId} visitDate={visitDate} />}
+                {state.blood && <GeneralBlood setLoadVisitId={setLoadVisitId} patientId={props.patientId} visitId={visitId} />}
+                {state.thyro && <Thyro setLoadVisitId={setLoadVisitId} patientId={props.patientId} visitId={visitId} />}
+                {state.ypofysi && <Ypofysi setLoadVisitId={setLoadVisitId} patientId={props.patientId} visitId={visitId} />}
+                {state.parathyro && <Parathyro setLoadVisitId={setLoadVisitId} patientId={props.patientId} visitId={visitId} />}
+                {state.epinefridia && <Parathyro setLoadVisitId={setLoadVisitId} patientId={props.patientId} visitId={visitId} />}
             </Row>
         </Container>
 

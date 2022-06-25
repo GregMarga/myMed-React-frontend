@@ -14,6 +14,7 @@ import { useHttpClient } from "../../../hooks/http-hook";
 
 
 
+
 const Visits = (props) => {
     const { isLoading, sendRequest, error, clearError } = useHttpClient();
     const [loadedVisits, setLoadedVisits] = useState([]);
@@ -56,14 +57,14 @@ const Visits = (props) => {
     return (
 
         <Container fluid className={classes.visits}>
-            {isLoading && <LoadingSpinner asOverlay />}
+            {isLoading && <LoadingSpinner />}
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            <Card className={classes.cardsVisit}>
+            {!isLoading && <Card className={classes.cardsVisit}>
                 <ListsHeader type='Τύπος Επίσκεψης' date='Ημερομηνία' diagnosis='Διάγνωση' />
                 {!isLoading && <VisitsList visits={loadedVisits} onDelete={deleteHandler} />}
-                {deleteModalIsOpen && <DeleteModal onConfirm={deleteVisitHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this visit?Please note that it can't be undone once thereafter."/>}
+                {deleteModalIsOpen && <DeleteModal onConfirm={deleteVisitHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this visit?Please note that it can't be undone once thereafter." />}
                 {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
-            </Card>
+            </Card>}
             <Button />
         </Container>
 

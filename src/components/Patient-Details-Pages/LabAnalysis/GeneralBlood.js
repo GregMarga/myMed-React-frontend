@@ -12,7 +12,7 @@ import moment from 'moment';
 import SaveButton from '../../UI/SaveButton';
 
 const GeneralBlood = (props) => {
-    const [loadBlood, setLoadBlood] = useState({ date: '', visitDate: '', kallio: '', natrio: '', asbestio: '', ht: '', mcv: '', sgot: '', b12: '', hb: '' });
+    const [loadBlood, setLoadBlood] = useState({ date: '', visitDate: '', kallio: '', natrio: '', asbestio: '', ht: '', mcv: '', sgot: '', b12: '', hb: '', visitId: '' });
     const params = useParams();
     const auth = useContext(AuthContext);
     const { error, clearError, isLoading, sendRequest } = useHttpClient();
@@ -30,12 +30,13 @@ const GeneralBlood = (props) => {
     const fetchVisit = async () => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/blood/${params.labId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            setLoadBlood({ date: moment(responseData.date).format('YYYY-MM-DD'), visitDate: moment(responseData.visitDate).format('YYYY-MM-DD'), kallio: responseData.kallio, natrio: responseData.natrio, asbestio: responseData.asbestio, ht: responseData.ht, mcv: responseData.mcv, sgot: responseData.sgot, b12: responseData.b12, hb: responseData.hb });
-        } catch (err) { }
+            props.setLoadVisitId(responseData.visitId)
+            setLoadBlood({ date: moment(responseData.date).format('YYYY-MM-DD'), visitDate: moment(responseData.visitDate).format('YYYY-MM-DD'), kallio: responseData.kallio, natrio: responseData.natrio, asbestio: responseData.asbestio, ht: responseData.ht, mcv: responseData.mcv, sgot: responseData.sgot, b12: responseData.b12, hb: responseData.hb, visitId: responseData.visitId });
+        } catch (err) {console.log(err) }
 
     };
     useEffect(() => {
-        if (params.labId !== 'new'&&params.type==='blood') {
+        if (params.labId !== 'new' && params.type === 'blood') {
             fetchVisit()
         }
     }, [props.patientId, auth.token]);
@@ -43,13 +44,13 @@ const GeneralBlood = (props) => {
     const submitHandler = async (event) => {
         event.preventDefault();
         console.log(dateInputRef.current.value)
-        if (params.labId === 'new'||loadBlood.date==='') {   //neo document giati date required ara den yparxei eggrafi gia ayto to typo eksetasis
+        if (params.labId === 'new' || loadBlood.date === '') {   //neo document giati date required ara den yparxei eggrafi gia ayto to typo eksetasis
             try {
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests`, 'POST',
                     JSON.stringify({
                         type: 'blood',
                         date: dateInputRef.current.value,
-                        visitDate:props.visitDate,
+                        visitId: props.visitId,
                         kallio: kallioInputRef.current.value,
                         natrio: natrioInputRef.current.value,
                         asbestio: asbestioInputRef.current.value,
@@ -66,7 +67,7 @@ const GeneralBlood = (props) => {
         }
         else {
             try {
-                
+
                 await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/${params.labId}`, 'PATCH',
                     JSON.stringify({
                         type: 'blood',
@@ -93,8 +94,8 @@ const GeneralBlood = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading && <LoadingSpinner asOverlay />}
-            <Card>
+            {isLoading && <LoadingSpinner />}
+            {!isLoading && <Card>
                 <form className={classes.bloodForm} onSubmit={submitHandler}>
                     <Container >
                         <Row >
@@ -162,7 +163,7 @@ const GeneralBlood = (props) => {
 
                     </Container>
                 </form>
-            </Card>
+            </Card>}
 
         </Fragment>
 

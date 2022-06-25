@@ -25,13 +25,13 @@ const LabAnalysis = (props) => {
     const auth = useContext(AuthContext);
 
     const location = useLocation();
-    const query = new URLSearchParams(location.search).get('q');
+    const query = new URLSearchParams(location.search).get('visitId');
 
     useEffect(() => {
         const fetchLabTests = async () => {
             try {
                 const responseData = await sendRequest(
-                    `http://localhost:5000/patients/${props.patientId}/lab_tests?date=${query}`
+                    `http://localhost:5000/patients/${props.patientId}/lab_tests?visitId=${query}`
                     , 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setLoadedLabs(responseData);
             } catch (err) {
@@ -75,9 +75,9 @@ const LabAnalysis = (props) => {
 
     return (
         <Fragment>
-            {isLoading && <LoadingSpinner asOverlay />}
+            {isLoading && <LoadingSpinner />}
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            <Container fluid className={classes.labAnalysis}>
+            {!isLoading&&<Container fluid className={classes.labAnalysis}>
                 <Card className={classes.cardLab}>
                     <ListsHeader type='Τύπος Εξέτασης' date='Ημερομηνία Εξέτασης' diagnosis='Ημερομηνία Επίσκεψης' />
                     <LabsList labs={loadedLabs} onDelete={deleteHandler} />
@@ -86,7 +86,7 @@ const LabAnalysis = (props) => {
                 </Card>
                 <Button />
 
-            </Container>
+            </Container>}
         </Fragment>
     );
 };

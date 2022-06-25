@@ -24,7 +24,7 @@ const Files = (props) => {
                 {
                     Authorization: 'Bearer ' + auth.token
                 });
-           
+
             setLoadedFiles(responseData);
         }
         fetchFiles();
@@ -33,15 +33,15 @@ const Files = (props) => {
 
     return (
         <Fragment>
-            {isLoading && <LoadingSpinner asOverlay />}
+            {isLoading && <LoadingSpinner />}
             {!!error && <ErrorModal />}
-            <Container fluid className={classes.files}>
+            {!isLoading && <Container fluid className={classes.files}>
                 <Card className={classes.cardsFiles}>
-                    <ListsHeader type='Όνομα Αρχείου' date='Ημερομηνία' diagnosis='Τύπος Αρχείου' title/>
+                    <ListsHeader type='Όνομα Αρχείου' date='Ημερομηνία' diagnosis='Τύπος Αρχείου' title />
                     <FilesList files={loadedFiles} />
                 </Card>
                 <Button />
-            </Container>
+            </Container>}
         </Fragment>
     );
 }

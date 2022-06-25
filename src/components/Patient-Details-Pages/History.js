@@ -54,7 +54,7 @@ const History = (props) => {
 
     return (
         <Fragment>
-             {isLoading&&<LoadingSpinner asOverlay/>}
+             {isLoading&&<LoadingSpinner />}
              {!!error && <ErrorModal error={error} onClear={clearError} />}
        
         <form className={classes.history} onSubmit={submitHandler}>
