@@ -1,6 +1,6 @@
 import { Route, Switch, Redirect } from 'react-router-dom';
 import SideNavigation from './components/SideNavigation';
-import Appointments from './pages/Appointments';
+import Appointment from './pages/Appointment';
 import PatientDetail from './pages/PatientDetail';
 import Patients from './pages/Patients';
 import Auth from './authentication/Auth';
@@ -77,7 +77,7 @@ function App() {
         </Route>
         <Route path='/appointments'>
           <SideNavigation />
-          <Appointments />
+          <Appointment />
         </Route>
         <Route path='/patients/:patientId' >
           <SideNavigation />

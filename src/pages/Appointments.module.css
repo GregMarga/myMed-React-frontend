@@ -1,0 +1,15 @@
+.appointments {
+    margin-left: 12.5%;
+    margin-top: 3%;
+    width: 80%;
+    height: 800px;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .appointments {
+        margin: auto;
+        width: 100%;
+        height: auto;
+    }
+}
