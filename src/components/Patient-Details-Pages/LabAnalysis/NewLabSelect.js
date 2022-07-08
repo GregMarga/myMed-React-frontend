@@ -19,6 +19,8 @@ const NewLabSelect = (props) => {
 
     const location = useLocation();
     const query = new URLSearchParams(location.search).get('visitId');
+    console.log(props.loadVisitId)
+    console.log(query)
 
     useEffect(() => {
         const fetchVisitDates = async () => {

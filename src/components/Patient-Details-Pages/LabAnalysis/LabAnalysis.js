@@ -80,7 +80,7 @@ const LabAnalysis = (props) => {
             {!isLoading&&<Container fluid className={classes.labAnalysis}>
                 <Card className={classes.cardLab}>
                     <ListsHeader type='Τύπος Εξέτασης' date='Ημερομηνία Εξέτασης' diagnosis='Ημερομηνία Επίσκεψης' />
-                    <LabsList labs={loadedLabs} onDelete={deleteHandler} />
+                    <LabsList labs={loadedLabs} onDelete={deleteHandler} visitId={query}/>
                     {deleteModalIsOpen && <DeleteModal onConfirm={deleteLabTestHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this visit?Please note that it can't be undone once thereafter." />}
                     {deleteModalIsOpen && <Backdrop onClick={closeDeleteModal} />}
                 </Card>

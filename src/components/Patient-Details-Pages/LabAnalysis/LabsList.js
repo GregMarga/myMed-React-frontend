@@ -15,7 +15,7 @@ const LabsList = (props) => {
                     onDelete={props.onDelete}
                 />);
             })}
-            {(props.labs.length === 0) && <Row><Col className='text-center'>No lab tests recorded for this patient,add one.</Col></Row>}
+            {(props.labs.length === 0) && <Row><Col className='text-center'>No lab tests recorded for this patient{(!!props.visitId)&&"'s visit"},add one.</Col></Row>}
         </Container>
     );
 };

@@ -2,6 +2,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import SideNavigation from './components/SideNavigation';
 import Appointment from './pages/Appointment';
 import PatientDetail from './pages/PatientDetail';
+import Statistics from './pages/Statistics';
 import Patients from './pages/Patients';
 import Auth from './authentication/Auth';
 import { AuthContext } from './context/auth-context';
@@ -18,7 +19,7 @@ function App() {
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
     setUserId(uid);
-    const tokenExpirationDate = expirationDate || new Date(new Date().getTime() +1000*60*60);
+    const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
     setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem('userData', JSON.stringify({
       userId: uid,
@@ -83,6 +84,11 @@ function App() {
           <SideNavigation />
           <PatientDetail />
         </Route>
+        <Route path='/Statistics' >
+          <SideNavigation />
+          <Statistics />
+        </Route>
+
       </Switch>
     )
 

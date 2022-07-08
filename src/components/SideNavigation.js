@@ -19,6 +19,9 @@ const SideNavigation = () => {
                             <li>
                                 <NavLink className={classes.headerA} activeClassName={classes.active} to='/Appointments'>Appointments</NavLink>
                             </li>
+                            <li>
+                                <NavLink className={classes.headerA} activeClassName={classes.active} to='/Statistics'>Statistics</NavLink>
+                            </li>
                             {auth.isLoggedIn &&
                                 <li>
                                     <button onClick={auth.logout} className={classes.logoutButton}><NavLink  to='/'>Logout</NavLink></button>

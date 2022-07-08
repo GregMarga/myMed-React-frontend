@@ -74,13 +74,7 @@ const FileEdit = (props) => {
                         </Row>
                         <Row>
                             <Col>
-                                <ImageUpload center id='image' onInput={inputHandler} />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <img src={`http://localhost:5000/uploads/images/${params.fileId}`} />
-
+                                <ImageUpload imageSource={`http://localhost:5000/uploads/images/${params.fileId}`} center id='image' onInput={inputHandler} />
                             </Col>
                         </Row>
                         <Row><Col><SaveButton /></Col></Row>

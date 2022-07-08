@@ -13,9 +13,11 @@ const FilesList = (props) => {
                     fileName={file}
                 />
             })}
-            {/* <FilesListItem 
-            fileName='thyro.jpg'
-            fileType='jpg'/> */}
+            {(props.files.length === 0) &&
+                <Row>
+                    <Col className='text-center'>There are no files for this patient</Col>
+                </Row>
+            }
 
         </Container>
     );
