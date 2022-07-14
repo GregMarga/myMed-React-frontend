@@ -11,7 +11,7 @@ const EditPatient = (props) => {
     const [loadedPatient, setLoadedPatient] = useState({ sirname: "", name: "", fathersName: "", age: "", tel: "", amka: "" });
     const sirnameInputRef = useRef();
     const nameInputRef = useRef();
-    const fathersNameInputRef = useRef();
+    const diagnosisInputRef = useRef();
     const AgeInputRef = useRef();
     const TelInputRef = useRef();
     const amkaInputRef = useRef();
@@ -28,7 +28,7 @@ const EditPatient = (props) => {
                 const data = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
-                setLoadedPatient({ sirname: data.sirname, name: data.name, fathersName: data.fathersName, age: data.age, tel: data.tel, amka: data.amka })
+                setLoadedPatient({ sirname: data.sirname, name: data.name, diagnosis: data.diagnosis, age: data.age, tel: data.tel, amka: data.amka })
                 console.log(data)
             } catch (err) { }
 
@@ -54,7 +54,7 @@ const EditPatient = (props) => {
         const updatedPatient = {
             sirname: sirnameInputRef.current.value,
             name: nameInputRef.current.value,
-            fathersName: fathersNameInputRef.current.value,
+            diagnosis: diagnosisInputRef.current.value,
             age: AgeInputRef.current.value,
             tel: TelInputRef.current.value,
             amka: amkaInputRef.current.value
@@ -76,8 +76,8 @@ const EditPatient = (props) => {
                         <legend>Patient Info</legend>
                         <input ref={sirnameInputRef} type="text" name="sirname" placeholder="Επώνυμο *" defaultValue={loadedPatient.sirname} required />
                         <input ref={nameInputRef} type="text" name="name" placeholder="Όνομα *" defaultValue={loadedPatient.name} required />
-                        <input ref={fathersNameInputRef} type="text" name="fathersName" placeholder="Πατρώνυμο " defaultValue={loadedPatient.fathersName} />
-                        <input ref={AgeInputRef} type="text" name="age" placeholder="Ηλικία " defaultValue={loadedPatient.age} />
+                        <input ref={diagnosisInputRef} type="text" name="diagnosis" placeholder="Διάγνωση " defaultValue={loadedPatient.diagnosis} />
+                        <input ref={AgeInputRef} type="number" name="age" placeholder="Ηλικία " defaultValue={loadedPatient.age} />
                         <input ref={TelInputRef} type="text" name="tel" placeholder="Τηλέφωνο *" defaultValue={loadedPatient.tel} required />
                         <input ref={amkaInputRef} type="text" name="amka" placeholder="ΑΜΚΑ " defaultValue={loadedPatient.amka} />
                         <button className="btn btn--alt" type="button" onClick={props.onClose}>Cancel</button>

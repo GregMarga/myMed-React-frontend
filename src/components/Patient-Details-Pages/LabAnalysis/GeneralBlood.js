@@ -32,7 +32,7 @@ const GeneralBlood = (props) => {
             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/lab_tests/blood/${params.labId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             props.setLoadVisitId(responseData.visitId)
             setLoadBlood({ date: moment(responseData.date).format('YYYY-MM-DD'), visitDate: moment(responseData.visitDate).format('YYYY-MM-DD'), kallio: responseData.kallio, natrio: responseData.natrio, asbestio: responseData.asbestio, ht: responseData.ht, mcv: responseData.mcv, sgot: responseData.sgot, b12: responseData.b12, hb: responseData.hb, visitId: responseData.visitId });
-        } catch (err) {console.log(err) }
+        } catch (err) { console.log(err) }
 
     };
     useEffect(() => {
@@ -114,49 +114,49 @@ const GeneralBlood = (props) => {
                         <Row >
                             <Col className={classes.myCol}>
                                 <label>Κάλλιο</label>
-                                <input name='kallio' ref={kallioInputRef} defaultValue={loadBlood.kallio} />
+                                <input type='number' name='kallio' ref={kallioInputRef} defaultValue={loadBlood.kallio} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Νάτριο</label>
-                                <input name='natrio' ref={natrioInputRef} defaultValue={loadBlood.natrio} />
+                                <input type='number' name='natrio' ref={natrioInputRef} defaultValue={loadBlood.natrio} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Ασβέστιο</label>
-                                <input name='asbestio' ref={asbestioInputRef} defaultValue={loadBlood.asbestio} />
+                                <input type='number' name='asbestio' ref={asbestioInputRef} defaultValue={loadBlood.asbestio} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Ht</label>
-                                <input name='ht' ref={htInputRef} defaultValue={loadBlood.ht} />
+                                <input type='number' name='ht' ref={htInputRef} defaultValue={loadBlood.ht} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>MCV</label>
-                                <input name='mcv' ref={mcvInputRef} defaultValue={loadBlood.mcv} />
+                                <input type='number' name='mcv' ref={mcvInputRef} defaultValue={loadBlood.mcv} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>SGOT</label>
-                                <input name='sgot' ref={sgotInputRef} defaultValue={loadBlood.sgot} />
+                                <input type='number' name='sgot' ref={sgotInputRef} defaultValue={loadBlood.sgot} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>B12</label>
-                                <input name='b12' ref={b12InputRef} defaultValue={loadBlood.b12} />
+                                <input type='number' name='b12' ref={b12InputRef} defaultValue={loadBlood.b12} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Hb</label>
-                                <input name='hb' ref={hbInputRef} defaultValue={loadBlood.hb} />
+                                <input type='number' name='hb' ref={hbInputRef} defaultValue={loadBlood.hb} />
                             </Col>
                         </Row>
                         <Row><Col><SaveButton /></Col></Row>

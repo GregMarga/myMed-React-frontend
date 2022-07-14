@@ -43,14 +43,26 @@ const FileEdit = (props) => {
 
     async function submitHandler(event) {
         event.preventDefault();
-        try {
-            const formData = new FormData();
-            formData.append('image', formState.inputs.image.value);
-            const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/files`, 'POST',
-                formData
-            )
-        } catch (err) {
-            console.log(err)
+        if (params.fileId === 'new') {
+            try {
+                const formData = new FormData();
+                formData.append('image', formState.inputs.image.value);
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/files`, 'POST',
+                    formData
+                )
+            } catch (err) {
+                console.log(err)
+            }
+        }else{
+            try {
+                const formData = new FormData();
+                formData.append('image', formState.inputs.image.value);
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/files/${params.fileId}`, 'PATCH',
+                    formData
+                )
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 
@@ -61,20 +73,10 @@ const FileEdit = (props) => {
             <Container fluid className={classes.fileEdit}>
                 <Card className={classes.cardFiles}>
                     <form onSubmit={submitHandler}>
-                        <Row>
 
-                            <Col className='text-center'>
-                                <label>Όνομα αρχείου</label>
-                                <input type='text' />
-                            </Col>
-                            <Col className='text-center'>
-                                <label>Ημερομηνία</label>
-                                <input type='date' />
-                            </Col>
-                        </Row>
                         <Row>
                             <Col>
-                                <ImageUpload imageSource={`http://localhost:5000/uploads/images/${params.fileId}`} center id='image' onInput={inputHandler} />
+                                <ImageUpload imageSource={(params.fileId !== 'new') ? `http://localhost:5000/uploads/images/${params.fileId}` : null} center id='image' onInput={inputHandler} />
                             </Col>
                         </Row>
                         <Row><Col><SaveButton /></Col></Row>

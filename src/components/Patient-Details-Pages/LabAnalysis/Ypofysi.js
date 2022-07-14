@@ -21,61 +21,61 @@ const Ypofysi = () => {
                         <Row >
                             <Col className={classes.myCol}>
                                 <label>FSH</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>LH</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Testo</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>E2</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>TSH</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>FT4</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>ACTH</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Φυρτιζόλη</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>GH</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>IGF-1</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
 

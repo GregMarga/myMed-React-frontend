@@ -106,37 +106,37 @@ const Parathyro = (props) => {
                         <Row >
                             <Col className={classes.myCol}>
                                 <label>PTH</label>
-                                <input ref={pthInputRef} name='pth' defaultValue={loadParathyro.pth} />
+                                <input type='number' ref={pthInputRef} name='pth' defaultValue={loadParathyro.pth} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>vitD</label>
-                                <input ref={vitdInputRef} name='vitd' defaultValue={loadParathyro.vitd} />
+                                <input type='number' ref={vitdInputRef} name='vitd' defaultValue={loadParathyro.vitd} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Ca</label>
-                                <input ref={caInputRef} name='ca' defaultValue={loadParathyro.ca} />
+                                <input type='number' ref={caInputRef} name='ca' defaultValue={loadParathyro.ca} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>P</label>
-                                <input ref={pInputRef} name='p' defaultValue={loadParathyro.p} />
+                                <input type='number' ref={pInputRef} name='p' defaultValue={loadParathyro.p} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Αλβουμίνη</label>
-                                <input ref={alvouminiInputRef} name='alvoumini' defaultValue={loadParathyro.alvoumini} />
+                                <input type='number' ref={alvouminiInputRef} name='alvoumini' defaultValue={loadParathyro.alvoumini} />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Κρεατινίνη</label>
-                                <input ref={kreataniniInputRef} name='kreatinini' defaultValue={loadParathyro.kreatanini} />
+                                <input ref={kreataniniInputRef} type='number' name='kreatinini' defaultValue={loadParathyro.kreatanini} />
                             </Col>
                         </Row>
                         <Row><Col><SaveButton /></Col></Row>

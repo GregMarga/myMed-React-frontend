@@ -57,55 +57,55 @@ const Epinefridia = () => {
                         <Row >
                             <Col className={classes.myCol}>
                                 <label>TSH</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>T4</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>FT4</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>T3</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>FT3</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>AbTPO</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>TRab</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>CT</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Tg</label>
-                                <input />
+                                <input type='number'/>
                             </Col>
                         </Row>
 

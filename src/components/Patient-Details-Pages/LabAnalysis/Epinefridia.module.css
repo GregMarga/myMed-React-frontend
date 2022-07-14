@@ -1,43 +1,53 @@
-.thyroForm{
+.thyroForm {
     font-size: 1.0625rem;
 }
-.thyroForm label{
+
+.thyroForm label {
     font-weight: bold;
-    
+
 }
-.thyroForm input{
+
+.thyroForm input {
     width: 5%;
-    position :fixed;
-    right:63%;
-    
+    position: fixed;
+    right: 63%;
+
 }
-.myCol{
+
+.thyroForm input[type=date] {
+    width: 10%;
+    right: 58%;
+}
+
+.myCol {
     margin-bottom: 1.5%;
 }
-.thyroForm span{
+
+.thyroForm span {
     font-size: 1.125rem;
     font-weight: bold;
     margin-right: 4.8%;
     text-decoration: underline;
 }
+
 @media only screen and (max-width: 1800px) {
     .thyroForm input {
-        position: relative; 
+        position: relative;
         right: auto;
         width: 9%;
         margin-left: 1%;
-     
+
 
     }
-  }
+}
+
 @media only screen and (max-width: 1200px) {
     .thyroForm input {
-        position: relative; 
+        position: relative;
         right: auto;
         width: 20%;
         margin-left: 1%;
-     
+
 
     }
-  }
-
+}

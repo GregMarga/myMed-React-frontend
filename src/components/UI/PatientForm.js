@@ -11,7 +11,7 @@ const PatientForm = (props) => {
     const auth = useContext(AuthContext);
     const sirnameInputRef = useRef();
     const nameInputRef = useRef();
-    const fathersNameInputRef = useRef();
+    const diagnosisInputRef = useRef();
     const AgeInputRef = useRef();
     const TelInputRef = useRef();
     const amkaInputRef = useRef();
@@ -24,7 +24,7 @@ const PatientForm = (props) => {
         const enteredPatient = {
             sirname: sirnameInputRef.current.value,
             name: nameInputRef.current.value,
-            fathersName: fathersNameInputRef.current.value,
+            diagnosis: diagnosisInputRef.current.value,
             age: AgeInputRef.current.value,
             tel: TelInputRef.current.value,
             amka: amkaInputRef.current.value,
@@ -48,8 +48,8 @@ const PatientForm = (props) => {
                     <legend>Patient Info</legend>
                     <input ref={sirnameInputRef} type="text" name="sirname" placeholder="Επώνυμο *" required />
                     <input ref={nameInputRef} type="text" name="name" placeholder="Όνομα *" required />
-                    <input ref={fathersNameInputRef} type="text" name="fathersName" placeholder="Πατρώνυμο " />
-                    <input ref={AgeInputRef} type="text" name="age" placeholder="Ηλικία " />
+                    <input ref={diagnosisInputRef} type="text" name="diagnosis" placeholder="Διάγνωση " />
+                    <input ref={AgeInputRef} type="number" name="age" placeholder="Ηλικία " />
                     <input ref={TelInputRef} type="text" name="tel" placeholder="Τηλέφωνο *" required />
                     <input ref={amkaInputRef} type="text" name="amka" placeholder="ΑΜΚΑ " />
                     <button className="btn btn--alt" type="button" onClick={props.onClick}>Cancel</button>

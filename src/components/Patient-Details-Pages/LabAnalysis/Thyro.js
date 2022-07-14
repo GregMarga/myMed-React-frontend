@@ -1,7 +1,8 @@
 import { Fragment } from 'react';
 import classes from './Thyro.module.css';
 import Card from '../../UI/Card';
-import { Container,Col,Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
+import SaveButton from '../../UI/SaveButton';
 
 
 const Thyro = () => {
@@ -20,64 +21,65 @@ const Thyro = () => {
                         <Row>
                             <Col className={classes.myCol}>
                                 <label>Ημ/νία</label>
-                                <input  name='date' type='date' required/>
+                                <input name='date' type='date' required />
                             </Col>
                         </Row>
 
                         <Row >
                             <Col className={classes.myCol}>
                                 <label>TSH</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>T4</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>FT4</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>T3</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>FT3</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>AbTPO</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>TRab</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>CT</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center '>
                             <Col className={classes.myCol}>
                                 <label>Tg</label>
-                                <input />
+                                <input type='number' />
                             </Col>
                         </Row>
+                        <Row><Col><SaveButton /></Col></Row>
 
                     </Container>
                 </form>

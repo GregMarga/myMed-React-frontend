@@ -18,7 +18,7 @@ const PatientsList = (props) => {
                             id={patient._id}
                             sirname={patient.sirname}
                             name={patient.name}
-                            fathersName={patient.fathersName}
+                            diagnosis={patient.diagnosis}
                             age={patient.age}
                             tel={patient.tel}
                             amka={patient.amka}

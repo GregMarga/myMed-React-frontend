@@ -11,14 +11,14 @@ import { useHistory } from "react-router-dom";
 
 
 const Basic = (props) => {
-    const [loading,SetLoading]=useState(false);
-    const [loadedBasics, setLoadedBasics] = useState({ dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '' })
+    const [loading, SetLoading] = useState(false);
+    const [loadedBasics, setLoadedBasics] = useState({ dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '' })
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
     const auth = useContext(AuthContext);
 
-    const history=useHistory();
+    const history = useHistory();
 
     const sirnameInputRef = useRef();
     const nameInputRef = useRef();
@@ -41,7 +41,7 @@ const Basic = (props) => {
         const fetchPatients = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                setLoadedBasics({ placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode });
+                setLoadedBasics({ placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode });
             } catch (err) { }
 
         };
@@ -59,7 +59,6 @@ const Basic = (props) => {
                 body: JSON.stringify({
                     name: nameInputRef.current.value,
                     sirname: sirnameInputRef.current.value,
-                    fathersName: fathersNameInputRef.current.value,
                     age: AgeInputRef.current.value,
                     amka: amkaInputRef.current.value,
                     tel: TelInputRef.current.value
@@ -70,7 +69,7 @@ const Basic = (props) => {
                 }
             });
 
-        } catch (err) { throw new Error(err)}
+        } catch (err) { throw new Error(err) }
 
 
         try {
@@ -85,16 +84,17 @@ const Basic = (props) => {
                         address: addressInputRef.current.value,
                         area: areaInputRef.current.value,
                         postalCode: postalCodeRef.current.value,
+                        fathersName: fathersNameInputRef.current.value
 
                     }), headers: {
                         'Content-Type': 'application/json',
                         Authorization: 'Bearer ' + auth.token
-                    }                    
+                    }
                 });
 
-                SetLoading(false);
+            SetLoading(false);
 
-        } catch (err) { throw new Error(err)}
+        } catch (err) { throw new Error(err) }
 
     }
 
@@ -102,7 +102,7 @@ const Basic = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading||loading && <LoadingSpinner asOverlay />}
+            {isLoading || loading && <LoadingSpinner asOverlay />}
 
             {!isLoading && <form className={classes.basicForm} onSubmit={submitHandler}>
 
@@ -127,7 +127,7 @@ const Basic = (props) => {
                             <label htmlFor="fathers-name">Πατρώνυμο</label>
                         </Col>
                         <Col className='text-sm-end '>
-                            <input ref={fathersNameInputRef} name='fathersName' id='fathers-name' type='text' defaultValue={props.patient.fathersName} />
+                            <input ref={fathersNameInputRef} name='fathersName' id='fathers-name' type='text' defaultValue={loadedBasics.fathersName} />
                         </Col>
                         <Col className='text-sm-end '>
                             <label htmlFor="age">Έτος Γεννήσεως</label>

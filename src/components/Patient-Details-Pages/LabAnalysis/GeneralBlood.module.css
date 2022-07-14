@@ -11,6 +11,10 @@
     right:63%;
     
 }
+.bloodForm input[type=date]{
+    width: 10%;
+    right:58%;
+}
 .myCol{
     margin-bottom: 1.5%;
 }

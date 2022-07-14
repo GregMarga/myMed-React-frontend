@@ -19,8 +19,8 @@ function reducer(state, action) {
             return { ...state, name: action.payload.name };
         case 'sirname':
             return { ...state, sirname: action.payload.sirname };
-        case 'fathersName':
-            return { ...state, fathersName: action.payload.fathersName };
+        case 'diagnosis':
+            return { ...state, diagnosis: action.payload.diagnosis };
         case 'tel':
             return { ...state, tel: action.payload.tel };
         case 'amka':
@@ -42,18 +42,19 @@ const Patients = () => {
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const auth = useContext(AuthContext);
 
-    const defaultSearch={ sirname: '', name: '', fathersName: '', age: '', tel: '', amka: '' };
+    const defaultSearch = { sirname: '', name: '', diagnosis: '', age: '', tel: '', amka: '' };
 
-    const [state, dispatch] = useReducer(reducer,defaultSearch);
+    const [state, dispatch] = useReducer(reducer, defaultSearch);
 
 
     useEffect(() => {
         const fetchPatients = async () => {
             try {
                 const responseData = await sendRequest(
-                    `http://localhost:5000/patients/getPatients/${auth.userId}?name=${state.name}&sirname=${state.sirname}&fathersName=${state.fathersName}&tel=${state.tel}&amka=${state.amka}`, 'GET', null, {
+                    `http://localhost:5000/patients/getPatients/${auth.userId}?name=${state.name}&sirname=${state.sirname}&diagnosis=${state.diagnosis}&tel=${state.tel}&amka=${state.amka}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
+                console.log(responseData)
                 setLoadedPatients(responseData);
             } catch (err) { }
 
@@ -103,7 +104,7 @@ const Patients = () => {
             {!!error && <ErrorModal error={error} onClear={clearError} />}
 
             <Container>
-                <PatientsListHeader  dispatch={dispatch}/>
+                <PatientsListHeader dispatch={dispatch} />
                 {isLoading && <LoadingSpinner />}
 
                 {!isLoading && loadedPatients && <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
