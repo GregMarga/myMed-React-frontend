@@ -4,15 +4,17 @@ import classes from './EditPatient.module.css';
 import { AuthContext } from '../context/auth-context';
 import ErrorModal from './UI/ErrorModal';
 import { useHttpClient } from '../hooks/http-hook';
+import moment from "moment";
 
 
 
 const EditPatient = (props) => {
-    const [loadedPatient, setLoadedPatient] = useState({ sirname: "", name: "", fathersName: "", age: "", tel: "", amka: "" });
+
+    const [loadedPatient, setLoadedPatient] = useState({ sirname: "", name: "", fathersName: "", dateOfBirth: "", tel: "", amka: "" });
     const sirnameInputRef = useRef();
     const nameInputRef = useRef();
     const diagnosisInputRef = useRef();
-    const AgeInputRef = useRef();
+    const dateOfBirthInputRef = useRef();
     const TelInputRef = useRef();
     const amkaInputRef = useRef();
     const history = useHistory();
@@ -21,6 +23,15 @@ const EditPatient = (props) => {
 
     const auth = useContext(AuthContext);
 
+    const [type, setType] = useState('text');
+
+    const onFocus = (event) => {
+        setType('date')
+    }
+    const onBlur = (event) => {
+        setType('text')
+    }
+
 
     useEffect(() => {
         const fetchPatients = async () => {
@@ -28,13 +39,16 @@ const EditPatient = (props) => {
                 const data = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
-                setLoadedPatient({ sirname: data.sirname, name: data.name, diagnosis: data.diagnosis, age: data.age, tel: data.tel, amka: data.amka })
-                console.log(data)
+                setLoadedPatient({ sirname: data.sirname, name: data.name, diagnosis: data.diagnosis, dateOfBirth: moment(data.dateOfBirth).format('YYYY-MM-DD'), tel: data.tel, amka: data.amka })
+
             } catch (err) { }
 
         };
         fetchPatients();
     }, [sendRequest]);
+    console.log((loadedPatient.dateOfBirth === 'Invalid date'))
+
+
 
 
 
@@ -55,7 +69,7 @@ const EditPatient = (props) => {
             sirname: sirnameInputRef.current.value,
             name: nameInputRef.current.value,
             diagnosis: diagnosisInputRef.current.value,
-            age: AgeInputRef.current.value,
+            dateOfBirth: dateOfBirthInputRef.current.value,
             tel: TelInputRef.current.value,
             amka: amkaInputRef.current.value
         };
@@ -77,7 +91,7 @@ const EditPatient = (props) => {
                         <input ref={sirnameInputRef} type="text" name="sirname" placeholder="Επώνυμο *" defaultValue={loadedPatient.sirname} required />
                         <input ref={nameInputRef} type="text" name="name" placeholder="Όνομα *" defaultValue={loadedPatient.name} required />
                         <input ref={diagnosisInputRef} type="text" name="diagnosis" placeholder="Διάγνωση " defaultValue={loadedPatient.diagnosis} />
-                        <input ref={AgeInputRef} type="number" name="age" placeholder="Ηλικία " defaultValue={loadedPatient.age} />
+                        <input ref={dateOfBirthInputRef} type={type} max={moment(new Date()).format('YYYY-MM-DD')} onBlur={onBlur} onFocus={onFocus} name="dateOfBirth" defaultValue={(loadedPatient.dateOfBirth !== 'Invalid date') ? loadedPatient.dateOfBirth : 'Ημερομηνία Γέννησης'} />
                         <input ref={TelInputRef} type="text" name="tel" placeholder="Τηλέφωνο *" defaultValue={loadedPatient.tel} required />
                         <input ref={amkaInputRef} type="text" name="amka" placeholder="ΑΜΚΑ " defaultValue={loadedPatient.amka} />
                         <button className="btn btn--alt" type="button" onClick={props.onClose}>Cancel</button>

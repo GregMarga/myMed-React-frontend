@@ -12,6 +12,7 @@ import { useHttpClient } from '../hooks/http-hook';
 import { useState, useEffect, useContext, useReducer } from 'react';
 import { AuthContext } from '../context/auth-context';
 
+const defaultSearch = { sirname: '', name: '', diagnosis: '', age: '', tel: '', amka: '' };
 
 function reducer(state, action) {
     switch (action.type) {
@@ -25,6 +26,9 @@ function reducer(state, action) {
             return { ...state, tel: action.payload.tel };
         case 'amka':
             return { ...state, amka: action.payload.amka };
+        case 'clear': {
+            return defaultSearch;
+        }
         default:
             return state;
     }
@@ -42,7 +46,6 @@ const Patients = () => {
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const auth = useContext(AuthContext);
 
-    const defaultSearch = { sirname: '', name: '', diagnosis: '', age: '', tel: '', amka: '' };
 
     const [state, dispatch] = useReducer(reducer, defaultSearch);
 

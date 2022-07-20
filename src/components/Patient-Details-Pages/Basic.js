@@ -8,11 +8,12 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { useHttpClient } from '../../hooks/http-hook';
 import { AuthContext } from "../../context/auth-context";
 import { useHistory } from "react-router-dom";
+import moment from 'moment';
 
 
 const Basic = (props) => {
     const [loading, SetLoading] = useState(false);
-    const [loadedBasics, setLoadedBasics] = useState({ dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '' })
+    const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '' })
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -23,7 +24,6 @@ const Basic = (props) => {
     const sirnameInputRef = useRef();
     const nameInputRef = useRef();
     const fathersNameInputRef = useRef();
-    const AgeInputRef = useRef();
     const TelInputRef = useRef();
     const amkaInputRef = useRef();
 
@@ -37,16 +37,33 @@ const Basic = (props) => {
     const postalCodeRef = useRef();
     const emailInputRef = useRef();
 
+    const [age, setAge] = useState(null);
+
     useEffect(() => {
         const fetchPatients = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setLoadedBasics({ placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode });
             } catch (err) { }
-
         };
         fetchPatients();
-    }, [sendRequest]);
+        setAge(props.patient.dateOfBirth);
+    }, [sendRequest,props.patient.dateOfBirth]);
+    // useEffect(() => {
+    //     const fetchBasic = async () => {
+    //         try {
+    //             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+    //             console.log(responseData)
+    //             setLoadedBasics((prevState) => {
+    //                 return { ...prevState, name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel };
+    //             })
+    //         } catch (err) {
+    //         }
+    //         fetchBasic();
+    //         console.log(loadedBasics.name);
+    //         setAge(props.patient.dateOfBirth);
+    //     }
+    // }, [sendRequest])
 
 
 
@@ -59,7 +76,7 @@ const Basic = (props) => {
                 body: JSON.stringify({
                     name: nameInputRef.current.value,
                     sirname: sirnameInputRef.current.value,
-                    age: AgeInputRef.current.value,
+                    dateOfBirth: dateOfBirthInputRef.current.value,
                     amka: amkaInputRef.current.value,
                     tel: TelInputRef.current.value
                 }),
@@ -130,10 +147,10 @@ const Basic = (props) => {
                             <input ref={fathersNameInputRef} name='fathersName' id='fathers-name' type='text' defaultValue={loadedBasics.fathersName} />
                         </Col>
                         <Col className='text-sm-end '>
-                            <label htmlFor="age">Έτος Γεννήσεως</label>
+                            <label htmlFor="dateOfBirth">Ημερομηνία Γέννησης</label>
                         </Col>
                         <Col className='text-sm-end '>
-                            <input ref={AgeInputRef} id='age' type='text' name="age" defaultValue={props.patient.age} />
+                            <input ref={dateOfBirthInputRef} id='dateOfBirth' type='date' name="dateOfBirth" defaultValue={moment(age).format('YYYY-MM-DD')} />
                         </Col>
                     </Row>
                     <Row className='justify-content-center'>
