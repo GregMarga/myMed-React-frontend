@@ -4,7 +4,10 @@
   align-items: center;
   flex-direction: column;
 }
-
+/* .imageUploadCard{
+  width: 50%;
+  padding-top: 3%;
+} */
 .image-upload__preview {
   min-width: 11rem;
   min-height: 11rem;

@@ -130,7 +130,7 @@ const VisitDetail = (props) => {
             {isLoading && <LoadingSpinner asOverlay />}
 
             <Container fluid className={classes.visitDetail}>
-                <Card className={classes.cardsVisitDetail}>
+                <Card className={classes.cardsNewVisit}>
                     <form onSubmit={submitHandler}>
                         <Row className={` justify-content-md-start`}>
                             <Col className={classes.label} lg='2'><h5>Στοιχεία Επίσκεψης</h5></Col>

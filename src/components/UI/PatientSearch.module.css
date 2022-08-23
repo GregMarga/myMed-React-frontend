@@ -1,0 +1,27 @@
+.patientSearch {
+    padding-top: 3%;
+    /* padding-bottom: 2%; */
+}
+
+.card {
+    width: 40%;
+    border: 1px solid black;
+}
+
+.h4s {
+    margin-left: 10px;
+}
+
+.inputs {
+    width: 40%;
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+.labels {
+    margin-left: 20px;
+    padding-bottom: 2.5%;
+    padding-top: 1%;
+    font-weight: 500;
+    font-size: 1.1rem;
+}

@@ -1,6 +1,7 @@
 import { Container } from 'react-bootstrap';
 import PatientsList from '../components/PatientsList';
 import PatientsListHeader from '../components/PatientsListHeader';
+import PatientSearch from '../components/UI/PatientSearch';
 import Backdrop from '../components/UI/Backdrop';
 import classes from './Patients.module.css';
 import Modal from '../components/UI/Modal';
@@ -57,7 +58,6 @@ const Patients = () => {
                     `http://localhost:5000/patients/getPatients/${auth.userId}?name=${state.name}&sirname=${state.sirname}&diagnosis=${state.diagnosis}&tel=${state.tel}&amka=${state.amka}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
-                console.log(responseData)
                 setLoadedPatients(responseData);
             } catch (err) { }
 
@@ -107,17 +107,18 @@ const Patients = () => {
             {!!error && <ErrorModal error={error} onClear={clearError} />}
 
             <Container>
-                <PatientsListHeader dispatch={dispatch} />
+                {/* <PatientsListHeader dispatch={dispatch} /> */}
                 {isLoading && <LoadingSpinner />}
 
                 {!isLoading && loadedPatients && <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
-                <button onClick={addPatientHandler} className={classes.addButton}>Add Patient +</button>
                 {modalIsOpen && <Modal onClose={closeHandler} onSubmit={submitPatientHandler} patients={loadedPatients} />}
                 {modalIsOpen && !error && <Backdrop onClick={closeHandler} />}
                 {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this patient?Please note that it can't be undone once thereafter." />}
                 {deleteModalIsOpen && !error && <Backdrop onClick={closeDeleteModal} />}
                 {editModalIsOpen && !error && <Backdrop onClick={closeEditModal} />}
                 {editModalIsOpen && <EditPatient onClose={closeEditModal} patientId={patientToEdit} />}
+                {!isLoading && loadedPatients && <PatientSearch />}
+                {/* <button onClick={addPatientHandler} className={classes.addButton}>Δημιουργία Ασθενή</button> */}
 
             </Container>
         </div>

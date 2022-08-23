@@ -22,17 +22,17 @@ const Files = (props) => {
     const { isLoading, error, clearError, sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
 
-    useEffect(() => {
-        const fetchFiles = async () => {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/files`, 'GET', null,
-                {
-                    Authorization: 'Bearer ' + auth.token
-                });
+    // useEffect(() => {
+    //     const fetchFiles = async () => {
+    //         const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/files`, 'GET', null,
+    //             {
+    //                 Authorization: 'Bearer ' + auth.token
+    //             });
 
-            setLoadedFiles(responseData);
-        }
-        fetchFiles();
-    }, []);
+    //         setLoadedFiles(responseData);
+    //     }
+    //     fetchFiles();
+    // }, []);
 
     const deleteHandler = (fileId) => {
         setDeleteModalIsOpen(true);

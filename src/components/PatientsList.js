@@ -2,9 +2,13 @@ import classes from './PatientsList.module.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import PatientsListItems from './PatientsListItem';
 import Card from './UI/Card';
-
+import PatientsListHeader from './PatientsListHeader';
+import { useContext } from 'react';
+import { PatientContext } from '../context/patient-context';
+import { Link } from 'react-router-dom';
 
 const PatientsList = (props) => {
+    const patientContext = useContext(PatientContext);
     let getAge = (dateOfBirth) => {
         const today = new Date();
         const birthDate = new Date(dateOfBirth);
@@ -19,7 +23,8 @@ const PatientsList = (props) => {
     return (
         <Container>
             <div className={classes.patientsList}>
-                <Card >
+                <Card className={classes.patientsListCard}>
+                    <PatientsListHeader />
 
                     {props.patients.map((patient) => (
 
@@ -31,7 +36,7 @@ const PatientsList = (props) => {
                             sirname={patient.sirname}
                             name={patient.name}
                             diagnosis={patient.diagnosis}
-                            age={(patient.dateOfBirth)?getAge(patient.dateOfBirth):''}
+                            age={(patient.dateOfBirth) ? getAge(patient.dateOfBirth) : ''}
                             tel={patient.tel}
                             amka={patient.amka}
                         />
@@ -41,6 +46,20 @@ const PatientsList = (props) => {
                         <Col className='text-center'>List is empty,add a patient.</Col>
                     </Row>}
 
+                    <Row className='justify-content-end'>
+                        <Link to='/patients/new/basic'>
+                            <Col className='text-center' xs={3}>
+                                <button
+                                    onClick={() => {
+                                        patientContext.setGenderNull();
+                                        patientContext.setPatientIdNull();
+                                    }}
+                                    className={classes.addButton}>
+                                    Προσθήκη Ασθενή
+                                </button>
+                            </Col>
+                        </Link>
+                    </Row>
 
                 </Card>
             </div>

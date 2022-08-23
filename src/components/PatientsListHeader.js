@@ -43,17 +43,17 @@ const PatientsListHeader = (props) => {
 
     return (
         <Container >
-
+            <Row><Col className='text-center'><h4 className={classes.title}>Ασθενείς</h4></Col></Row>
             <Row className='justify-content-sm-space-around'>
                 <Col className='text-center'><label className={classes.labels} htmlFor='sirname'>Επώνυμο</label></Col>
                 <Col className='text-center'><label className={classes.labels} htmlFor='name'>Όνομα</label></Col>
-                <Col className='text-center'><label className={classes.labels} htmlFor='diagnosis'>Διάγνωση</label></Col>
+                <Col className='text-center'><label className={classes.labels} htmlFor='diagnosis'>Πατρώνυμο</label></Col>
                 <Col className='text-center'><label className={classes.labels} htmlFor='age'>Ηλικία</label></Col>
                 <Col className='text-center'><label className={classes.labels} htmlFor='tel'>Τηλέφωνο</label></Col>
                 <Col className='text-center'><label className={classes.labels} htmlFor='amka'>ΑΜΚΑ</label></Col>
                 <Col></Col>
             </Row>
-            <form>
+            {/* <form>
                 <Row className='justify-content-sm-space-around'>
 
                     <Col className='text-center'><input onChange={changeSirnameHandler} value={sirname} name='sirname' type='text' id='sirname' /></Col>
@@ -65,7 +65,7 @@ const PatientsListHeader = (props) => {
                     <Col><button type='button' className={classes.button} onClick={clearHandler}>Clear filters</button></Col>
 
                 </Row>
-            </form>
+            </form> */}
 
         </Container>
 

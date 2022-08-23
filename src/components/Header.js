@@ -24,11 +24,7 @@ const Header = (props) => {
                                             <NavLink activeClassName={classes.active} to={`/patients/${props.patientId}/anamnistiko`}><span>Αναμνηστικό</span></NavLink>
                                         </li>
                                     </Col>
-                                    <Col className='text-center'>
-                                        <li>
-                                            <NavLink activeClassName={classes.active} to={`/patients/${props.patientId}/visits`}><span>Επισκέψεις</span></NavLink>
-                                        </li>
-                                    </Col>
+                                    
                                     <Col className='text-center'>
                                         <li>
                                             <NavLink activeClassName={classes.active} to={`/patients/${props.patientId}/aad`}><span>Αρχεία</span></NavLink>
@@ -42,6 +38,11 @@ const Header = (props) => {
                                     <Col className='text-center'>
                                         <li>
                                             <NavLink activeClassName={classes.active} to={`/patients/${props.patientId}/lab_test`}><span>Εργαστηριακός Έλεγχος</span></NavLink>
+                                        </li>
+                                    </Col>
+                                    <Col className='text-center'>
+                                        <li>
+                                            <NavLink activeClassName={classes.active} to={`/patients/${props.patientId}/visits`}><span>Δημιουργία Επίσκεψης</span></NavLink>
                                         </li>
                                     </Col>
                                 </ul>

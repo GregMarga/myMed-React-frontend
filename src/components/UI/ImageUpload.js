@@ -1,7 +1,8 @@
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Fragment } from 'react';
 
 import Button from '../../authentication/Button';
+import Card from './Card';
 import './ImageUpload.css';
 
 const ImageUpload = props => {
@@ -43,6 +44,8 @@ const ImageUpload = props => {
 
   return (
     <div className="form-control">
+      {/* <Fragment>
+       <Card className='imageUploadCard'> */}
       <input
         id={props.id}
         ref={filePickerRef}
@@ -54,13 +57,15 @@ const ImageUpload = props => {
       <div className={`image-upload ${props.center && 'center'}`}>
         <div className="image-upload__preview">
           {previewUrl && <img src={previewUrl} alt="Preview" />}
-          {!previewUrl && <p>Please pick an image.</p>}
+          {!previewUrl && <p>Παρακαλώ διαλέξτε μια φωτογραφία του ασθενή.</p>}
         </div>
         <Button type="button" onClick={pickImageHandler}>
-          {(!!props.imageSource) ? "Change Image" : "PICK IMAGE"}
+          {(!!props.imageSource) ? "Αλλάξτε Φωτογραφία" : "Επιλέξτε Φωτογραφία"}
         </Button>
       </div>
       {!isValid && <p>{props.errorText}</p>}
+      {/* </Card>
+     </Fragment> */}
     </div>
   );
 };

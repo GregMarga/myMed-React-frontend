@@ -1,6 +1,27 @@
 .history{
     font-size: 1.25rem;
-    padding-top: 7.5%;
+    padding-top: 2%;
+    width: 80%;
+    margin-left: 10%;
+}
+.Collapsible{
+    padding: 6px;
+    background-color: rgb(160, 214, 246);
+    margin-bottom: 10px;
+}
+.Collapsible__trigger{
+    color:rgb(23, 110, 38);
+   
+}
+.Collapsible__trigger--is-closed{
+    color: pink;
+    background-color: pink;
+}
+/* .Collapsible__contentOuter{
+    background-color: red;
+} */
+.Collapsible__contentInner{
+    background-color: #ebeced;
 }
 .history label{
     font-weight: bold;

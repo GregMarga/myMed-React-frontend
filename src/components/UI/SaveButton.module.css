@@ -1,10 +1,10 @@
 .saveButton{
     border: none;
-    background-color: #ebeced;
+    background-color: transparent;
     /* position: fixed;
     right: 18vw; */
-    margin-left: 82%;
-    margin-top:2%;
+    margin-left: 88%;
+    margin-top:1%;
     margin-bottom: 2%;
     border: none;
     border-radius: 15px;

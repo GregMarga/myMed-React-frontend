@@ -6,15 +6,34 @@ import Statistics from './pages/Statistics';
 import Patients from './pages/Patients';
 import Auth from './authentication/Auth';
 import { AuthContext } from './context/auth-context';
+import { PatientContext } from './context/patient-context';
 import { useState, useCallback, useEffect } from 'react';
+import Logo from './components/UI/Logo'
+import EmailConfirmation from './authentication/EmailConfirmation'
 
 let logoutTimer;
 
 function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [patientId, setPatientId] = useState(null);
+  const [gender, setGender] = useState(null);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
+
+  const createPatientId = useCallback((patientId) => {
+    setPatientId(patientId);
+  }, []);
+  const setPatientIdNull = useCallback(() => {
+    setPatientId(null);
+  })
+
+  const changeGender = useCallback((gender) => {
+    setGender(gender);
+  }, []);
+  const setGenderNull = useCallback(() => {
+    setGender(null);
+  })
 
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
@@ -58,8 +77,12 @@ function App() {
     routes = (
       <Switch>
         <Route path='/' exact>
+          <Logo />
           <Auth />
         </Route >
+        <Route path='/:userId/emailconfirmation' exact>
+          <EmailConfirmation />
+        </Route>
         <Route path='/' >
           <Redirect to='/' />
         </Route >
@@ -69,11 +92,13 @@ function App() {
     routes = (
       <Switch>
         <Route path='/' exact>
-          <SideNavigation />
-          <Redirect to='/patients' />
+          <Logo />
+          {/* <SideNavigation /> */}
+          <Patients />
         </Route>
         <Route path='/patients' exact>
-          <SideNavigation />
+          <Logo />
+          {/* <SideNavigation /> */}
           <Patients />
         </Route>
         <Route path='/appointments'>
@@ -81,13 +106,17 @@ function App() {
           <Appointment />
         </Route>
         <Route path='/patients/:patientId' >
-          <SideNavigation />
+          <Logo />
+
           <PatientDetail />
         </Route>
         <Route path='/Statistics' >
           <SideNavigation />
           <Statistics />
         </Route>
+        <Route path='/' >
+          <Redirect to='/' />
+        </Route >
 
       </Switch>
     )
@@ -96,9 +125,15 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ isLoggedIn: !!token, token: token, userId: userId, login: login, logout: logout }}>
-      <main>
-        {routes}
-      </main>
+      <PatientContext.Provider value={{ gender: gender, patientId: patientId, createPatientId: createPatientId, setPatientIdNull: setPatientIdNull, setGenderNull: setGenderNull, changeGender: changeGender }}>
+        <div className='backgroundImage'>
+          <main>
+
+            {routes}
+
+          </main>
+        </div>
+      </PatientContext.Provider>
     </AuthContext.Provider>
   );
 }

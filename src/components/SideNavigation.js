@@ -24,7 +24,7 @@ const SideNavigation = () => {
                             </li>
                             {auth.isLoggedIn &&
                                 <li>
-                                    <button onClick={auth.logout} className={classes.logoutButton}><NavLink  to='/'>Logout</NavLink></button>
+                                    <button onClick={auth.logout} className={classes.logoutButton}><NavLink  to='/'>Αποσύνδεση</NavLink></button>
                                 </li>
                             }
                         </ul>
