@@ -1,7 +1,7 @@
 import { Row, Col } from "react-bootstrap";
-import classes from './ConditionsListItem.module.css'
+import classes from './DiagnosisListItem.module.css'
 
-const ConditionsListItem = (props) => {
+const DiagnosisListItem = (props) => {
     return (
             <Row className={classes.conditionsListItem}>
                 <Col className="text-center" sm={4}><span>{props.condition}</span></Col>
@@ -15,4 +15,4 @@ const ConditionsListItem = (props) => {
     );
 }
 
-export default ConditionsListItem;
+export default DiagnosisListItem;

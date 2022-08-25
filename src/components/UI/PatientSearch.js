@@ -1,8 +1,15 @@
 import { Container, Row, Col } from "react-bootstrap";
 import Card from "./Card";
 import classes from './PatientSearch.module.css'
+import { useState } from "react";
 
-const PatientSearch = () => {
+const PatientSearch = (props) => {
+    const [amka, setAmka] = useState();
+    const changeAmkaHandler = (event) => {
+        const interval = setInterval(props.dispatch({ type: 'amka', payload: { amka: event.target.value } }), 5000);
+        setAmka(event.target.value);
+        return () => clearInterval(interval);
+    }
 
     return (
         <Container className={classes.patientSearch}>
@@ -13,7 +20,7 @@ const PatientSearch = () => {
                 <Row>
                     <Col >
                         <label className={classes.labels}>ΑΜΚΑ Ασθενή</label>
-                        <input className={classes.inputs} type='text' />
+                        <input className={classes.inputs} type='text' onChange={changeAmkaHandler} value={amka} />
                     </Col>
                 </Row>
             </Card>

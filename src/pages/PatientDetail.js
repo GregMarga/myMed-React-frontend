@@ -17,7 +17,8 @@ import ErrorModal from '../components/UI/ErrorModal';
 import NewLabAnalysis from '../components/Patient-Details-Pages/LabAnalysis/NewLabAnalysis';
 import Files from '../components/Patient-Details-Pages/NewFiles/Files';
 import { useState, useEffect, useContext } from 'react';
-import NewVisit from '../components/Patient-Details-Pages/Visits/NewVisit';
+import Visit from '../components/Patient-Details-Pages/NewVisits/Visit';
+// import NewVisit from '../components/Patient-Details-Pages/Visits/NewVisit';
 
 
 const PatientDetail = () => {
@@ -53,7 +54,7 @@ const PatientDetail = () => {
                 <Route path={`/patients/${params.patientId}/basic`} exact><Basic patient={loadedPatient} patientId={patientId} /></Route>
                 <Route path={`/patients/${params.patientId}/anamnistiko`}><History patientId={patientId} /></Route>
                 <Route path={`/patients/${params.patientId}/farmaka`}><Farmaka /></Route>
-                <Route path={`/patients/${params.patientId}/visits`} exact><div><NewVisit /></div></Route>
+                <Route path={`/patients/${params.patientId}/visits`} exact><div><Visit /></div></Route>
                 {/* <Route path={`/patients/${params.patientId}/visits`} exact><div><Visits patientId={patientId} /></div></Route> */}
                 <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>
                 <Route path={`/patients/${params.patientId}/lab_test`} exact><LabAnalysis patientId={patientId} /></Route>

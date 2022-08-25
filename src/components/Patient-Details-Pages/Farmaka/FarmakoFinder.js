@@ -1,13 +1,12 @@
 import { Row, Col } from "react-bootstrap";
-// import algoliasearch from 'algoliasearch/lite';
-// import { InstantSearch, SearchBox, Configure, Hits } from 'react-instantsearch-dom';
 import FarmakaHit from "./FarmakaHit";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from '../../../context/auth-context'
 import { useHttpClient } from '../../../hooks/http-hook';
 import FarmakaATC from "./FarmakaATC";
+import './FarmakoFinder.css'
 
-// const searchClient = algoliasearch("G7C4EARD5F", "0a3dc741ec2f575b4d9fd73eba270ded");
+
 
 
 const FarmakoFinder = (props) => {
@@ -71,15 +70,19 @@ const FarmakoFinder = (props) => {
 
     return (
         <Row>
-            <Col>
-                <input list="drugNames" name="drugName" id="drugName" value={drugInput} onChange={nameChangeHandler} defaultValue={selectedHit.name} />
+           
+            <Col className="text-start">
+            {(props.therapeia) && <label className="drastiki__ousia">Όνομα Φαρμάκου</label>}
+                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugNames" name="drugName" id="drugName" value={drugInput} onChange={nameChangeHandler} defaultValue={selectedHit.name} />
                 <datalist id="drugNames" >
                     <FarmakaHit hit={hitList} />
 
                 </datalist>
             </Col>
-            <Col>
-                <input list="drugATCs" name="drugATC" id="drugATC" defaultValue={selectedHit.ATC_name} onChange={atcNameChangeHandler} />
+            
+            <Col className="text-start">
+            {(props.therapeia) && <label className="drastiki__ousia">Δραστική Ουσία</label>}
+                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugATCs" name="drugATC" id="drugATC" defaultValue={selectedHit.ATC_name} onChange={atcNameChangeHandler} />
                 <datalist id="drugATCs">
                     <FarmakaATC hit={hitList} />
                 </datalist>

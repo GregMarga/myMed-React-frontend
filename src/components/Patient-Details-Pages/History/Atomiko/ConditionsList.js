@@ -3,15 +3,15 @@ import classes from './ConditionsList.module.css'
 import ConditionsListItem from "./ConditionsListItem";
 
 const ConditionsList = (props) => {
+    console.log(props.conditionsList)
 
     return (
         <Container fluid className={classes.conditionsList}>
             <Row>
                 {props.conditionsList.map((condition) => {
-                    <ConditionsListItem
-                        condition={condition.condition}
+                    return <ConditionsListItem
+                        condition={condition.name}
                         state={condition.state}
-                        severity={condition.severity}
                         dateOfDiagnosis={condition.dateOfDiagnosis}
                         dateOfHealing={condition.dateOfHealing}
                     />

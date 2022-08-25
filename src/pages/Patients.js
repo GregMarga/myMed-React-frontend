@@ -117,10 +117,11 @@ const Patients = () => {
                 {deleteModalIsOpen && !error && <Backdrop onClick={closeDeleteModal} />}
                 {editModalIsOpen && !error && <Backdrop onClick={closeEditModal} />}
                 {editModalIsOpen && <EditPatient onClose={closeEditModal} patientId={patientToEdit} />}
-                {!isLoading && loadedPatients && <PatientSearch />}
+
                 {/* <button onClick={addPatientHandler} className={classes.addButton}>Δημιουργία Ασθενή</button> */}
 
             </Container>
+            <PatientSearch dispatch={dispatch} />
         </div>
     );
 };

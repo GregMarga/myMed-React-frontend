@@ -1,0 +1,31 @@
+.conditionsForm {
+    /* background-color: red; */
+    margin-top: 1%;
+    font-size: 0.9rem;
+}
+
+.conditionsForm input {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.conditionInput {
+    width: 80%;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+}
+
+.myLabels {
+    font-size: 1rem;
+    font-weight: 500;
+}
+.dosologia input{
+    width: 50%;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.dosologia label{
+    font-size: 1rem;
+    font-weight: 500;
+}

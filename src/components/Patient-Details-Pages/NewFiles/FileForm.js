@@ -44,8 +44,8 @@ const FilesForm = (props) => {
                 {/* <label>Κατάσταση</label> */}
                 <select ref={typeInputRef}>
                     <option>Αίματος</option>
-                    <option>Υποτροπίαση</option>
-                    <option>Χρόνια</option>
+                    <option>Απεικονιστικές </option>
+                    <option>Άλλη</option>
                     <option></option>
                 </select>
             </Col>

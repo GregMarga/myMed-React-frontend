@@ -1,0 +1,67 @@
+.cardsNewVisit{
+    padding: 20px;
+}
+.cardsNewVisit label{
+    margin-top: 1%;
+    font-weight: 500;
+}
+
+.cardsNewVisit input{
+    margin-top: 2%;
+    margin-left: 20px;
+}
+.date {
+    width: 15%;
+}
+
+.threeInput input {
+    width: 30%;
+}
+
+.invisible {
+    text-decoration: none;
+}
+.visitDetail h2 {
+    border-bottom: dotted black 1px;
+    margin-bottom: 2%;
+
+}
+
+.visitDetail label {
+    padding: 1%;
+    font-weight: bold;
+
+}
+
+.visitDetail select {
+    font-size: 1.1rem;
+}
+
+.multiInputs input {
+    width: 20%;
+    margin-bottom: 1%;
+}
+
+.fullSize {
+    width: 60%;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 2%;
+
+}
+.newVisit select{
+    margin-left: 20px;
+}
+.newVisit textarea {
+    margin-top: 1%;
+    width: 100%;
+}
+@media only screen and (max-width: 1000px) {
+    .date {
+      width: auto;
+    }
+  }

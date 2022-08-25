@@ -69,7 +69,7 @@ const History = (props) => {
             {isLoading && <LoadingSpinner />}
             {!!error && <ErrorModal error={error} onClear={clearError} />}
 
-            {/* <form className='history' onSubmit={submitHandler}> */}
+            <form className='history' onSubmit={submitHandler}>
                 <Container fluid>
                     <Collapsible trigger='Ατομικό' triggerWhenOpen={'Ατομικό^'} transitionTime={200}>
                         <Conditions />
@@ -143,7 +143,7 @@ const History = (props) => {
 
                 </Container>
                 <SaveButton />
-            {/* </form> */}
+            </form>
         </Fragment>
     );
 }
