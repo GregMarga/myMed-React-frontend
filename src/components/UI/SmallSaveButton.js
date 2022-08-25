@@ -2,7 +2,6 @@ import classes from './SmallDeleteButton.module.css';
 import saveLogo from './check.png';
 
 const SmallSaveButton = (props = { onClick: () => { } }) => {
-    console.log(props)
     const clickHandler = () => {
         props.onClick()
     }

@@ -4,6 +4,7 @@ import classes from './Basic.module.css';
 import SaveButton from '../UI/SaveButton';
 import ErrorModal from '../UI/ErrorModal';
 import LoadingSpinner from "../UI/LoadingSpinner";
+// import Card from "../UI/Card";
 import ImageUpload from "../UI/ImageUpload";
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useHttpClient } from '../../hooks/http-hook';
@@ -11,6 +12,7 @@ import { useForm } from "../../hooks/form-hook";
 import { AuthContext } from "../../context/auth-context";
 import { PatientContext } from "../../context/patient-context";
 import { useHistory } from "react-router-dom";
+import Card from 'react-bootstrap/Card'
 import moment from 'moment';
 
 
@@ -119,7 +121,7 @@ const Basic = (props) => {
             patientId = responseData.patient._id;
 
         }
-        catch (err) { throw new Error(err) }
+        catch (err) { }
         if (typeof (formState.inputs.image.value) !== 'undefined') {
             console.log(formState.inputs.image.value)
             try {
@@ -265,18 +267,18 @@ const Basic = (props) => {
                         <Col className='text-start'>
                             <input ref={emailInputRef} id='email' type='text' name="email" />
                         </Col>
+
                     </Row>
                     <Row >
                         <Col  ><SaveButton onClick={() => { }} /></Col>
                     </Row>
 
 
-
                 </Container>
             </form>}
 
 
-        </Fragment>
+        </Fragment >
     );
 };
 

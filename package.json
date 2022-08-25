@@ -27,6 +27,7 @@
     "react-collapsed": "^3.3.2",
     "react-collapsible": "^2.10.0",
     "react-dom": "^18.0.0",
+    "react-dropzone": "^14.2.2",
     "react-instantsearch-dom": "^6.31.1",
     "react-notify-toast": "^0.5.1",
     "react-router-dom": "^5.3.1",

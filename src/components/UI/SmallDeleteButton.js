@@ -2,7 +2,6 @@ import classes from './SmallDeleteButton.module.css';
 import closeLogo from './close.png';
 
 const EditButton = (props = { onClick: () => { } }) => {
-    console.log(props)
     const clickHandler = () => {
         props.onClick()
     }

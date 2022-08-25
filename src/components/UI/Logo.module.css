@@ -1,5 +1,8 @@
 .logoCard {
     background-color: white;
+    /* position: absolute; */
+    /* top:0; */
+    margin-bottom: 2%;
 }
 
 .logoutButton {

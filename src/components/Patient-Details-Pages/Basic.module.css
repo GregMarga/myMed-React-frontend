@@ -1,64 +1,80 @@
-.basicForm{
-    padding-top: 2%;
+.basicForm {
+    padding-top: 1%;
     padding-right: 8%;
     /* opacity: 100%; */
 }
-.firstInputs{
+
+.firstInputs {
     margin-top: 2%;
 }
-.firstInputs input{
+
+.firstInputs input {
     width: 20%;
 }
 
-.basicForm input{
+.inputCard {
+    width: 30%;
+    padding-right: 10px;
+    margin-left: 65%;
+}
+
+.basicForm input {
     border-radius: 4px;
-    font:inherit;
+    font: inherit;
     padding: 5px;
     padding-left: 0;
     width: 20rem;
     max-width: 100%;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     margin: 0;
-    outline:0;
-    margin-bottom: 20px;
+    outline: 0;
+    margin-bottom: 5px;
     font-size: 20px;
+    margin-top: 5px;
 
 
 }
-.basicForm select{
+
+.basicForm select {
     font-size: 1.38rem;
     width: 100%;
 
 }
-.basicForm label{
+
+.basicForm label {
     font-weight: bold;
     margin-bottom: 1.38rem;
     font-size: 1.25rem;
     padding: 4px;
     padding-right: 0;
-    
+
 }
-.basicForm span{
+
+.basicForm span {
     color: red;
 }
 
 @media only screen and (max-width: 1000px) {
     .basicForm select {
-       width: 300px;
-     
+        width: 300px;
+
 
     }
-  }
-  @media only screen and (max-width: 1470px) {
+}
+
+@media only screen and (max-width: 1470px) {
     .basicForm {
-      width: 100%;
-      padding-left: auto;
-      height: auto;
-      position: relative;
-      padding-top: 10%;
-      padding-right: auto;
-     
+        width: 100%;
+        padding-left: auto;
+        height: auto;
+        position: relative;
+        padding-top: 10%;
+        padding-right: auto;
+
 
     }
-   
-  }
+
+    .inputCard {
+        width: 50%;
+    }
+}

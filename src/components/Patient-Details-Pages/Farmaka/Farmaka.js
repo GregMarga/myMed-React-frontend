@@ -1,51 +1,60 @@
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, SearchBox, Configure, Highlight, Hits } from 'react-instantsearch-dom';
+import { InstantSearch, SearchBox, Configure, Highlight, Hits, createClassNames } from 'react-instantsearch-dom';
 import Hit from "../History/Hit";
 import { Container, Row, Col } from 'react-bootstrap';
+import Card from '../../UI/Card';
 import SaveButton from '../../UI/SaveButton'
-import { useHttpClient } from '../../../hooks/http-hook';
-import { useState, useRef, useContext } from 'react';
-import { AuthContext } from '../../../context/auth-context';
+import FarmakaList from './FarmakaList';
+import FarmakaForm from './FarmakaForm';
+// import SmallSAveButton from '../../UI/SmallSaveButton'
 
-const searchClient = algoliasearch("2BT0WK0XX3", "84f4040eebc1e09a00920164c7d7c301");
+import { useHttpClient } from '../../../hooks/http-hook';
+import { useState, useRef, useContext, useEffect } from 'react';
+import { AuthContext } from '../../../context/auth-context';
+import FarmakaHeader from './FarmakaHeader';
+import classes from './Farmaka.module.css';
+
+
+
 
 const Farmaka = () => {
     const { sendRequest, isLoadding, error, clearError } = useHttpClient();
+
+  
     const testInputRef = useRef();
     const auth = useContext(AuthContext)
 
-    const submitHandler = async (event) => {
-        console.log('submitting')
-        console.log(testInputRef.current.value)
-        const responseData = await sendRequest(`http://localhost:5000/patients/new/farmaka`, 'POST',
-            JSON.stringify({
-                test: testInputRef.current.value
-            }), {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + auth.token
-        }
-        )
+
+
+    const [farmakaList, setFarmakaList] = useState([])
+    const [addFarmako, setAddFarmako] = useState(false);
+
+    const  addFarmakaHandler = (farmako) => {
+        setFarmakaList((prevState) => {
+            return [...prevState, farmako];
+        })
+        console.log(farmakaList)
     }
+
+    const submitHandler = () => { }
+
+
     return (
         <Container>
+            <Card className={classes.farmakaCard}>
+                <FarmakaHeader />
+                {addFarmako && <FarmakaForm addFarmakaHandler={addFarmakaHandler} setAddFarmako={setAddFarmako}/>}
+                <FarmakaList addFarmako={addFarmako} farmakaList={farmakaList} />
 
-            <InstantSearch indexName="conditions" searchClient={searchClient}>
-                <Configure hitsPerPage={5} />
-                <SearchBox
-                    onSubmit={event => {
-                        event.preventDefault();
-                        console.log('lets see')
-                        console.log(event.currentTarget);
-                    }}
-                    onReset={event => {
-                        console.log(event.currentTarget);
-                    }}
-                />
-
-            </InstantSearch>
-            <input ref={testInputRef} type='file'/>
-            <SaveButton onClick={submitHandler} />
-
+                <Row>
+                    {!addFarmako && <Col><button className={classes.addFarmako} onClick={() => { setAddFarmako(true) }}>Προσθήκη Φαρμάκου</button></Col>}
+                </Row>
+            </Card>
+            <Row>
+                <Col>
+                    {(farmakaList.length>0)&&<SaveButton onClick={submitHandler} />}
+                </Col>
+            </Row>
         </Container>
     );
 }

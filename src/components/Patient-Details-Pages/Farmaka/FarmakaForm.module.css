@@ -1,0 +1,12 @@
+.farmakoForm{
+    margin-top: 1%;
+}
+.farmakoForm input{
+    font-size: 0.8rem;
+    overflow: visible;
+}
+.farmakoForm datalist{
+    font-size: 0.9rem;
+    overflow: scroll;
+    width: 120%;
+}

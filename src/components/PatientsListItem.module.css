@@ -2,7 +2,8 @@
     background-color: red;
 } */
 .myLinks:hover span{
-    color: rgb(20, 231, 139);  
+   font-weight: 500;
+
    
 }
 .myLinks span{
