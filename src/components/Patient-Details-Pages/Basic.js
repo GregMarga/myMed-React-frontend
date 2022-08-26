@@ -20,6 +20,11 @@ const Basic = (props) => {
     const [loading, SetLoading] = useState(false);
     const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '' })
 
+    const [updated, setUpdated] = useState(false);
+
+    const [imageName, setImageName] = useState(null);
+    const [imageExists, setImageExists] = useState(false);
+
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
     const auth = useContext(AuthContext);
@@ -58,40 +63,29 @@ const Basic = (props) => {
 
     const [age, setAge] = useState(null);
 
-    // useEffect(() => {
-    //     const fetchPatients = async () => {
-    //         try {
-    //             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-    //             setLoadedBasics({ placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode });
-    //         } catch (err) { }
-    //     };
-    //     fetchPatients();
-    //     setAge(props.patient.dateOfBirth);
-    // }, [sendRequest,props.patient.dateOfBirth]);
-    // useEffect(() => {
-    //     const fetchBasic = async () => {
-    //         try {
-    //             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-    //             console.log(responseData)
-    //             setLoadedBasics((prevState) => {
-    //                 return { ...prevState, name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel };
-    //             })
-    //         } catch (err) {
-    //         }
-    //         fetchBasic();
-    //         console.log(loadedBasics.name);
-    //         setAge(props.patient.dateOfBirth);
-    //     }
-    // }, [sendRequest])
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                console.log(responseData)
+                setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode });
+                console.log('hereee greegG', responseData.files[0], responseData.files[0].split('\\')[2])
+                setImageName(responseData.files[0].split('\\')[2]);
+                if (responseData.files[0] !== null) { setImageExists(true); }
+                setAge(responseData.dateOfBirth);
+            } catch (err) { }
+        };
+        if (patientContext.patientId !== null) {
 
+            fetchPatients();
+        }
+        setUpdated(false)
+    }, [sendRequest, patientContext.patientId, imageName, updated]);
 
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        let patientId;
-
-
-
+        let patientId = null;
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`,
                 'POST',
@@ -104,12 +98,14 @@ const Basic = (props) => {
                     tel: TelInputRef.current.value,
                     placeOfBirth: placeOfBirthInputRef.current.value,
                     job: jobInputRef.current.value,
+                    email: emailInputRef.current.value,
                     familyStatus: familyStatusInputRef.current.value,
                     gender: genderInputRef.current.value,
                     address: addressInputRef.current.value,
                     area: areaInputRef.current.value,
                     postalCode: postalCodeRef.current.value,
-                    fathersName: fathersNameInputRef.current.value
+                    fathersName: fathersNameInputRef.current.value,
+                    patientId: patientContext.patientId
                 }), {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + auth.token
@@ -122,7 +118,7 @@ const Basic = (props) => {
 
         }
         catch (err) { }
-        if (typeof (formState.inputs.image.value) !== 'undefined') {
+        if (typeof (formState.inputs.image.value) !== 'undefined' && (patientId !== null)) {
             console.log(formState.inputs.image.value)
             try {
                 const formData = new FormData();
@@ -130,12 +126,65 @@ const Basic = (props) => {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/files`, 'POST',
                     formData
                 )
+                setImageExists(true);
+                setImageName(formState.inputs.image.value)
             } catch (err) {
                 console.log(err)
             }
         }
+    }
+
+    const updateHandler = async (event) => {
+        event.preventDefault();
+
+        try {
+            const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`,
+                'PATCH',
+                JSON.stringify({
+                    patientId: patientContext.patientId,
+                    name: nameInputRef.current.value,
+                    sirname: sirnameInputRef.current.value,
+                    dateOfBirth: dateOfBirthInputRef.current.value,
+                    amka: amkaInputRef.current.value,
+                    tel: TelInputRef.current.value,
+                    placeOfBirth: placeOfBirthInputRef.current.value,
+                    job: jobInputRef.current.value,
+                    email: emailInputRef.current.value,
+                    familyStatus: familyStatusInputRef.current.value,
+                    gender: genderInputRef.current.value,
+                    address: addressInputRef.current.value,
+                    area: areaInputRef.current.value,
+                    postalCode: postalCodeRef.current.value,
+                    fathersName: fathersNameInputRef.current.value,
+                    patientId: patientContext.patientId
+                }), {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + auth.token
+            }
+            );
+
+            patientContext.changeGender(responseData.patient.gender);
+
+        }
+        catch (err) { }
+        if (typeof (formState.inputs.image.value) !== 'undefined' && imageExists && (formState.inputs.image.value) !== imageName) {
+            console.log(formState.inputs.image.value)
+            try {
+                const formData = new FormData();
+                formData.append('image', formState.inputs.image.value);
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/files/${imageName}`, 'PATCH',
+                    formData
+                )
+                setImageName(formState.inputs.image.value);
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        setUpdated(true);
 
     }
+
+
 
 
     return (
@@ -143,49 +192,22 @@ const Basic = (props) => {
             {!!error && <ErrorModal error={error} onClear={clearError} />}
             {isLoading || loading && <LoadingSpinner asOverlay />}
 
-            {!isLoading && <form className={classes.basicForm} onSubmit={submitHandler}>
+            {!isLoading && <form className={classes.basicForm} onSubmit={!(patientContext.patientId) ? submitHandler : updateHandler}>
 
                 <Container >
 
                     <Row>
                         <Col className={`text-sm-end ${classes.firstInputs}`} xs={6}>
-                            <div><label htmlFor="sirname">Επώνυμο<span>* </span></label>&nbsp;<input id='sirname' type='text' ref={sirnameInputRef} required defaultValue={props.patient.sirname} /></div>
-                            <div> <label htmlFor="name">Όνομα<span>* </span> &nbsp;</label><input ref={nameInputRef} id='name' type='text' required defaultValue={props.patient.name} /></div>
-                            <div> <label htmlFor="amka"  >ΑΜΚΑ<span>* </span>&nbsp;</label><input ref={amkaInputRef} name='amka' id='amka' type='text' defaultValue={props.patient.amka} required /></div>
+                            <div><label htmlFor="sirname">Επώνυμο<span>* </span></label>&nbsp;<input id='sirname' type='text' ref={sirnameInputRef} required defaultValue={loadedBasics.sirname} /></div>
+                            <div> <label htmlFor="name">Όνομα<span>* </span> &nbsp;</label><input ref={nameInputRef} id='name' type='text' required defaultValue={loadedBasics.name} /></div>
+                            <div> <label htmlFor="amka"  >ΑΜΚΑ<span>* </span>&nbsp;</label><input ref={amkaInputRef} name='amka' id='amka' type='text' defaultValue={loadedBasics.amka} required /></div>
                             <div><label htmlFor="fathers-name">Πατρώνυμο</label>&nbsp;&nbsp;<input ref={fathersNameInputRef} name='fathersName' id='fathers-name' type='text' defaultValue={loadedBasics.fathersName} /></div>
                         </Col>
-                        {/* <Col className='text-sm-end ' xs={3}>
-                            <div><input id='sirname' type='text' ref={sirnameInputRef} required defaultValue={props.patient.sirname} /></div>
-                            <div> <input ref={nameInputRef} id='name' type='text' required defaultValue={props.patient.name} /></div>
-                            <div><input ref={amkaInputRef} name='amka' id='amka' type='text' defaultValue={props.patient.amka} required /></div>
-                            <div> <input ref={fathersNameInputRef} name='fathersName' id='fathers-name' type='text' defaultValue={loadedBasics.fathersName} /></div>
-                        </Col> */}
+
                         <Col className="text-center">
-                            <ImageUpload center imageSource={null} onInput={inputHandler} id='image' />
+                            <ImageUpload center imageSource={(!!imageName) ? `http://localhost:5000/uploads/images/${imageName}` : null} onInput={inputHandler} id='image' />
                         </Col>
                     </Row>
-                    {/* <Row>
-                        <Col className='text-sm-end '>
-                            <label htmlFor="name">Όνομα<span>* </span></label>
-                        </Col>
-                        <Col className='text-sm-end '>
-                            <input ref={nameInputRef} id='name' type='text' required defaultValue={props.patient.name} />
-                        </Col>
-                    </Row> */}
-                    {/* <Row className='justify-content-center '>
-                        <Col className='text-sm-end '>
-                            <label htmlFor="sirname">Επώνυμο<span>* </span></label>
-                        </Col>
-                        <Col className='text-sm-end '>
-                            <input id='sirname' type='text' ref={sirnameInputRef} required defaultValue={props.patient.sirname} />
-                        </Col>
-                        <Col className='text-sm-end '>
-                            <label htmlFor="name">Όνομα<span>* </span></label>
-                        </Col>
-                        <Col className='text-sm-end '>
-                            <input ref={nameInputRef} id='name' type='text' required defaultValue={props.patient.name} />
-                        </Col>
-                    </Row> */}
                     <Row className='justify-content-center'>
 
                         <Col className='text-sm-end '>
@@ -206,7 +228,7 @@ const Basic = (props) => {
                             <label htmlFor="tel" >Τηλέφωνο<span>* </span></label>
                         </Col>
                         <Col className='text-sm-end '>
-                            <input ref={TelInputRef} name='tel' id='tel' type='text' defaultValue={props.patient.tel} required />
+                            <input ref={TelInputRef} name='tel' id='tel' type='text' defaultValue={loadedBasics.tel} required />
                         </Col>
                         <Col className='text-sm-end '>
                             <label htmlFor="job">Επάγγελμα</label>
@@ -226,7 +248,7 @@ const Basic = (props) => {
                                 <option value='notmarried' selected={loadedBasics.familyStatus === 'notmarried'}>Ανύπνατρος/η</option>
                                 <option value='divorced' selected={loadedBasics.familyStatus === 'divorced'}>Διαζευγμένος/η</option>
                             </select>
-                            {/* <input id='family_status' type='text' /> */}
+
                         </Col>
                         <Col className='text-sm-end '>
                             <label htmlFor="gender">Φύλο<span>* </span></label>
@@ -236,7 +258,7 @@ const Basic = (props) => {
                                 <option value="" selected disabled hidden>Επιλέξτε</option>
                                 <option value='male' selected={loadedBasics.gender === 'male'}>Άρρεν</option>
                                 <option value='female' selected={loadedBasics.gender === 'female'}>Θήλυ</option>
-                                {/* <option value='other' selected={loadedBasics.gender === 'other'}>Άλλο</option> */}
+
                             </select>
                         </Col>
                     </Row>
@@ -265,18 +287,16 @@ const Basic = (props) => {
                             <label htmlFor="email">E-mail</label>
                         </Col>
                         <Col className='text-start'>
-                            <input ref={emailInputRef} id='email' type='text' name="email" />
+                            <input ref={emailInputRef} id='email' type='text' name="email" defaultValue={loadedBasics.email} />
                         </Col>
 
                     </Row>
                     <Row >
-                        <Col  ><SaveButton onClick={() => { }} /></Col>
+                        <Col  ><SaveButton /></Col>
                     </Row>
-
 
                 </Container>
             </form>}
-
 
         </Fragment >
     );
