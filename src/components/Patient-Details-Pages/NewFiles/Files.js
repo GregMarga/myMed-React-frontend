@@ -23,13 +23,21 @@ const Files = () => {
         })
     }
 
+    const removeFileHandler = (fileIdToDelete) => {
+        setFilesList((prevState) => {
+            return prevState.filter(file=>{
+                return file.id!==fileIdToDelete
+            })
+        })
+    }
+  
 
     return (
         <Container>
             <Card className={classes.filesCard}>
                 <FilesHeader />
                 {addFile && <FilesForm addFileHandler={addFileHandler} setAddFile={setAddFile} />}
-                <FilesList filesList={filesList} addFile={addFile} />
+                <FilesList filesList={filesList} addFile={addFile} removeFileHandler={removeFileHandler}/>
 
                 <Row>
                     {!addFile && <Col><button className={classes.addFile} onClick={() => { setAddFile(true) }}>Προσθήκη Αρχείου</button></Col>}

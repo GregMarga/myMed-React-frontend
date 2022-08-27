@@ -5,7 +5,7 @@ import SurgeriesForm from './SurgeriesForm';
 import classes from './Surgeries.module.css'
 import { useState } from "react";
 
-const Surgeries = () => {
+const Surgeries = (props) => {
     const [surgeriesList, setSurgeriesList] = useState([]);
     const [addSurgery, setAddSurgery] = useState(false);
 
@@ -13,21 +13,27 @@ const Surgeries = () => {
         setAddSurgery(true)
     }
 
+    const addSurgeryHandler = (condition) => {
+        props.setSurgeriesList((prevState) => {
+            return [...prevState, condition];
+        })
+        console.log(condition);
+    }
+
     return (
         <Container>
             <div></div>
             <Card className={classes.surgeriesCard}>
                 <Row>
-                    <Col className="text-center" sm={4} md={2} >Τίτλος</Col>
-                    <Col className="text-center">Τύπος Χειρουργείου</Col>
+                    <Col className="text-center"   >Τίτλος</Col>
                     <Col className="text-center">Ημ/νια Εισόδου</Col>
                     <Col className="text-center">Ημ/νία Εξόδου</Col>
-                    <Col className="text-center" sm={4} md={2}>Νοσοκομείο</Col>
+                    <Col className="text-center"  >Νοσοκομείο</Col>
                     <Col sm={2}></Col>
                 </Row>
-                {addSurgery && <SurgeriesForm />}
-                <SurgeriesList surgeriesList={surgeriesList} addSurgery={addSurgery} />    
-                <Row><Col><button onClick={openSurgeryFormHandler}>Προσθήκη Χειρουργείου</button></Col></Row>
+                {addSurgery && <SurgeriesForm setAddSurgery={setAddSurgery} addSurgeryHandler={addSurgeryHandler}/>}
+                <SurgeriesList surgeriesList={props.surgeriesList}  />    
+                {!addSurgery&&<Row><Col><button onClick={openSurgeryFormHandler}>Προσθήκη Χειρουργείου</button></Col></Row>}
             </Card>
         </Container>
     );

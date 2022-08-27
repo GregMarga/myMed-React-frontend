@@ -2,15 +2,16 @@ import { Container, Row, Col } from "react-bootstrap";
 import SurgeriesListItem from './SurgeriesListItem';
 
 const SurgeriesList = (props) => {
+   
     return (
         <Container>
             {props.surgeriesList.map(surgery => {
-                <SurgeriesListItem
-                title={surgery.title}
-                type={surgery.type}
-                dateOfEntrance={surgery.dateOfEntrance}
-                dateOfExit={surgery.dateOfExit}
-                hospital={surgery.hospital}
+                return <SurgeriesListItem
+                    title={surgery.name}
+                    dateOfEntrance={surgery.dateOfEntrance}
+                    dateOfExit={surgery.dateOfExit}
+                    hospital={surgery.hospital}
+                    key={surgery.id}
                 />
             })}
             {(props.surgeriesList.length === 0) && (!props.addSurgery) && <Row>

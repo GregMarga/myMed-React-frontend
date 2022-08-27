@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useCallback } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import classes from './Basic.module.css';
 import SaveButton from '../UI/SaveButton';
@@ -18,12 +18,10 @@ import moment from 'moment';
 
 const Basic = (props) => {
     const [loading, SetLoading] = useState(false);
-    const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '' })
+    const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '', imageName: null })
 
-    const [updated, setUpdated] = useState(false);
+    
 
-    const [imageName, setImageName] = useState(null);
-    const [imageExists, setImageExists] = useState(false);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -63,24 +61,30 @@ const Basic = (props) => {
 
     const [age, setAge] = useState(null);
 
-    useEffect(() => {
-        const fetchPatients = async () => {
-            try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
-                setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode });
-                console.log('hereee greegG', responseData.files[0], responseData.files[0].split('\\')[2])
-                setImageName(responseData.files[0].split('\\')[2]);
-                if (responseData.files[0] !== null) { setImageExists(true); }
-                setAge(responseData.dateOfBirth);
-            } catch (err) { }
-        };
-        if (patientContext.patientId !== null) {
 
-            fetchPatients();
-        }
-        setUpdated(false)
-    }, [sendRequest, patientContext.patientId, imageName, updated]);
+    const fetchPatients = useCallback(async () => {
+        try {
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            console.log(responseData)
+            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, imageName: responseData.files[0].split('\\')[2] });
+            console.log('hereee greegG', responseData.files[0], responseData.files[0].split('\\')[2])
+            // setImageName(responseData.files[0].split('\\')[2]);
+           
+            setAge(responseData.dateOfBirth);
+        } catch (err) { }
+    }
+    )
+
+
+
+    // useEffect(() => {
+
+    //     if (patientContext.patientId !== null) {
+
+    //         fetchPatients();
+    //     }
+        
+    // }, [sendRequest, patientContext.patientId, loadedBasics.imageName]);
 
 
     const submitHandler = async (event) => {
@@ -126,8 +130,11 @@ const Basic = (props) => {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/files`, 'POST',
                     formData
                 )
-                setImageExists(true);
-                setImageName(formState.inputs.image.value)
+                
+                setLoadedBasics((prevState) => {
+                    return { ...prevState, imageName: formState.inputs.image.value }
+                })
+                // setImageName(formState.inputs.image.value)
             } catch (err) {
                 console.log(err)
             }
@@ -167,20 +174,22 @@ const Basic = (props) => {
 
         }
         catch (err) { }
-        if (typeof (formState.inputs.image.value) !== 'undefined' && imageExists && (formState.inputs.image.value) !== imageName) {
+        if (typeof (formState.inputs.image.value) !== 'undefined' && (!!loadedBasics.imageName) && (formState.inputs.image.value) !== loadedBasics.imageName) {
             console.log(formState.inputs.image.value)
             try {
                 const formData = new FormData();
                 formData.append('image', formState.inputs.image.value);
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/files/${imageName}`, 'PATCH',
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/files/${loadedBasics.imageName}`, 'PATCH',
                     formData
                 )
-                setImageName(formState.inputs.image.value);
+                setLoadedBasics((prevState) => {
+                    return { ...prevState, imageName: formState.inputs.image.value }
+                })
+                // setImageName(formState.inputs.image.value);
             } catch (err) {
                 console.log(err)
             }
         }
-        setUpdated(true);
 
     }
 
@@ -205,7 +214,7 @@ const Basic = (props) => {
                         </Col>
 
                         <Col className="text-center">
-                            <ImageUpload center imageSource={(!!imageName) ? `http://localhost:5000/uploads/images/${imageName}` : null} onInput={inputHandler} id='image' />
+                            <ImageUpload center imageSource={(!!loadedBasics.imageName) ? `http://localhost:5000/uploads/images/${loadedBasics.imageName}` : null} onInput={inputHandler} id='image' />
                         </Col>
                     </Row>
                     <Row className='justify-content-center'>

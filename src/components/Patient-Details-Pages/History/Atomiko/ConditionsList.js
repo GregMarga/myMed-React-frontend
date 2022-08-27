@@ -1,9 +1,11 @@
 import { Container, Row, Col } from "react-bootstrap";
 import classes from './ConditionsList.module.css'
 import ConditionsListItem from "./ConditionsListItem";
+import { v4 as uuid } from 'uuid';
+
 
 const ConditionsList = (props) => {
-    console.log(props.conditionsList)
+   
 
     return (
         <Container fluid className={classes.conditionsList}>
@@ -14,6 +16,7 @@ const ConditionsList = (props) => {
                         state={condition.state}
                         dateOfDiagnosis={condition.dateOfDiagnosis}
                         dateOfHealing={condition.dateOfHealing}
+                        key={uuid()}
                     />
                 })}
                 {(props.conditionsList.length === 0)&&(!props.addCondition) && <Row>

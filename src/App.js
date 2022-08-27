@@ -93,7 +93,7 @@ function App() {
       <Switch>
         <Route path='/' exact>
           <Logo />
-          {/* <SideNavigation /> */}
+         
           <Patients />
         </Route>
         <Route path='/patients' exact>
@@ -101,22 +101,25 @@ function App() {
           {/* <SideNavigation /> */}
           <Patients />
         </Route>
-        <Route path='/appointments'>
+        {/* <Route path='/appointments'>
           <SideNavigation />
           <Appointment />
-        </Route>
+        </Route> */}
         <Route path='/patients/:patientId' >
           <Logo />
 
           <PatientDetail />
         </Route>
-        <Route path='/Statistics' >
+        {/* <Route path='/Statistics' >
           <SideNavigation />
           <Statistics />
-        </Route>
-        <Route path='/' >
+        </Route> */}
+        <Route path='/:userId/emailconfirmation' >
           <Redirect to='/' />
-        </Route >
+        </Route>
+        {/* <Route path='/' >
+          <Redirect to='/' />
+        </Route > */}
 
       </Switch>
     )

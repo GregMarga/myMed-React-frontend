@@ -18,50 +18,57 @@ import { PatientContext } from "../../../context/patient-context";
 const History = (props) => {
     const { isLoading, sendRequest, error, clearError } = useHttpClient();
 
+    const [conditionsList, setConditionsList] = useState([]);
+    const [allergiesList, setAllergiesList] = useState([]);
+    const [cleronomicalList,setCleronomicalList]=useState([]);
+    const [surgeriesList, setSurgeriesList] = useState([]);
+    const [gynaikologikoList,setGynaikologikoList]=useState()
+
+
     const auth = useContext(AuthContext);
-    const patientContext = useContext(PatientContext);
+    // const patientContext = useContext(PatientContext);
 
-    const [loadAnamnistiko, setLoadAnamnistiko] = useState({ allergies: '', cleronomical: '', personal: '', surgeries: '', drug_usage: '', others: '' })
-    const allergiesInputRef = useRef();
-    const cleronomicalInputRef = useRef();
-    const personalInputRef = useRef();
-    const surgeriesInputRef = useRef();
-    const drug_usageInputRef = useRef();
-    const othersInputRef = useRef();
+    // const [loadAnamnistiko, setLoadAnamnistiko] = useState({ allergies: '', cleronomical: '', personal: '', surgeries: '', drug_usage: '', others: '' })
+    // const allergiesInputRef = useRef();
+    // const cleronomicalInputRef = useRef();
+    // const personalInputRef = useRef();
+    // const surgeriesInputRef = useRef();
+    // const drug_usageInputRef = useRef();
+    // const othersInputRef = useRef();
+
+    
 
 
+    useEffect(() => {
+        const fetchHistory = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/patients/6309f53a562ee457493197f4/anamnistiko`,'GET',null,{Authorization:'Bearer '+auth.token});
+                setConditionsList(responseData.conditions)
+            }catch(err){ }
 
-
-    // useEffect(() => {
-    //     const fetchHistory = async () => {
-    //         try {
-    //             const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/anamnistiko`,'GET',null,{Authorization:'Bearer '+auth.token});
-    //             setLoadAnamnistiko({allergies:responseData.allergies,cleronomical:responseData.cleronomical,personal:responseData.personal,drug_usage:responseData.drug_usage,surgeries:responseData.surgeries,others:responseData.others});
-    //         }catch(err){ }
-
-    //     };
-    //     fetchHistory();
-    // }, []);
+        };
+        fetchHistory();
+    }, []);
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        console.log('submit')
-        // try {
-        //     await sendRequest(`http://localhost:5000/patients/${props.patientId}/anamnistiko`, 'POST',
-        //         JSON.stringify({
-        //             allergies: allergiesInputRef.current.value,
-        //             cleronomical: cleronomicalInputRef.current.value,
-        //             personal: personalInputRef.current.value,
-        //             surgeries: surgeriesInputRef.current.value,
-        //             drug_usage: drug_usageInputRef.current.value,
-        //             others: othersInputRef.current.value
+        console.log('conditions')
+        try {
+            await sendRequest(`http://localhost:5000/patients/6308f51a89c1f09531ffb6a1/anamnistiko`, 'POST',
+                JSON.stringify({
+                    allergies:  [],
+                    cleronomical: [{ code: 'z04', condition: 'asthma', date: '25/3/2017' }],
+                    conditions: conditionsList,
+                    surgeries: [],
+                    gynaikologiko: [],
 
 
-        //         }), {
-        //         'Content-Type': 'application/json',
-        //         Authorization: 'Bearer ' + auth.token
-        //     });
-        // } catch (err) { }
+
+                }), {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + auth.token
+            });
+        } catch (err) { }
     }
 
     return (
@@ -72,18 +79,21 @@ const History = (props) => {
             <form className='history' onSubmit={submitHandler}>
                 <Container fluid>
                     <Collapsible trigger='Ατομικό' triggerWhenOpen={'Ατομικό^'} transitionTime={200}>
-                        <Conditions />
-                        <Allergies />
+                        <Conditions conditionsList={conditionsList} setConditionsList={setConditionsList}/>
+                        <Allergies allergiesList={allergiesList} setAllergiesList={setAllergiesList}/>
                     </Collapsible>
                     <Collapsible trigger='Κληρονομικό' transitionTime={200}>
-                        <Klironomiko />
+                        <Klironomiko cleronomicalList={cleronomicalList} setCleronomicalList={setCleronomicalList}/>
                     </Collapsible>
                     <Collapsible trigger='Χειρουργεία' transitionTime={200}>
-                        <Surgeries />
+                        <Surgeries surgeriesList={surgeriesList} setSurgeriesList={setSurgeriesList}/>
                     </Collapsible>
-                    {(patientContext.gender === 'female') && <Collapsible trigger='Γυναικολογικό' transitionTime={200}>
+                    <Collapsible trigger='Γυναικολογικό' transitionTime={200}>
                         <Gynaikologiko />
-                    </Collapsible>}
+                    </Collapsible >
+                    {/* {(patientContext.gender === 'female') && <Collapsible trigger='Γυναικολογικό' transitionTime={200}>
+                        <Gynaikologiko />
+                    </Collapsible>} */}
 
                     {/* <Row className='justify-content-center '>
                     <Col className='text-sm-end '>

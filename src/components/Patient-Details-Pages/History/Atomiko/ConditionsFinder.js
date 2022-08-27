@@ -34,14 +34,25 @@ const ConditionsFinder = (props) => {
 
     const nameChangeHandler = (event) => {
         setConditionInput(event.target.value);
+        let hit;
         for (let i = 0; i < hitList.length; i++) {
 
-            if (hitList[i].code === event.target.value.split(":")[0]) {
+            if (hitList[i].code === event.target.value.split(":")[0]) {       /// find selected
                 setSelectedHit(hitList[i]);
                 props.setSelectedCondition({ code: hitList[i].code, condition: hitList[i].condition });
+                hit={ code: hitList[i].code, condition: hitList[i].condition }
+
+                if (!!props.add){
+                    props.setSelectedConditionsList((prevState)=>{
+                        return [...prevState,hit];
+                    })
+                   setConditionInput('')
+                   props.setAddAllergy(false);
+                }
             }
+           
         }
-        console.log('selectedHit:', selectedHit)
+        
     }
     
 

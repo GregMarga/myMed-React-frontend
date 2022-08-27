@@ -14,6 +14,8 @@ const Files = (props) => {
                     dateOfDiagnosis={file.dateOfDiagnosis}
                     dateOfVisit={file.dateOfVisit}
                     key={file.id}
+                    id={file.id}
+                    removeFileHandler={props.removeFileHandler}
                 />
             })}
             {(props.filesList.length === 0) && (!props.addFile) && <Row>

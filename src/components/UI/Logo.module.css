@@ -36,13 +36,14 @@
 } 
 .logoCard img {
     padding-left: 3%;
+    padding-top: 1%;
 }
 
 .logoCard span {
     font-size: 1.2rem;
     font-style: italic;
-    position: fixed;
-    top:3.1%
+    /* position: fixed;
+    top:3.1% */
 }
 
 @media only screen and (max-width: 1000px) {

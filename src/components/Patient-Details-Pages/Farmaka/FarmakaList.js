@@ -15,6 +15,8 @@ const FarmakaList = (props) => {
                     dateOfStart={farmako.dateOfStart}
                     dateOfEnd={farmako.dateOfEnd}
                     key={farmako.id}
+                    id={farmako.id}
+                    removeFarmakoHandler={props.removeFarmakoHandler}
                 />
             })}
             {(props.farmakaList.length === 0) && (!props.addFarmako) && <Row>

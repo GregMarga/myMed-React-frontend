@@ -3,43 +3,44 @@ import { useState, useRef } from "react";
 import SmallSaveButton from "../../../UI/SmallSaveButton";
 import SmallDeleteButton from "../../../UI/SmallDeleteButton"
 import classes from './SurgeriesForm.module.css';
+import { v4 as uuid } from 'uuid';
 
 
 const SurgeriesForm = (props) => {
 
     const nameInputRef = useRef();
-    const typeInputRef = useRef();
     const dateOfEntranceInputRef = useRef();
     const dateOfExitInputRef = useRef();
     const hospitalInputRef = useRef();
 
     const submitHandler = (event) => {
         console.log(nameInputRef.current.value);
+        let surgery={
+            name:nameInputRef.current.value,
+            dateOfEntrance:dateOfEntranceInputRef.current.value,
+            dateOfExit:dateOfExitInputRef.current.value,
+            hospital:hospitalInputRef.current.value,
+            id:uuid()
+        }
+        props.addSurgeryHandler(surgery);
+        props.setAddSurgery(false)
     }
 
     return (
 
         <Row className={classes.conditionsForm}>
-            <Col sm={4} md={2}>
-                <input type='text' name='title' />
-            </Col>
-            <Col className='text-center'>
-                {/* <label>Κατάσταση</label> */}
-                <select ref={nameInputRef}>
-                    <option>Σταθερή</option>
-                    <option>Υποτροπίαση</option>
-                    <option>Χρόνια</option>
-                </select>
+            <Col  className="text-center">
+                <input type='text' name='title' ref={nameInputRef}/>
             </Col>
 
-            <Col ><input type='date' ref={dateOfEntranceInputRef} /></Col>
-            <Col ><input type='date' ref={dateOfExitInputRef} /></Col>
+            <Col className="text-center"><input type='date' ref={dateOfEntranceInputRef} /></Col>
+            <Col className="text-center"><input type='date' ref={dateOfExitInputRef} /></Col>
             <Col className='text-center' sm={4} md={2}>
                 <input type='text' name='hospital' ref={hospitalInputRef} />
             </Col>
-            <Col className='text-start' >
+            <Col className='text-start' sm={2}>
                 <SmallSaveButton onClick={submitHandler} />
-                <SmallDeleteButton onClick={() => { }} />
+                <SmallDeleteButton onClick={() => { props.setAddSurgery(false)}} />
             </Col>
         </Row>
 

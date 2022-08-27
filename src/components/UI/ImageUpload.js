@@ -6,6 +6,7 @@ import Card from './Card';
 import './ImageUpload.css';
 
 const ImageUpload = props => {
+  console.log(props.imageSource)
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState(props.imageSource);
   const [isValid, setIsValid] = useState(false);
