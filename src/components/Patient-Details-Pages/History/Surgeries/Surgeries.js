@@ -28,7 +28,7 @@ const Surgeries = (props) => {
                     <Col className="text-center"   >Τίτλος</Col>
                     <Col className="text-center">Ημ/νια Εισόδου</Col>
                     <Col className="text-center">Ημ/νία Εξόδου</Col>
-                    <Col className="text-center"  >Νοσοκομείο</Col>
+                    <Col className="text-center"  sm={4} md={2}>Νοσοκομείο</Col>
                     <Col sm={2}></Col>
                 </Row>
                 {addSurgery && <SurgeriesForm setAddSurgery={setAddSurgery} addSurgeryHandler={addSurgeryHandler}/>}

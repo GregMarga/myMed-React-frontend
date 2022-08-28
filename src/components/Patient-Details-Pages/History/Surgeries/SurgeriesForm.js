@@ -1,5 +1,5 @@
-import { Container, Row, Col } from "react-bootstrap";
-import { useState, useRef } from "react";
+import { Row, Col } from "react-bootstrap";
+import { useRef } from "react";
 import SmallSaveButton from "../../../UI/SmallSaveButton";
 import SmallDeleteButton from "../../../UI/SmallDeleteButton"
 import classes from './SurgeriesForm.module.css';
@@ -15,12 +15,12 @@ const SurgeriesForm = (props) => {
 
     const submitHandler = (event) => {
         console.log(nameInputRef.current.value);
-        let surgery={
-            name:nameInputRef.current.value,
-            dateOfEntrance:dateOfEntranceInputRef.current.value,
-            dateOfExit:dateOfExitInputRef.current.value,
-            hospital:hospitalInputRef.current.value,
-            id:uuid()
+        let surgery = {
+            name: nameInputRef.current.value,
+            dateOfEntrance: dateOfEntranceInputRef.current.value,
+            dateOfExit: dateOfExitInputRef.current.value,
+            hospital: hospitalInputRef.current.value,
+            id: uuid()
         }
         props.addSurgeryHandler(surgery);
         props.setAddSurgery(false)
@@ -29,8 +29,8 @@ const SurgeriesForm = (props) => {
     return (
 
         <Row className={classes.conditionsForm}>
-            <Col  className="text-center">
-                <input type='text' name='title' ref={nameInputRef}/>
+            <Col className="text-center">
+                <input type='text' name='title' ref={nameInputRef} />
             </Col>
 
             <Col className="text-center"><input type='date' ref={dateOfEntranceInputRef} /></Col>
@@ -40,7 +40,7 @@ const SurgeriesForm = (props) => {
             </Col>
             <Col className='text-start' sm={2}>
                 <SmallSaveButton onClick={submitHandler} />
-                <SmallDeleteButton onClick={() => { props.setAddSurgery(false)}} />
+                <SmallDeleteButton onClick={() => { props.setAddSurgery(false) }} />
             </Col>
         </Row>
 

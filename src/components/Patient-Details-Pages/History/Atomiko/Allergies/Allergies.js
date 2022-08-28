@@ -11,7 +11,21 @@ const Allergies = (props) => {
     const [selectedConditionsList, setSelectedConditionsList] = useState([])
     const [addAllergy, setAddAllergy] = useState(false);
 
-
+    const checkDefault = (checkboxName) => {
+        let result;
+        props.allergiesList.map((allergy) => {
+            // console.log(checkboxName,'allergy:',allergy.name)
+            if (allergy.name === checkboxName) {
+                result=true;
+            } else {
+                result=false;
+            }
+        })
+        // console.log(checkboxName,result)
+        return result;
+    };
+    console.log(props.allergiesList)
+    // console.log(checkDefault('Τ78.4: Αλλεργία,μη καθορισμένη'))
 
     const changeHandler = (event) => {
         if (event.target.checked) {
@@ -21,12 +35,12 @@ const Allergies = (props) => {
         }
         else if (!event.target.checked) {
             props.setAllergiesList((prevState) => {
-               return prevState.filter((allergy)=>{
-                    return allergy!==event.target.value
-               })
+                return prevState.filter((allergy) => {
+                    return allergy !== event.target.value
+                })
             })
         }
-       
+
     }
 
 
@@ -44,13 +58,13 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Τ78.4: Αλλεργία,μη καθορισμένη' onChange={changeHandler} />
+                        <input type='checkbox' value='Τ78.4: Αλλεργία,μη καθορισμένη' onChange={changeHandler} defaultChecked={checkDefault('Τ78.4: Αλλεργία,μη καθορισμένη')} />
                     </Col>
                     <Col className="text-start">
                         <label>Τ78.4: Αλλεργία,μη καθορισμένη</label>
                     </Col>
                     <Col xs={1} className='text-end'>
-                        <input type='checkbox' value='Ζ88.1: Ατομικό ιστορικό αλλεργίας στην πενικιλίνη' onChange={changeHandler} />
+                        <input type='checkbox' value='Ζ88.1: Ατομικό ιστορικό αλλεργίας στην πενικιλίνη' onChange={changeHandler} defaultChecked={checkDefault('Ζ88.1: Ατομικό ιστορικό αλλεργίας στην πενικιλίνη')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Ζ88.1: Ατομικό ιστορικό αλλεργίας στην πενικιλίνη</label>
@@ -58,14 +72,14 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='J30.1: Αλλεργική ρινίτιδα που οφείλεται στη γύρη' onChange={changeHandler} />
+                        <input type='checkbox' value='J30.1: Αλλεργική ρινίτιδα που οφείλεται στη γύρη' onChange={changeHandler} defaultChecked={checkDefault('')}/>
                     </Col>
                     <Col className="text-start">
                         <label>J30.1: Αλλεργική ρινίτιδα που οφείλεται στη γύρη</label>
                     </Col>
 
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.2: Ατομικό ιστορικό αλλεργίας σε άλλους αντιβιοτικούς παράγοντες' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.2: Ατομικό ιστορικό αλλεργίας σε άλλους αντιβιοτικούς παράγοντες' onChange={changeHandler} defaultChecked={checkDefault('Z88.2: Ατομικό ιστορικό αλλεργίας σε άλλους αντιβιοτικούς παράγοντες')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.2: Ατομικό ιστορικό αλλεργίας σε άλλους αντιβιοτικούς παράγοντες</label>
@@ -73,14 +87,14 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='J30.2:  Άλλη εποχική αλλεργική ρινίτιδα' onChange={changeHandler} />
+                        <input type='checkbox' value='J30.2:  Άλλη εποχική αλλεργική ρινίτιδα' onChange={changeHandler} defaultChecked={checkDefault('J30.2:  Άλλη εποχική αλλεργική ρινίτιδα')}/>
                     </Col>
                     <Col className="text-start">
                         <label>J30.2:  Άλλη εποχική αλλεργική ρινίτιδα</label>
                     </Col>
 
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.3: Ατομικό ιστορικό αλλεργίας στις σουλφοναμίδες' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.3: Ατομικό ιστορικό αλλεργίας στις σουλφοναμίδες' onChange={changeHandler} defaultChecked={checkDefault('Z88.3: Ατομικό ιστορικό αλλεργίας στις σουλφοναμίδες')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.3: Ατομικό ιστορικό αλλεργίας στις σουλφοναμίδες</label>
@@ -88,13 +102,13 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='J30.3: Άλλη αλλεργική ρινίτιδα' onChange={changeHandler} />
+                        <input type='checkbox' value='J30.3: Άλλη αλλεργική ρινίτιδα' onChange={changeHandler} defaultChecked={checkDefault('J30.3: Άλλη αλλεργική ρινίτιδα')}/>
                     </Col>
                     <Col className="text-start">
                         <label>J30.3: Άλλη αλλεργική ρινίτιδα</label>
                     </Col>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.4: Ατομικό ιστορικό αλλεργίας σε άλλους παράγοντες κατά των λοιμώξεων' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.4: Ατομικό ιστορικό αλλεργίας σε άλλους παράγοντες κατά των λοιμώξεων' onChange={changeHandler} defaultChecked={checkDefault('Z88.4: Ατομικό ιστορικό αλλεργίας σε άλλους παράγοντες κατά των λοιμώξεων')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.4: Ατομικό ιστορικό αλλεργίας σε άλλους παράγοντες κατά των λοιμώξεων</label>
@@ -103,13 +117,13 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='J30.4: Αλλεργική ρινίτιδα, μη καθορισμένη' onChange={changeHandler} />
+                        <input type='checkbox' value='J30.4: Αλλεργική ρινίτιδα, μη καθορισμένη' onChange={changeHandler} defaultChecked={checkDefault('J30.4: Αλλεργική ρινίτιδα, μη καθορισμένη')}/>
                     </Col>
                     <Col className="text-start" >
                         <label>J30.4: Αλλεργική ρινίτιδα, μη καθορισμένη</label>
                     </Col>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.5: Ατομικό ιστορικό αλλεργίας σε αναισθητικό παράγοντα' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.5: Ατομικό ιστορικό αλλεργίας σε αναισθητικό παράγοντα' onChange={changeHandler} defaultChecked={checkDefault('Z88.5: Ατομικό ιστορικό αλλεργίας σε αναισθητικό παράγοντα')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.5: Ατομικό ιστορικό αλλεργίας σε αναισθητικό παράγοντα</label>
@@ -117,13 +131,13 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='J45: Κυρίως αλλεργικό άσθμα' onChange={changeHandler} />
+                        <input type='checkbox' value='J45: Κυρίως αλλεργικό άσθμα' onChange={changeHandler} defaultChecked={checkDefault('J45: Κυρίως αλλεργικό άσθμα')}/>
                     </Col>
                     <Col className="text-start">
                         <label>J45: Κυρίως αλλεργικό άσθμα</label>
                     </Col>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.6: Ατομικό ιστορικό αλλεργίας σε ναρκωτικό παράγοντα' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.6: Ατομικό ιστορικό αλλεργίας σε ναρκωτικό παράγοντα' onChange={changeHandler} defaultChecked={checkDefault('Z88.6: Ατομικό ιστορικό αλλεργίας σε ναρκωτικό παράγοντα')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.6: Ατομικό ιστορικό αλλεργίας σε ναρκωτικό παράγοντα</label>
@@ -131,13 +145,13 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='K52.2: Αλλεργική και διαιτητική γαστρεντερίτιδα και κολίτιδα' onChange={changeHandler} />
+                        <input type='checkbox' value='K52.2: Αλλεργική και διαιτητική γαστρεντερίτιδα και κολίτιδα' onChange={changeHandler} defaultChecked={checkDefault('K52.2: Αλλεργική και διαιτητική γαστρεντερίτιδα και κολίτιδα')}/>
                     </Col>
                     <Col className="text-start">
                         <label>K52.2: Αλλεργική και διαιτητική γαστρεντερίτιδα και κολίτιδα</label>
                     </Col>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.7: Ατομικό ιστορικό αλλεργίας σε ορό και εμβόλιο' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.7: Ατομικό ιστορικό αλλεργίας σε ορό και εμβόλιο' onChange={changeHandler} defaultChecked={checkDefault('Z88.7: Ατομικό ιστορικό αλλεργίας σε ορό και εμβόλιο')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.7: Ατομικό ιστορικό αλλεργίας σε ορό και εμβόλιο</label>
@@ -146,13 +160,13 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='L23: Αλλεργική δερματίτιδα εξ επαφής' onChange={changeHandler} />
+                        <input type='checkbox' value='L23: Αλλεργική δερματίτιδα εξ επαφής' onChange={changeHandler} defaultChecked={checkDefault('L23: Αλλεργική δερματίτιδα εξ επαφής')}/>
                     </Col>
                     <Col className="text-start">
                         <label>L23: Αλλεργική δερματίτιδα εξ επαφής </label>
                     </Col>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.8: Ατομικό ιστορικό αλλεργίας σε άλλα φάρμακα, φαρμακευτικές και βιολογικές ουσίες' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.8: Ατομικό ιστορικό αλλεργίας σε άλλα φάρμακα, φαρμακευτικές και βιολογικές ουσίες' onChange={changeHandler} defaultChecked={checkDefault('Z88.8: Ατομικό ιστορικό αλλεργίας σε άλλα φάρμακα, φαρμακευτικές και βιολογικές ουσίες')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.8: Ατομικό ιστορικό αλλεργίας σε άλλα φάρμακα, φαρμακευτικές και βιολογικές ουσίες</label>
@@ -160,13 +174,13 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='L50.0: Αλλεργική κνίδωση' onChange={changeHandler} />
+                        <input type='checkbox' value='L50.0: Αλλεργική κνίδωση' onChange={changeHandler} defaultChecked={checkDefault('L50.0: Αλλεργική κνίδωση')}/>
                     </Col>
                     <Col className="text-start">
                         <label>L50.0: Αλλεργική κνίδωση</label>
                     </Col>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='Z88.9: Ατομικό ιστορικό αλλεργίας σε μη καθορισμένα φάρμακα, φαρμακευτικές και βιολογικές ουσίες' onChange={changeHandler} />
+                        <input type='checkbox' value='Z88.9: Ατομικό ιστορικό αλλεργίας σε μη καθορισμένα φάρμακα, φαρμακευτικές και βιολογικές ουσίες' onChange={changeHandler} defaultChecked={checkDefault('Z88.9: Ατομικό ιστορικό αλλεργίας σε μη καθορισμένα φάρμακα, φαρμακευτικές και βιολογικές ουσίες')}/>
                     </Col>
                     <Col className="text-start">
                         <label>Z88.9: Ατομικό ιστορικό αλλεργίας σε μη καθορισμένα φάρμακα, φαρμακευτικές και βιολογικές ουσίες</label>
@@ -177,7 +191,7 @@ const Allergies = (props) => {
                     return (
                         <Row key={uuid()}>
                             <Col className="text-end" xs={1}>
-                                <input type='checkbox' value={`${condition.code}: ${condition.condition}`} onChange={changeHandler} />
+                                <input type='checkbox' value={`${condition.code}: ${condition.condition}`} onChange={changeHandler} defaultChecked={checkDefault(`${condition.code}: ${condition.condition}`)}/>
                             </Col>
                             <Col xs={6}>
                                 <label>{`${condition.code}: ${condition.condition}`}</label>

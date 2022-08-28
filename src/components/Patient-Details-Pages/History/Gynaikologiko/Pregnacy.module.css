@@ -1,0 +1,12 @@
+.pregnacyCard{
+    padding: 20px;
+    font-size: 1rem;
+}
+.pregnacyHeader{
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-bottom:solid 1px black ;
+}
+.addPregnacy{
+    margin-top: 2%;
+}
