@@ -14,8 +14,9 @@ const Allergies = (props) => {
     const checkDefault = (checkboxName) => {
         let result;
         props.allergiesList.map((allergy) => {
-            // console.log(checkboxName,'allergy:',allergy.name)
-            if (allergy.name === checkboxName) {
+            // console.log(checkboxName,'allergy:',allergy)
+            if (allergy === checkboxName) {
+                console.log('in',allergy)
                 result=true;
             } else {
                 result=false;
@@ -72,7 +73,7 @@ const Allergies = (props) => {
                 </Row>
                 <Row>
                     <Col className="text-end" xs={1}>
-                        <input type='checkbox' value='J30.1: Αλλεργική ρινίτιδα που οφείλεται στη γύρη' onChange={changeHandler} defaultChecked={checkDefault('')}/>
+                        <input type='checkbox' value='J30.1: Αλλεργική ρινίτιδα που οφείλεται στη γύρη' onChange={changeHandler} defaultChecked={checkDefault('J30.1: Αλλεργική ρινίτιδα που οφείλεται στη γύρη')}/>
                     </Col>
                     <Col className="text-start">
                         <label>J30.1: Αλλεργική ρινίτιδα που οφείλεται στη γύρη</label>

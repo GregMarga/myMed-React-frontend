@@ -7,27 +7,34 @@ import { useState } from "react";
 
 
 const Therapeia = (props) => {
-    const [therapeiaList, setTherapeiaList] = useState([]);
+    
     const [addTherapeia, setAddTherapeia] = useState(false);
     const openAddForm = (event) => {
         setAddTherapeia(true);
     }
 
     const addTherapeiaHandler = (therapeia) => {
-        setTherapeiaList((prevState) => {
+        props.setTherapeiaList((prevState) => {
             return [...prevState, therapeia];
         })
         console.log(therapeia);
+    }
+    const removeTherapeiaHandler = (therapeiaIdToDelete) => {
+        props.setTherapeiaList((prevState) => {
+            return prevState.filter(therapeia=>{
+                return therapeia._id!==therapeiaIdToDelete
+            })
+        })
     }
 
 
     return (
         <Container>
             <Card className={classes.therapeiaCard}>
-                <TherapeiaList therapeiaList={therapeiaList} addTherapeia={addTherapeia} />
+                <TherapeiaList therapeiaList={props.therapeiaList} addTherapeia={addTherapeia} removeTherapeiaHandler={removeTherapeiaHandler}/>
                 <Row>
                     <Col>
-                        {addTherapeia && <TherapeiaForm addTherapeia={addTherapeia} addTherapeiaHandler={addTherapeiaHandler} diagnosisList={props.diagnosisList}/>}
+                        {addTherapeia && <TherapeiaForm addTherapeia={addTherapeia} addTherapeiaHandler={addTherapeiaHandler} diagnosisList={props.diagnosisList} setAddTherapeia={setAddTherapeia}/>}
                         {!addTherapeia && <button className={classes.addCondition} onClick={openAddForm}>Προσθήκη Θεραπείας</button>}
                     </Col>
                 </Row>

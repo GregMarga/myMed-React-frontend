@@ -9,10 +9,13 @@ const TherapeiaList = (props) => {
             {props.therapeiaList.map((therapeia) => {
                 return <TherapeiaListItem
                     condition={therapeia.condition}
-                    drugName={therapeia.drugName}
+                    drugName={therapeia.name}
                     ATC_name={therapeia.ATC_name}
-                    quantity={therapeia.quantity}
-                    frequency={therapeia.frequency}
+                    quantity={therapeia.posotita}
+                    frequency={therapeia.syxnotita}
+                    key={therapeia._id}
+                    id={therapeia._id}
+                    removeTherapeiaHandler={props.removeTherapeiaHandler}
                 />
             })}
             {(props.therapeiaList.length === 0) && (!props.addTherapeia) && <Row>

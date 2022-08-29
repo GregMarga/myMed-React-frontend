@@ -14,9 +14,11 @@ const DiagnosisList = (props) => {
                         state={diagnosis.state}
                         dateOfDiagnosis={diagnosis.dateOfDiagnosis}
                         dateOfHealing={diagnosis.dateOfHealing}
+                        key={diagnosis._id}
+                        id={diagnosis._id}
                     />
                 })}
-                {(props.diagnosisList.length === 0)&&(!props.addDiagnosis) && <Row>
+                {(props.diagnosisList.length === 0) && (!props.addDiagnosis) && <Row>
                     <Col className='text-center'>Η λίστα είναι άδεια,προσθέστε μια διάγνωση.</Col>
                 </Row>}
 

@@ -16,12 +16,12 @@ const PatientsListItems = (props) => {
 
                 <Row className={classes.myLinks} >
 
-                        <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.sirname}</span></Link></Col>
-                        <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.name}</span></Link></Col>
-                        <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.diagnosis}</span></Link></Col>
-                        <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.age}</span></Link></Col>
-                        <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.tel}</span></Link></Col>
-                        <Col className='text-center'><Link to={`/patients/${props.id}/basic`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.amka}</span></Link></Col>
+                        <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.sirname}</span></Link></Col>
+                        <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.name}</span></Link></Col>
+                        <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.diagnosis}</span></Link></Col>
+                        <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.age}</span></Link></Col>
+                        <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.tel}</span></Link></Col>
+                        <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.amka}</span></Link></Col>
                         <Col className='text-end' >
                                 <EditButton onClick={editHandler}/>
                                 <DeleteButton onClick={deleteHandler} />

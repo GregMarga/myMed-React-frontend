@@ -9,6 +9,7 @@ import DiagnosisForm from "./DiagnosisForm";
 
 
 const Diagnosis = (props) => {
+    console.log(props.diagnosisList)
     // const [diagnosisList, setDiagnosisList] = useState([]);
     const [addDiagnosis, setAddDiagnosis] = useState(false);
     const openAddForm = (event) => {

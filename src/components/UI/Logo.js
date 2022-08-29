@@ -42,15 +42,15 @@ const Logo = () => {
                         {/* <Col>Μία εφαρμογή διαχείρισης δεδομένων ασθενών.</Col> */}
                     </Row>
                     {addPatient && <Row className="justify-content-md-center">
-                        <Col lg={0} xl={4} className='text-start'></Col>
-                        <Col className="text-center"md={4} lg={2} xl={1}><button className={classes.linkButton}> <NavLink to={`/`}>Αρχική</NavLink></button></Col>
+                        <Col lg={0} xxl={4} className='text-start'></Col>
+                        <Col className="text-center"md={4} lg={2} xxl={1}><button className={classes.linkButton}> <NavLink to={`/`}>Αρχική</NavLink></button></Col>
                         <Col className="text-center">
                             <button className={classes.linkButton}>  <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/basic`}>Βασικά</NavLink></button>
                         </Col>
                         <Col className="text-center"><button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/anamnistiko`}>Αναμνηστικό</NavLink></button></Col>
-                        <Col className="text-center"md={4} lg={2} xl={2}> <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/farmaka`}>Φαρμακευτική Αγωγή</NavLink></button></Col>
-                        <Col className="text-center"md={4} lg={2} xl={1}>  <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/aad`}>Αρχεία</NavLink></button></Col>
-                        <Col className="text-center"md={4} lg={2} xl={2}> <button className={classes.linkButton}>  <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/visits`}> Δημιουργία Επίσκεψης</NavLink></button></Col>
+                        <Col className="text-center"md={4} lg={2} xxl={2}> <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/farmaka`}>Φαρμακευτική Αγωγή</NavLink></button></Col>
+                        <Col className="text-center"md={4} lg={2} xxl={1}>  <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/aad`}>Αρχεία</NavLink></button></Col>
+                        <Col className="text-center"md={4} lg={2} xxl={2}> <button className={classes.linkButton}>  <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/visits`}> Δημιουργία Επίσκεψης</NavLink></button></Col>
 
                     </Row>}
                 </Container>

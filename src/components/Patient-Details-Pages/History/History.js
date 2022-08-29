@@ -58,7 +58,12 @@ const History = (props) => {
                 setConditionsList(responseData.conditionsList);
                 setSurgeriesList(responseData.surgeries);
                 setPregnaciesList(responseData.maieutiko)
-                setAllergiesList(responseData.allergies);
+                responseData.allergies.map(allergy=>{
+                    setAllergiesList((prevState)=>{
+                        return [...prevState,allergy.name]
+                    });
+                })
+                
                 setGynaikologikoList(responseData.gynaikologiko)
                 console.log(responseData)
             } catch (err) { }

@@ -2,6 +2,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import SideNavigation from './components/SideNavigation';
 import Appointment from './pages/Appointment';
 import PatientDetail from './pages/PatientDetail';
+import PatientProfile from './components/Patient-Profile/PatientProfile';
 import Statistics from './pages/Statistics';
 import Patients from './pages/Patients';
 import Auth from './authentication/Auth';
@@ -105,6 +106,11 @@ function App() {
           <SideNavigation />
           <Appointment />
         </Route> */}
+        <Route path='/patients/:patientId/profile' exact>
+          <Logo />
+
+          <PatientProfile />
+        </Route>
         <Route path='/patients/:patientId' >
           <Logo />
 
