@@ -4,7 +4,9 @@
     margin-left: 5%;
     padding: 20px;
 }
-
+.basicInfo{
+    margin-left: 10%;
+}
 .profileImage {
     min-width: 11rem;
     min-height: 11rem;

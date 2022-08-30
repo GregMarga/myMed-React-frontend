@@ -5,7 +5,7 @@ import profile from './profile.webp';
 
 const BasicInfo = (props) => {
     return (
-        <Row>
+        <Row className={classes.basicInfo}>
             <Col md={2} className='text-center'>
                 <div>
                     <label>Όνομα:</label>

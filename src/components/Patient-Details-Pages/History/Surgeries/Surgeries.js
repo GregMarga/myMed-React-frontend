@@ -24,7 +24,7 @@ const Surgeries = (props) => {
         <Container>
             <div></div>
             <Card className={classes.surgeriesCard}>
-                <Row>
+                <Row className={classes.surgeryHeader}>
                     <Col className="text-center"   >Τίτλος</Col>
                     <Col className="text-center">Ημ/νια Εισόδου</Col>
                     <Col className="text-center">Ημ/νία Εξόδου</Col>

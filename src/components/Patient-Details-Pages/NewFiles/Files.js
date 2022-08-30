@@ -8,7 +8,7 @@ import { useState, useContext } from "react"
 import { AuthContext } from '../../../context/auth-context'
 import SaveButton from '../../UI/SaveButton';
 
-const Files = () => {
+const Files = (props) => {
     const auth = useContext(AuthContext);
 
     const [filesList, setFilesList] = useState([])
@@ -34,7 +34,7 @@ const Files = () => {
 
     return (
         <Container>
-            <Card className={classes.filesCard}>
+            <Card className={(props.info)?classes.filesCard2:classes.filesCard}>
                 <FilesHeader />
                 {addFile && <FilesForm addFileHandler={addFileHandler} setAddFile={setAddFile} />}
                 <FilesList filesList={filesList} addFile={addFile} removeFileHandler={removeFileHandler}/>

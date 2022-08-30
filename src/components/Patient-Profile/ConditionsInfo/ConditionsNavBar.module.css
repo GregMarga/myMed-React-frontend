@@ -1,7 +1,11 @@
 .navBar{
     width: 80%;
-    margin-left: 12%;
+    margin-left: 13%;
     font-size: 1.15rem;
     margin-top: 1%;
     /* background-color: lightblue; */
+}
+.navBar button{
+    width: auto;
+    border-radius:5px ;
 }

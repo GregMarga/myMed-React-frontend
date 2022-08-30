@@ -16,7 +16,9 @@ const ConditionsList = (props) => {
                         state={condition.state}
                         dateOfDiagnosis={condition.dateOfDiagnosis}
                         dateOfHealing={condition.dateOfHealing}
-                        key={uuid()}
+                        key={condition.id}
+                        id={condition.id}
+                        removeConditionHandler={props.removeConditionHandler}
                     />
                 })}
                 {(props.conditionsList.length === 0)&&(!props.addCondition) && <Row>

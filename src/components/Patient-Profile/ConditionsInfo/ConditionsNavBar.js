@@ -1,13 +1,15 @@
 import { Row, Col } from "react-bootstrap";
 import classes from './ConditionsNavBar.module.css'
 
-const ConditionsNavBar = () => {
+const ConditionsNavBar = (props) => {
     return (
         <Row className={classes.navBar}>
-            Ατομικό
-            Κληρονομικό
-            Χειρουργεία
-             Γυναικολογικό
+            <button onClick={()=>{props.setTabIsOpen('atomiko')}}>Ατομικό</button>
+            <button onClick={()=>{props.setTabIsOpen('')}}>Κληρονομικό</button>
+            <button onClick={()=>{props.setTabIsOpen('surgeries')}}> Χειρουργεία</button>
+            <button onClick={()=>{props.setTabIsOpen('farmaka')}}>Φάρμακα</button>
+            <button onClick={()=>{props.setTabIsOpen('files')}}>Αρχεία</button>
+            <button onClick={()=>{props.setTabIsOpen('')}}> Γυναικολογικό</button>
         </Row>
     )
 }

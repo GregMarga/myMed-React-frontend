@@ -15,7 +15,7 @@ const FilesListItem = (props) => {
 
     const clickHandler=async (event)=>{
         try{
-            const responseData = await sendRequest(`http://localhost:5000/patients/6309fcafa1c72310739694de/uploads/exams/${props.id}`, 'DELETE', null, {
+            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/uploads/exams/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
             }
             );

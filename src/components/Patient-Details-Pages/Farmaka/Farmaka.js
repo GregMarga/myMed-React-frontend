@@ -5,7 +5,7 @@ import FarmakaForm from './FarmakaForm';
 // import SmallSAveButton from '../../UI/SmallSaveButton'
 
 import { useHttpClient } from '../../../hooks/http-hook';
-import { useState, useRef, useContext, useEffect } from 'react';
+import { useState, useRef, useContext, useEffect,useCallback } from 'react';
 import { AuthContext } from '../../../context/auth-context';
 import FarmakaHeader from './FarmakaHeader';
 import classes from './Farmaka.module.css';
@@ -13,7 +13,7 @@ import classes from './Farmaka.module.css';
 
 
 
-const Farmaka = () => {
+const Farmaka = (props) => {
     const { sendRequest, isLoadding, error, clearError } = useHttpClient();
 
   
@@ -24,6 +24,23 @@ const Farmaka = () => {
 
     const [farmakaList, setFarmakaList] = useState([])
     const [addFarmako, setAddFarmako] = useState(false);
+
+
+
+    const fetchFarmaka = useCallback(async () => {
+        try {
+            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/farmaka`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            setFarmakaList(responseData.farmakaList)         
+           
+
+        } catch (err) { }
+    }
+    )
+    useEffect(()=>{
+        fetchFarmaka();
+    },[])
+
+
 
     const  addFarmakaHandler = (farmako) => {
         setFarmakaList((prevState) => {
@@ -45,7 +62,7 @@ const Farmaka = () => {
 
     return (
         <Container>
-            <Card className={classes.farmakaCard}>
+            <Card className={(props.info)?classes.farmakaCard2:classes.farmakaCard}>
                 <FarmakaHeader />
                 {addFarmako && <FarmakaForm addFarmakaHandler={addFarmakaHandler} setAddFarmako={setAddFarmako}/>}
                 <FarmakaList addFarmako={addFarmako} farmakaList={farmakaList} removeFarmakoHandler={removeFarmakoHandler}/>

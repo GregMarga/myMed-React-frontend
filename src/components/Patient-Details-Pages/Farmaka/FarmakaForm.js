@@ -43,7 +43,7 @@ const FarmakaForm = (props) => {
 
         try {
 
-            const responseData = await sendRequest(`http://localhost:5000/patients/6309fcafa1c72310739694de/farmaka`, 'POST',
+            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/farmaka`, 'POST',
                 JSON.stringify({
                     name: selectedFarmako.name,
                     ATC_name: selectedFarmako.ATC_name,

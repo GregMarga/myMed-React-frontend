@@ -3,9 +3,15 @@ import { Row, Col } from 'react-bootstrap'
 import ConditionsNavBar from './ConditionsNavBar';
 import Card from '../../UI/Card';
 import { Fragment, useState } from 'react';
+import Atomiko from './Atomiko/Atomiko';
+import Farmaka from './Farmaka/FarmakaInfo';
+import SurgeriesInfo from './Surgeries/SurgeriesInfo';
+import FilesInfo from './Files/FilesInfo';
+
+
 
 const ConditionsInfo = (props) => {
-    const tabs = ['Ατομικό', 'Κληρονομικό', 'Χειρουργεία', 'Γυναικολογικό'];
+const [tabIsOpen,setTabIsOpen]=useState('atomiko')
 
 
 
@@ -13,14 +19,13 @@ const ConditionsInfo = (props) => {
 
     return (
         <Fragment>
-            <ConditionsNavBar/>
-        <Card className={classes.conditionsInfoCard}>
-            <Row>
-
-                <Col className='text-center'>more info</Col>
-               
-            </Row>
-        </Card>
+            <ConditionsNavBar setTabIsOpen={setTabIsOpen}/>
+        {/* <Card className={classes.conditionsInfoCard}> */}
+            {tabIsOpen==='atomiko'&&<Atomiko/>}
+            {tabIsOpen==='surgeries'&&<SurgeriesInfo/>}
+            {tabIsOpen==='farmaka'&&<Farmaka/>}
+            {tabIsOpen==='files'&&<FilesInfo/>}
+        {/* </Card> */}
         </Fragment>
     );
 }

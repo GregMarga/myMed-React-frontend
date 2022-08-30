@@ -1,17 +1,19 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import SmallSaveButton from "../../../UI/SmallSaveButton";
 import SmallDeleteButton from "../../../UI/SmallDeleteButton"
 
 import classes from './ConditionsForm.module.css';
 import ConditionsFinder from "./ConditionsFinder";
-import { v4 as uuid } from 'uuid';
+import { useHttpClient } from "../../../../hooks/http-hook";
+import { AuthContext } from "../../../../context/auth-context";
 
 
 
 const ConditionsForm = (props) => {
-    const [showHits, setShowHits] = useState(true);
-    const [selectedCondition, setSelectedCondition] = useState({code:'',condition:''})
+    const auth=useContext(AuthContext);
+    const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' })
+    const {sendRequest}=useHttpClient();
     const stateInputRef = useRef();
     const severityInputRef = useRef();
     const dateOfDiagnosisInputRef = useRef();
@@ -19,14 +21,16 @@ const ConditionsForm = (props) => {
 
     console.log(selectedCondition)
 
-    const submitHandler = (event) => {
-        console.log('submit conditionform')
+    const submitHandler = async (event) => {
+        const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        console.log(responseData)
+        
         let condition = {
-            name: selectedCondition.code + ':' + selectedCondition.condition,
-            state:stateInputRef.current.value,
+            name: selectedCondition.code + ': ' + selectedCondition.condition,
+            state: stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
-            id: uuid()
+            id: responseData
         }
         console.log(condition)
         props.addConditionHandler(condition);
@@ -37,7 +41,7 @@ const ConditionsForm = (props) => {
 
         <Row className={classes.conditionsForm}>
             <Col sm={4}>
-                <ConditionsFinder setSelectedCondition={setSelectedCondition}/>
+                <ConditionsFinder setSelectedCondition={setSelectedCondition} />
             </Col>
             <Col sm={2} className='text-center'>
                 <select ref={stateInputRef}>

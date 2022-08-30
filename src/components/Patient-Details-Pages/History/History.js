@@ -29,7 +29,8 @@ const History = (props) => {
     const [gynaikologikoList, setGynaikologikoList] = useState({ emminarxi: null, stability: null, cycle_duration: null, period_duration: null, maieutiko: [], adk: null, tdk: null })
 
     const [stability, setStability] = useState(true);
-
+   
+    console.log(allergiesList)
 
     const stabilityChangeHandler = (event) => {
         setStability(event.target.value === 'true')
@@ -47,23 +48,23 @@ const History = (props) => {
     const tdkInputRef = useRef();
 
 
-    console.log(surgeriesList)
 
 
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/630b813244bf2010b51b6df9/anamnistiko/female`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/anamnistiko/female`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                console.log(responseData.allergies)
                 setConditionsList(responseData.conditionsList);
                 setSurgeriesList(responseData.surgeries);
                 setPregnaciesList(responseData.maieutiko)
-                responseData.allergies.map(allergy=>{
-                    setAllergiesList((prevState)=>{
-                        return [...prevState,allergy.name]
+                responseData.allergies.map(allergy => {
+                    setAllergiesList((prevState) => {
+                        return [...prevState, allergy.name]
                     });
                 })
-                
+
                 setGynaikologikoList(responseData.gynaikologiko)
                 console.log(responseData)
             } catch (err) { }
@@ -71,24 +72,59 @@ const History = (props) => {
         };
         fetchHistory();
     }, []);
-    
+
     console.log(gynaikologikoList.emminarxi)
+
+    const addConditionHandler = (condition) => {
+        setConditionsList((prevState) => {
+            return [...prevState, condition];
+        })
+        
+    }
+
+    const removeConditionHandler = (conditionIdToDelete) => {
+        setConditionsList((prevState) => {
+            return prevState.filter(condition=>{
+                return condition.id!==conditionIdToDelete
+            })
+        })
+    }
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        // setGynaikologikoList({
-        //     emminarxi: emminarxiInputRef.current.value,
-        //     stability: stabilityInputRef.current.value,
-        //     cycle_duration: cycle_durationInputRef.current.value,
-        //     period_duration: period_durationInputRef.current.value,
-        //     emminopausi: emminopausiInputRef.current.value,
-        //     pregnacyList: pregnacyList,
-        //     adk: adkInputRef.current.checked,
-        //     tdk: tdkInputRef.current.checked,
-        // })
-        // console.log(emminarxiInputRef.current.value, stabilityInputRef.current.value, cycle_durationInputRef.current.value)
+       
         try {
-            await sendRequest(`http://localhost:5000/patients/630b813244bf2010b51b6df9/anamnistiko`, 'POST',
+            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/anamnistiko`, 'POST',
+                JSON.stringify({
+                    allergies: allergiesList,
+                    cleronomical: cleronomicalList,
+                    conditions: conditionsList,
+                    surgeries: surgeriesList,
+                    gynaikologiko: {
+                        emminarxi: emminarxiInputRef.current.value,
+                        stability: stabilityInputRef.current.value,
+                        cycle_duration: cycle_durationInputRef.current.value,
+                        period_duration: period_durationInputRef.current.value,
+                        emminopausi: emminopausiInputRef.current.value,
+                        pregnacyList: pregnacyList,
+                        adk: adkInputRef.current.checked,
+                        tdk: tdkInputRef.current.checked,
+                    }
+
+
+
+                }), {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + auth.token
+            });
+        } catch (err) { }
+    }
+
+    const updateHandler = async (event) => {
+        event.preventDefault();
+       
+        try {
+            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/anamnistiko`, 'PATCH',
                 JSON.stringify({
                     allergies: allergiesList,
                     cleronomical: cleronomicalList,
@@ -119,10 +155,10 @@ const History = (props) => {
             {isLoading && <LoadingSpinner />}
             {!!error && <ErrorModal error={error} onClear={clearError} />}
 
-            <form className='history' onSubmit={submitHandler}>
+            <form className='history' onSubmit={updateHandler}>
                 <Container fluid>
                     <Collapsible trigger='Ατομικό' triggerWhenOpen={'Ατομικό^'} transitionTime={200}>
-                        <Conditions conditionsList={conditionsList} setConditionsList={setConditionsList} />
+                        <Conditions conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler}/>
                         <Allergies allergiesList={allergiesList} setAllergiesList={setAllergiesList} />
                     </Collapsible>
                     <Collapsible trigger='Κληρονομικό' transitionTime={200}>
@@ -137,7 +173,7 @@ const History = (props) => {
                             <Card className={classes.erCard}>
                                 <Row>
                                     <Col sm lg="2" className='text-end'><label>Εμμηναρχή</label></Col>
-                                    <Col sm lg="2" className='text-start'><input type='number' placeholder="ηλικία σε έτη" ref={emminarxiInputRef} defaultValue={gynaikologikoList.emminarxi}/></Col>
+                                    <Col sm lg="2" className='text-start'><input type='number' placeholder="ηλικία σε έτη" ref={emminarxiInputRef} defaultValue={gynaikologikoList.emminarxi} /></Col>
                                 </Row>
                                 <Row>
                                     <Col className='text-end'><label>Σταθερότητα</label></Col>
@@ -148,13 +184,13 @@ const History = (props) => {
                                         </select>
                                     </Col>
                                     <Col className='text-end'><label>Διάρκεια Κύκλου</label></Col>
-                                    <Col><input type='number'  disabled={stability === false} ref={cycle_durationInputRef} defaultValue={!!(gynaikologikoList.cycle_duration)?gynaikologikoList.cycle_duration:28}/></Col>
+                                    <Col><input type='number' disabled={stability === false} ref={cycle_durationInputRef} defaultValue={!!(gynaikologikoList.cycle_duration) ? gynaikologikoList.cycle_duration : 28} /></Col>
                                     <Col className='text-end'><label>Διάρκεια Περιόδου</label></Col>
-                                    <Col ><input type='number' ref={period_durationInputRef} defaultValue={gynaikologikoList.period_duration}/></Col>
+                                    <Col ><input type='number' ref={period_durationInputRef} defaultValue={gynaikologikoList.period_duration} /></Col>
                                 </Row>
                                 <Row>
                                     <Col sm={2} className='text-end'><label>Εμμηνόπαυση</label></Col>
-                                    <Col sm={2} className='text-start'><input type='number' placeholder="ηλικία σε έτη" ref={emminopausiInputRef} defaultValue={gynaikologikoList.emminopausi}/></Col>
+                                    <Col sm={2} className='text-start'><input type='number' placeholder="ηλικία σε έτη" ref={emminopausiInputRef} defaultValue={gynaikologikoList.emminopausi} /></Col>
                                 </Row>
                             </Card>
                             <Row><Col className="text-center"><div ><h4>Μαιευτικό Ιστορικό</h4></div></Col></Row>
@@ -162,7 +198,7 @@ const History = (props) => {
                             <Pregnacy pregnacyList={pregnacyList} setPregnaciesList={setPregnaciesList} />
                             <Card className={classes.gynaikologikoCard}>
                                 <Row>
-                                    <Col sm={1} className='text-end'><input type='checkbox' ref={adkInputRef} defaultChecked={gynaikologikoList.adk}/></Col>
+                                    <Col sm={1} className='text-end'><input type='checkbox' ref={adkInputRef} defaultChecked={gynaikologikoList.adk} /></Col>
                                     <Col sm={3} className='text-start'>Αυτόματη Διακοπή Κύησης</Col>
                                 </Row>
                                 <Row>
@@ -178,7 +214,7 @@ const History = (props) => {
 
 
                 </Container>
-                {!isLoading&&<SaveButton />}
+                {!isLoading && <SaveButton />}
             </form>
         </Fragment>
     );

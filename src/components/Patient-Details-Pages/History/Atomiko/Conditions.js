@@ -15,22 +15,15 @@ const Conditions = (props) => {
         setAddCondition(true);
     }
 
-    const addConditionHandler = (condition) => {
-        props.setConditionsList((prevState) => {
-            return [...prevState, condition];
-        })
-        console.log(condition);
-    }
-
 
     return (
         <Container >
-            <Row><Col className="text-center"><div className={classes.title}><h4>Παθήσεις</h4></div></Col></Row>
+            {/* <Row><Col className="text-center"><div className={classes.title}><h4>Παθήσεις</h4></div></Col></Row> */}
             <Card className={classes.conditionsCard}>
                 <ConditionsHeader />
 
-                {addCondition && <ConditionsForm setAddCondition={setAddCondition} addConditionHandler={addConditionHandler} />}
-                <ConditionsList addCondition={addCondition} conditionsList={props.conditionsList} />
+                {addCondition && <ConditionsForm setAddCondition={setAddCondition} addConditionHandler={props.addConditionHandler} />}
+                <ConditionsList addCondition={addCondition} conditionsList={props.conditionsList} removeConditionHandler={props.removeConditionHandler}/>
                 
                 <Row>
                     <Col>

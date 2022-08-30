@@ -32,7 +32,7 @@ const Visit = () => {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/630b813244bf2010b51b6df9/visits`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/visits`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 setDiagnosisList(responseData.diagnosisList);
                 setTherapeiaList(responseData.therapeiaList)
@@ -79,7 +79,7 @@ const Visit = () => {
         console.log('submit')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/630b813244bf2010b51b6df9/visits`, 'POST',
+            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/visits`, 'POST',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -105,7 +105,7 @@ const Visit = () => {
         console.log('update')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/630b813244bf2010b51b6df9/visits`, 'PATCH',
+            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/visits`, 'PATCH',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
