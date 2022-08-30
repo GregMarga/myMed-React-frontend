@@ -84,42 +84,34 @@ function App() {
         <Route path='/:userId/emailconfirmation' exact>
           <EmailConfirmation />
         </Route>
-        <Route path='/' >
+        {/* <Route path='/' >
           <Redirect to='/' />
-        </Route >
+        </Route > */}
       </Switch>
     )
   } else {
     routes = (
       <Switch>
         <Route path='/' exact>
-          <Logo />
-         
+          <Logo />         
           <Patients />
         </Route>
+
         <Route path='/patients' exact>
-          <Logo />
-          {/* <SideNavigation /> */}
+          <Logo />         
           <Patients />
-        </Route>
-        {/* <Route path='/appointments'>
-          <SideNavigation />
-          <Appointment />
-        </Route> */}
+
+        </Route>        
         <Route path='/patients/:patientId/profile' exact>
           <Logo />
-
           <PatientProfile />
         </Route>
+
         <Route path='/patients/:patientId' >
           <Logo />
-
           <PatientDetail />
         </Route>
-        {/* <Route path='/Statistics' >
-          <SideNavigation />
-          <Statistics />
-        </Route> */}
+
         <Route path='/:userId/emailconfirmation' >
           <Redirect to='/' />
         </Route>

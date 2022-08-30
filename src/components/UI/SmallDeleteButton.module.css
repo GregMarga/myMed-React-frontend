@@ -1,4 +1,6 @@
-.buttonSpan{}
+.buttonSpan{
+    background-color: transparent;
+}
 .saveButton{
     background-color: transparent;
     border: none;

@@ -30,7 +30,7 @@ const ConditionsForm = (props) => {
             state: stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
-            id: responseData
+            _id: responseData
         }
         console.log(condition)
         props.addConditionHandler(condition);

@@ -55,7 +55,7 @@ const PatientDetail = () => {
                 <Route path={`/patients/${params.patientId}/anamnistiko`}><History patientId={patientId} /></Route>
                 <Route path={`/patients/${params.patientId}/farmaka`}><Farmaka /></Route>
                 <Route path={`/patients/${params.patientId}/visits`} exact><div><Visit /></div></Route>
-                {/* <Route path={`/patients/${params.patientId}/visits`} exact><div><Visits patientId={patientId} /></div></Route> */}
+               
                 <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>
                 <Route path={`/patients/${params.patientId}/lab_test`} exact><LabAnalysis patientId={patientId} /></Route>
                 <Route path={`/patients/${params.patientId}/aad`} exact><Files patientId={patientId} /></Route>

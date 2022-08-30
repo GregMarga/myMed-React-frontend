@@ -1,29 +1,29 @@
 import { Fragment, useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
-import ConditionsFinder from "../ConditionsFinder";
-import SmallDeleteButton from '../../../../UI/SmallDeleteButton'
-import classes from './AllergiesLoaded.module.css'
+import ConditionsFinder from "../Atomiko/ConditionsFinder";
 
-const AllergiesLoaded = (props) => {
+import classes from './KlironomikoLoaded.module.css'
+
+const KlirnomikoLoaded = (props) => {
     const [addAllergy, setAddAllergy] = useState(false);
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' });
     
     console.log(props.allergiesList)
-   
+    
     
     let removeHandler=(nameToDelete)=>{
         console.log('out')
     };
     useEffect(()=>{
         removeHandler=(nameToDelete)=>{
-            props.removeFromAllergyList(nameToDelete)
+            props.removeFromCleronomicalList(nameToDelete)
             console.log('in')
         }
     
-    },[props.allergiesList,props.removeFromAllergyList])
+    },[props.cleronomicalList,props.removeFromAllergyList])
     useEffect(()=>{
         if (selectedCondition.code!==''){
-            props.addToAllergyList(selectedCondition.code+': '+selectedCondition.condition)
+            props.addToCleronomicalList(selectedCondition.code+': '+selectedCondition.condition)
             setAddAllergy(false)
         }
     },[selectedCondition])
@@ -31,7 +31,7 @@ const AllergiesLoaded = (props) => {
 
     return (
         <Fragment>
-            {props.allergiesList.map((allergy) => {
+            {props.cleronomicalList.map((allergy) => {
                 return (
                     <Row className={classes.loadedAllergy} key={allergy._id}>
                         <Col>
@@ -63,4 +63,4 @@ const AllergiesLoaded = (props) => {
    
 }
 
-export default AllergiesLoaded;
+export default KlirnomikoLoaded;

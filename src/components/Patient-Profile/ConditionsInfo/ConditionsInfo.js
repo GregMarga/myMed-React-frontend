@@ -6,6 +6,8 @@ import { Fragment, useState } from 'react';
 import Atomiko from './Atomiko/Atomiko';
 import Farmaka from './Farmaka/FarmakaInfo';
 import SurgeriesInfo from './Surgeries/SurgeriesInfo';
+import AllergiesInfo from './AllergiesInfo/AllergiesInfo';
+import KlironomikoInfo from './KlironomikoInfo/KlironomikoInfo'
 import FilesInfo from './Files/FilesInfo';
 
 
@@ -22,6 +24,8 @@ const [tabIsOpen,setTabIsOpen]=useState('atomiko')
             <ConditionsNavBar setTabIsOpen={setTabIsOpen}/>
         {/* <Card className={classes.conditionsInfoCard}> */}
             {tabIsOpen==='atomiko'&&<Atomiko/>}
+            {tabIsOpen==='allergies'&&<AllergiesInfo/>}
+            {tabIsOpen==='klironomiko'&&<KlironomikoInfo/>}
             {tabIsOpen==='surgeries'&&<SurgeriesInfo/>}
             {tabIsOpen==='farmaka'&&<Farmaka/>}
             {tabIsOpen==='files'&&<FilesInfo/>}

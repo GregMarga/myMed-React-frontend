@@ -55,13 +55,14 @@ const History = (props) => {
         const fetchHistory = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/anamnistiko/female`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData.allergies)
+                console.log(responseData)
                 setConditionsList(responseData.conditionsList);
                 setSurgeriesList(responseData.surgeries);
-                setPregnaciesList(responseData.maieutiko)
+                setPregnaciesList(responseData.maieutiko);
+                setCleronomicalList(responseData.cleronomicalList)
                 responseData.allergies.map(allergy => {
                     setAllergiesList((prevState) => {
-                        return [...prevState, allergy.name]
+                        return [...prevState, allergy]
                     });
                 })
 
@@ -73,7 +74,7 @@ const History = (props) => {
         fetchHistory();
     }, []);
 
-    console.log(gynaikologikoList.emminarxi)
+   
 
     const addConditionHandler = (condition) => {
         setConditionsList((prevState) => {
