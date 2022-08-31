@@ -1,9 +1,22 @@
 import { Row, Col } from "react-bootstrap";
 import classes from './PatientProfile.module.css';
 import profile from './profile.webp';
-
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/auth-context";
+import { PatientContext } from "../../context/patient-context";
+import { useHttpClient } from "../../hooks/http-hook";
+import { useParams } from "react-router-dom";
 
 const BasicInfo = (props) => {
+    const auth = useContext(AuthContext);
+    const patientContext = useContext(PatientContext)
+    const { isLoading, error, clearError, sendRequest } = useHttpClient()
+    const patientId = useParams().patientId
+    console.log(patientId)
+
+    patientContext.createPatientId(patientId)
+
+
     return (
         <Row className={classes.basicInfo}>
             <Col md={2} className='text-center'>

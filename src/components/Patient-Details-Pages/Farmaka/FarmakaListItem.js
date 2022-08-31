@@ -8,13 +8,14 @@ import { PatientContext } from "../../../context/patient-context";
 
 
 const FarmakaListItem = (props) => {
+    console.log(props.id)
     const {sendRequest,error,clearError}=useHttpClient();
     const auth=useContext(AuthContext);
     const patientContext=useContext(PatientContext);
 
     const clickHandler = async (event) => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/farmaka/${props.id}`, 'DELETE', null, {
+            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/farmaka/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
             }
             );

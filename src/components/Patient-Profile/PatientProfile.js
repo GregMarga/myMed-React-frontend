@@ -1,8 +1,9 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import ConditionsInfo from "./ConditionsInfo/ConditionsInfo";
 import BasicInfo from "./BasicInfo";
 import VisitsList from "./VisitsList/VisitsList";
 import classes from './PatientProfile.module.css';
+
 
 const PatientProfile = () => {
     

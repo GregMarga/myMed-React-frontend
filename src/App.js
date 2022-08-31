@@ -10,6 +10,7 @@ import { AuthContext } from './context/auth-context';
 import { PatientContext } from './context/patient-context';
 import { useState, useCallback, useEffect } from 'react';
 import Logo from './components/UI/Logo'
+import { useHistory } from 'react-router-dom';
 import EmailConfirmation from './authentication/EmailConfirmation'
 
 let logoutTimer;
@@ -20,6 +21,8 @@ function App() {
   const [patientId, setPatientId] = useState(null);
   const [gender, setGender] = useState(null);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
+
+  const history=useHistory();
 
 
   const createPatientId = useCallback((patientId) => {
@@ -40,6 +43,9 @@ function App() {
     setToken(token);
     setUserId(uid);
     const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
+    setInterval(()=>{
+      history.replace('/')
+    },3600001);
     setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem('userData', JSON.stringify({
       userId: uid,

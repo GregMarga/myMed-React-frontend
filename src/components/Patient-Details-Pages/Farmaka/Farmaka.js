@@ -29,7 +29,7 @@ const Farmaka = (props) => {
 
     const fetchFarmaka = useCallback(async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/farmaka`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/farmaka`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             setFarmakaList(responseData.farmakaList)         
            
 
@@ -53,7 +53,7 @@ const Farmaka = (props) => {
     const removeFarmakoHandler = (farmakoIdToDelete) => {
         setFarmakaList((prevState) => {
             return prevState.filter(farmako=>{
-                return farmako.id!==farmakoIdToDelete
+                return farmako._id!==farmakoIdToDelete
             })
         })
     }

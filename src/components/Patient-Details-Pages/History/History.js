@@ -86,7 +86,7 @@ const History = (props) => {
     const removeConditionHandler = (conditionIdToDelete) => {
         setConditionsList((prevState) => {
             return prevState.filter(condition=>{
-                return condition.id!==conditionIdToDelete
+                return condition._id!==conditionIdToDelete
             })
         })
     }

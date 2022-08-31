@@ -23,7 +23,7 @@ const ConditionsForm = (props) => {
 
     const submitHandler = async (event) => {
         const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-        console.log(responseData)
+       
         
         let condition = {
             name: selectedCondition.code + ': ' + selectedCondition.condition,
@@ -32,7 +32,7 @@ const ConditionsForm = (props) => {
             dateOfHealing: dateOfHealingInputRef.current.value,
             _id: responseData
         }
-        console.log(condition)
+       
         props.addConditionHandler(condition);
         props.setAddCondition(false);
     }

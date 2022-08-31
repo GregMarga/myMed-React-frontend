@@ -26,24 +26,9 @@ const FarmakaForm = (props) => {
     const dateOfVisitInputRef = useRef();
 
     const submitHandler = async (event) => {
-        // console.log('submit farmakoform')
-        // let farmako = {
-        //     name: selectedFarmako.name,
-        //     ATC_name: selectedFarmako.ATC_name,
-        //     dateOfStart: dateOfDiagnosisInputRef.current.value,
-        //     dateOfEnd: dateOfVisitInputRef.current.value,
-        //     id: uuid()
-        // }
-        // console.log(farmako)
-        // props.addFarmakaHandler(farmako);
-        // props.setAddFarmako(false);
-        // // console.log(nameInputRef.current.value);
-        // console.log(selectedFile);
         let farmakoId;
-
         try {
-
-            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/farmaka`, 'POST',
+            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/farmaka`, 'POST',
                 JSON.stringify({
                     name: selectedFarmako.name,
                     ATC_name: selectedFarmako.ATC_name,
@@ -63,7 +48,7 @@ const FarmakaForm = (props) => {
             ATC_name: selectedFarmako.ATC_name,
             dateOfStart: dateOfDiagnosisInputRef.current.value,
             dateOfEnd: dateOfVisitInputRef.current.value,
-            id: farmakoId
+            _id: farmakoId
         }
 
         props.addFarmakaHandler(farmako);

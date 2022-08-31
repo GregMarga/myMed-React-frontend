@@ -17,10 +17,11 @@ import moment from 'moment';
 
 
 const Basic = (props) => {
+    console.log(props.patientId)
     const [loading, SetLoading] = useState(false);
     const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '', imageName: null })
+    const history = useHistory();
 
-    
 
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -29,9 +30,8 @@ const Basic = (props) => {
 
     const patientContext = useContext(PatientContext)
 
-    console.log(patientContext.gender, patientContext.patientId);
+    // console.log(patientContext.gender, patientContext.patientId);
 
-    const history = useHistory();
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -62,134 +62,176 @@ const Basic = (props) => {
     const [age, setAge] = useState(null);
 
 
-    const fetchPatients = useCallback(async () => {
+    const fetchPatients = async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             console.log(responseData)
-            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, imageName: responseData.files[0].split('\\')[2] });
-            console.log('hereee greegG', responseData.files[0], responseData.files[0].split('\\')[2])
-            // setImageName(responseData.files[0].split('\\')[2]);
+            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, imageName: responseData.files.split('\\')[2] });
            
+
             setAge(responseData.dateOfBirth);
         } catch (err) { }
     }
-    )
 
 
+    useEffect(() => {
 
-    // useEffect(() => {
+        // if (patientContext.patientId !== null) {
 
-    //     if (patientContext.patientId !== null) {
+        fetchPatients();
+        // }
 
-    //         fetchPatients();
-    //     }
-        
-    // }, [sendRequest, patientContext.patientId, loadedBasics.imageName]);
+    }, [sendRequest, patientContext.patientId, loadedBasics.imageName]);
 
 
     const submitHandler = async (event) => {
         event.preventDefault();
         let patientId = null;
-        try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`,
-                'POST',
-                JSON.stringify({
-                    uid: auth.userId,
-                    name: nameInputRef.current.value,
-                    sirname: sirnameInputRef.current.value,
-                    dateOfBirth: dateOfBirthInputRef.current.value,
-                    amka: amkaInputRef.current.value,
-                    tel: TelInputRef.current.value,
-                    placeOfBirth: placeOfBirthInputRef.current.value,
-                    job: jobInputRef.current.value,
-                    email: emailInputRef.current.value,
-                    familyStatus: familyStatusInputRef.current.value,
-                    gender: genderInputRef.current.value,
-                    address: addressInputRef.current.value,
-                    area: areaInputRef.current.value,
-                    postalCode: postalCodeRef.current.value,
-                    fathersName: fathersNameInputRef.current.value,
-                    patientId: patientContext.patientId
-                }), {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + auth.token
-            }
-            );
-
-            patientContext.createPatientId(responseData.patient._id);
-            patientContext.changeGender(responseData.patient.gender);
-            patientId = responseData.patient._id;
-
-        }
-        catch (err) { }
-        if (typeof (formState.inputs.image.value) !== 'undefined' && (patientId !== null)) {
-            console.log(formState.inputs.image.value)
+        if (!!formState.inputs.image.value) {
             try {
                 const formData = new FormData();
                 formData.append('image', formState.inputs.image.value);
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/files`, 'POST',
+                formData.append('uid', auth.userId);
+                formData.append('name', nameInputRef.current.value)
+                formData.append('sirname', sirnameInputRef.current.value)
+                formData.append('dateOfBirth', dateOfBirthInputRef.current.value)
+                formData.append('amka', amkaInputRef.current.value)
+                formData.append('tel', TelInputRef.current.value)
+                formData.append('placeOfBirth', placeOfBirthInputRef.current.value)
+                formData.append('job', jobInputRef.current.value)
+                formData.append('email', emailInputRef.current.value)
+                formData.append('familyStatus', familyStatusInputRef.current.value)
+                formData.append('gender', genderInputRef.current.value)
+                formData.append('address', addressInputRef.current.value)
+                formData.append('area', areaInputRef.current.value)
+                formData.append('postalCode', postalCodeRef.current.value)
+                formData.append('fathersName', fathersNameInputRef.current.value)
+                formData.append('patientId', patientContext.patientId)   ////////
+
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic/image`,
+                    'POST',
                     formData
-                )
-                
-                setLoadedBasics((prevState) => {
-                    return { ...prevState, imageName: formState.inputs.image.value }
-                })
-                // setImageName(formState.inputs.image.value)
-            } catch (err) {
+                );
+
+                patientContext.createPatientId(responseData.patient._id);
+                patientContext.changeGender(responseData.patient.gender);
+                patientId = responseData.patient._id;
+
+            }
+            catch (err) {
+                console.log(err)
+            }
+        } else {
+            try {
+
+                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`,
+                    'POST',
+                    JSON.stringify({
+                        uid: auth.userId,
+                        name: nameInputRef.current.value,
+                        sirname: sirnameInputRef.current.value,
+                        dateOfBirth: dateOfBirthInputRef.current.value,
+                        amka: amkaInputRef.current.value,
+                        tel: TelInputRef.current.value,
+                        placeOfBirth: placeOfBirthInputRef.current.value,
+                        job: jobInputRef.current.value,
+                        email: emailInputRef.current.value,
+                        familyStatus: familyStatusInputRef.current.value,
+                        gender: genderInputRef.current.value,
+                        address: addressInputRef.current.value,
+                        area: areaInputRef.current.value,
+                        postalCode: postalCodeRef.current.value,
+                        fathersName: fathersNameInputRef.current.value,
+                        patientId: patientContext.patientId
+                    }), {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
+                }
+                );
+
+                patientContext.createPatientId(responseData.patient._id);
+                patientContext.changeGender(responseData.patient.gender);
+                patientId = responseData.patient._id;
+
+            }
+            catch (err) {
                 console.log(err)
             }
         }
+        fetchPatients()
     }
 
     const updateHandler = async (event) => {
         event.preventDefault();
-
-        try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`,
-                'PATCH',
-                JSON.stringify({
-                    patientId: patientContext.patientId,
-                    name: nameInputRef.current.value,
-                    sirname: sirnameInputRef.current.value,
-                    dateOfBirth: dateOfBirthInputRef.current.value,
-                    amka: amkaInputRef.current.value,
-                    tel: TelInputRef.current.value,
-                    placeOfBirth: placeOfBirthInputRef.current.value,
-                    job: jobInputRef.current.value,
-                    email: emailInputRef.current.value,
-                    familyStatus: familyStatusInputRef.current.value,
-                    gender: genderInputRef.current.value,
-                    address: addressInputRef.current.value,
-                    area: areaInputRef.current.value,
-                    postalCode: postalCodeRef.current.value,
-                    fathersName: fathersNameInputRef.current.value,
-                    patientId: patientContext.patientId
-                }), {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + auth.token
-            }
-            );
-
-            patientContext.changeGender(responseData.patient.gender);
-
-        }
-        catch (err) { }
-        if (typeof (formState.inputs.image.value) !== 'undefined' && (!!loadedBasics.imageName) && (formState.inputs.image.value) !== loadedBasics.imageName) {
-            console.log(formState.inputs.image.value)
+        if (!!formState.inputs.image.value) {
             try {
+                console.log(formState.inputs.image.value)
                 const formData = new FormData();
                 formData.append('image', formState.inputs.image.value);
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/files/${loadedBasics.imageName}`, 'PATCH',
+                formData.append('uid', auth.userId);
+                formData.append('name', nameInputRef.current.value)
+                formData.append('sirname', sirnameInputRef.current.value)
+                formData.append('dateOfBirth', dateOfBirthInputRef.current.value)
+                formData.append('amka', amkaInputRef.current.value)
+                formData.append('tel', TelInputRef.current.value)
+                formData.append('placeOfBirth', placeOfBirthInputRef.current.value)
+                formData.append('job', jobInputRef.current.value)
+                formData.append('email', emailInputRef.current.value)
+                formData.append('familyStatus', familyStatusInputRef.current.value)
+                formData.append('gender', genderInputRef.current.value)
+                formData.append('address', addressInputRef.current.value)
+                formData.append('area', areaInputRef.current.value)
+                formData.append('postalCode', postalCodeRef.current.value)
+                formData.append('fathersName', fathersNameInputRef.current.value)
+                formData.append('patientId', patientContext.patientId)   ////////
+                console.log(formData)
+
+                const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/basic/image`,
+                    'PATCH',
                     formData
-                )
-                setLoadedBasics((prevState) => {
-                    return { ...prevState, imageName: formState.inputs.image.value }
-                })
-                // setImageName(formState.inputs.image.value);
-            } catch (err) {
-                console.log(err)
+                );
+
+                patientContext.changeGender(responseData.patient.gender);
             }
+            catch (err) { }
+        } else {
+            try {
+               
+                const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/basic`,
+                    'PATCH',
+                    JSON.stringify({
+                        patientId: patientContext.patientId,
+                        name: nameInputRef.current.value,
+                        sirname: sirnameInputRef.current.value,
+                        dateOfBirth: dateOfBirthInputRef.current.value,
+                        amka: amkaInputRef.current.value,
+                        tel: TelInputRef.current.value,
+                        placeOfBirth: placeOfBirthInputRef.current.value,
+                        job: jobInputRef.current.value,
+                        email: emailInputRef.current.value,
+                        familyStatus: familyStatusInputRef.current.value,
+                        gender: genderInputRef.current.value,
+                        address: addressInputRef.current.value,
+                        area: areaInputRef.current.value,
+                        postalCode: postalCodeRef.current.value,
+                        fathersName: fathersNameInputRef.current.value,
+
+                    }), {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
+                }
+                );
+
+
+                patientContext.changeGender(responseData.patient.gender);
+            }
+            catch (err) { }
         }
+        fetchPatients()
+        // if (!error) {
+        //     history.replace('/patients/new/basic')
+        // }
+        // history.replace('/patients/new/anamnistiko')
 
     }
 
@@ -201,7 +243,7 @@ const Basic = (props) => {
             {!!error && <ErrorModal error={error} onClear={clearError} />}
             {isLoading || loading && <LoadingSpinner asOverlay />}
 
-            {!isLoading && <form className={classes.basicForm} onSubmit={!(patientContext.patientId) ? submitHandler : updateHandler}>
+            {!isLoading && <form className={classes.basicForm} onSubmit={updateHandler}>
 
                 <Container >
 
@@ -209,7 +251,7 @@ const Basic = (props) => {
                         <Col className={`text-sm-end ${classes.firstInputs}`} xs={6}>
                             <div><label htmlFor="sirname">Επώνυμο<span>* </span></label>&nbsp;<input id='sirname' type='text' ref={sirnameInputRef} required defaultValue={loadedBasics.sirname} /></div>
                             <div> <label htmlFor="name">Όνομα<span>* </span> &nbsp;</label><input ref={nameInputRef} id='name' type='text' required defaultValue={loadedBasics.name} /></div>
-                            <div> <label htmlFor="amka"  >ΑΜΚΑ<span>* </span>&nbsp;</label><input ref={amkaInputRef} name='amka' id='amka' type='text' defaultValue={loadedBasics.amka} required /></div>
+                            <div> <label htmlFor="amka"  >ΑΜΚΑ<span>* </span>&nbsp;</label><input ref={amkaInputRef} name='amka' id='amka' type='text' defaultValue={loadedBasics.amka} required minLength={11} maxLength={11}/></div>
                             <div><label htmlFor="fathers-name">Πατρώνυμο</label>&nbsp;&nbsp;<input ref={fathersNameInputRef} name='fathersName' id='fathers-name' type='text' defaultValue={loadedBasics.fathersName} /></div>
                         </Col>
 
