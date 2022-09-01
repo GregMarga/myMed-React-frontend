@@ -1,12 +1,24 @@
 import { Fragment } from "react";
 import { Row, Col } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import TherapeiaListItem from "./TherapeiaListItem";
-
+import classes from './TherapeiaList.module.css'
 
 const TherapeiaList = (props) => {
+   
+  
+    const visitId=useParams().visitId
+    const patientId=useParams().patientId;
+
+    const loadHandler = async (event) => {
+
+        props.dispatch({ type: 'oldTherapeia', payload: { oldTherapeia: true } })
+    }
+
+
     return (
         <Fragment>
-            {props.therapeiaList.map((therapeia) => {
+            {(((props.oldTherapeia)||(visitId!=='new'))||(props.loadedTherapeiaList.length === 0))&&props.therapeiaList.map((therapeia) => {
                 return <TherapeiaListItem
                     condition={therapeia.condition}
                     drugName={therapeia.name}
@@ -18,7 +30,12 @@ const TherapeiaList = (props) => {
                     removeTherapeiaHandler={props.removeTherapeiaHandler}
                 />
             })}
-            {(props.therapeiaList.length === 0) && (!props.addTherapeia) && <Row>
+            {(props.loadedTherapeiaList.length !== 0)&& (!props.addTherapeia) && (!props.oldTherapeia) && (visitId === 'new') && <Row>
+                <Col className={`text-center ${classes.loadRow}`}>
+                    Για να φορτώσετε τις  θεραπείες της τελευταίας επίσκεψης πατήστε το κουμπί <button type='button' onClick={loadHandler}>Φόρτωση</button>
+                </Col>
+            </Row>}
+            {((patientId==='new'&&(props.therapeiaList.length===0))||((props.therapeiaList.length === 0) && (!props.addTherapeia) && (props.oldTherapeia)||((props.loadedTherapeiaList.length === 0)&&(patientId!=='new') && (!props.addTherapeia)))) && <Row>
                 <Col className='text-center'>Η λίστα είναι άδεια,προσθέστε μια θεραπεία.</Col>
             </Row>}
         </Fragment>

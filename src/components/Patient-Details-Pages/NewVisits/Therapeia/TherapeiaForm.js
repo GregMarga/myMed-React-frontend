@@ -1,14 +1,16 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useState, useRef, Fragment } from "react";
+import { useState, useRef, Fragment, useContext } from "react";
 import FarmakoFinder from "../../Farmaka/FarmakoFinder";
 import classes from './TherapeiaForm.module.css';
 import { v4 as uuid } from 'uuid';
+import { AuthContext } from "../../../../context/auth-context";
+import { useHttpClient } from "../../../../hooks/http-hook";
 
 
 
 const TherapeiaForm = (props) => {
-    console.log(props.diagnosisList)
-    
+    const auth=useContext(AuthContext);
+    const {error,sendRequest}=useHttpClient();
     const [selectedFarmako, setSelectedFarmako] = useState({ name: '', ATC_name: '' });
 
 
@@ -16,15 +18,16 @@ const TherapeiaForm = (props) => {
     const posotitaInputRef=useRef();
     const syxnotitaInputRef=useRef();
 
-    const submitHandler = (event) => {
-        
+    const submitHandler =async (event) => {
+        const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+
         let therapeia = {
             condition:conditionInputRef.current.value,
             name: selectedFarmako.name,
             ATC_name:selectedFarmako.ATC_name,
             posotita:posotitaInputRef.current.value,
             syxnotita:syxnotitaInputRef.current.value,
-            id: uuid()
+            _id: responseData
         }
         console.log(therapeia)
         props.addTherapeiaHandler(therapeia);

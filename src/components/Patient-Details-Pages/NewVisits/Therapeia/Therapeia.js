@@ -13,25 +13,26 @@ const Therapeia = (props) => {
         setAddTherapeia(true);
     }
 
-    const addTherapeiaHandler = (therapeia) => {
-        props.setTherapeiaList((prevState) => {
-            return [...prevState, therapeia];
-        })
-        console.log(therapeia);
+    const addTherapeiaHandler = (newTherapeia) => {
+        props.dispatch({ type: 'addTherapeiaList', payload: { therapeia:  newTherapeia} })
+        // props.setTherapeiaList((prevState) => {
+        //     return [...prevState, therapeia];
+        // })
+        console.log(newTherapeia);
     }
     const removeTherapeiaHandler = (therapeiaIdToDelete) => {
-        props.setTherapeiaList((prevState) => {
-            return prevState.filter(therapeia=>{
-                return therapeia._id!==therapeiaIdToDelete
-            })
+        let therapeiaList=props.state.therapeiaList.filter(therapeia=>{
+            return therapeia._id!==therapeiaIdToDelete
         })
+       
+        props.dispatch({ type: 'removeTherapeiaList', payload: { therapeiaList:  therapeiaList} })
     }
 
 
     return (
         <Container>
             <Card className={classes.therapeiaCard}>
-                <TherapeiaList therapeiaList={props.therapeiaList} addTherapeia={addTherapeia} removeTherapeiaHandler={removeTherapeiaHandler}/>
+                <TherapeiaList loadedTherapeiaList={props.loadedTherapeiaList} therapeiaList={props.therapeiaList} oldTherapeia={props.state.oldTherapeia} dispatch={props.dispatch} addTherapeia={addTherapeia} removeTherapeiaHandler={removeTherapeiaHandler}/>
                 <Row>
                     <Col>
                         {addTherapeia && <TherapeiaForm addTherapeia={addTherapeia} addTherapeiaHandler={addTherapeiaHandler} diagnosisList={props.diagnosisList} setAddTherapeia={setAddTherapeia}/>}

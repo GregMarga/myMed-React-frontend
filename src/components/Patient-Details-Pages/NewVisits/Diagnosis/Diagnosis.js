@@ -14,6 +14,7 @@ const Diagnosis = (props) => {
 
     const openAddForm = (event) => {
         setAddDiagnosis(true);
+        props.dispatch({ type: 'touchDiagnosis', payload: { touchDiagnosisForm:  true} })
         
     }
 
@@ -33,7 +34,7 @@ const Diagnosis = (props) => {
                 <ConditionsHeader />
 
                 {addDiagnosis && <DiagnosisForm setAddDiagnosis={setAddDiagnosis} addDiagnosisHandler={addDiagnosisHandler} />}
-                <DiagnosisList loadedDiagnosisList={props.loadedDiagnosisList} oldDiagnosis={props.state.oldDiagnosis} dispatch={props.dispatch} addDiagnosis={addDiagnosis} diagnosisList={props.diagnosisList} />
+                <DiagnosisList loadedDiagnosisList={props.loadedDiagnosisList} touchForm={props.state.touchDiagnosisForm} oldDiagnosis={props.state.oldDiagnosis} dispatch={props.dispatch} addDiagnosis={addDiagnosis} diagnosisList={props.diagnosisList} />
                 
                 <Row>
                     <Col>

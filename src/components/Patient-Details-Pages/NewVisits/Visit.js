@@ -14,19 +14,34 @@ import Therapeia from "./Therapeia/Therapeia";
 import classes from './Visit.module.css';
 import SaveButton from '../../UI/SaveButton'
 
-const defaultState = { oldDiagnosis: false, oldTherapeia: false, diagnosisList: [], loadedDiagnosisList: [] }
+const defaultState = { oldDiagnosis: false, touchDiagnosisForm: false, oldTherapeia: false, touchTherapeiaForm: false, diagnosisList: [], loadedDiagnosisList: [], therapeiaList: [], loadedTherapeiaList: [] }
+
 
 const reducer = (state, action) => {
-   
+
     switch (action.type) {
         case 'oldDiagnosis':
             return { ...state, oldDiagnosis: action.payload.oldDiagnosis, diagnosisList: state.loadedDiagnosisList };
+        case 'touchDiagnosis':
+            return { ...state, touchDiagnosisForm: action.payload.touchDiagnosisForm };
         case 'oldTherapeia':
-            return { ...state, oldTherapeia: action.payload.oldTherapeia };
+            return { ...state, oldTherapeia: action.payload.oldTherapeia, therapeiaList: state.loadedTherapeiaList };
+        case 'touchTherapeia':
+            return { ...state, touchTherapeiaForm: action.payload.touchTherapeiaForm };
         case 'addDiagnosisList':
             return { ...state, diagnosisList: [...state.diagnosisList, action.payload.diagnosis] };
         case 'loadDiagnosisList':
             return { ...state, loadedDiagnosisList: action.payload.loadedDiagnosisList }
+        case 'loadTherapeiaList':
+            return { ...state, loadedTherapeiaList: action.payload.loadedTherapeiaList }
+        case 'addTherapeiaList':
+            return { ...state, therapeiaList: [...state.therapeiaList, action.payload.therapeia] };
+        case 'removeTherapeiaList':
+            return { ...state, therapeiaList: action.payload.therapeiaList }
+        case 'oldVisit':
+           
+            return { ...state,oldDiagnosis:true,loadedDiagnosisList:action.payload.diagnosisList,loadedTherapeiaList:action.payload.therapeiaList,oldTherapeia:true, diagnosisList: action.payload.diagnosisList, therapeiaList: action.payload.therapeiaList }
+
 
         default:
             return state;
@@ -35,6 +50,7 @@ const reducer = (state, action) => {
 
 const Visit = () => {
     const [state, dispatch] = useReducer(reducer, defaultState);
+
     const [diagnosisList, setDiagnosisList] = useState([]);
     const [therapeiaList, setTherapeiaList] = useState([]);
     const [loadVisit, setLoadVisit] = useState('');
@@ -51,24 +67,31 @@ const Visit = () => {
     const patientId = (paramsId === 'new') ? patientContext.patientId : paramsId;
     const { isLoading, sendRequest, error, clearError } = useHttpClient()
 
+
+
     useEffect(() => {
+
         const fetchHistory = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits/${visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
-                dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
-                // setDiagnosisList(responseData.diagnosisList);
-                setTherapeiaList(responseData.therapeiaList)
+                if (visitId === 'new') {
+                    dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
+                    dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData.therapeiaList } })
+                } else {
+                    dispatch({ type: 'oldVisit', payload: { diagnosisList: responseData.diagnosisList, therapeiaList: responseData.therapeiaList } })
+
+                }
 
 
-                
             } catch (err) { console.log(err) }
 
         };
         if (paramsId !== 'new') {
             fetchHistory();
         }
-    }, [patientId, sendRequest]);
+
+    }, [patientId, sendRequest, visitId]);
 
 
     const dateInputRef = useRef();
@@ -114,7 +137,7 @@ const Visit = () => {
                     smkt: smktInputRef.current.value,
                     tekt: tektInputRef.current.value,
                     test_volume: test_volumeInputRef.current.value,
-                    therapeiaList: therapeiaList,
+                    therapeiaList: state.therapeiaList,
 
 
                 }), {
@@ -122,13 +145,13 @@ const Visit = () => {
                 Authorization: 'Bearer ' + auth.token
             });
         } catch (err) { console.log(err) }
-        history.replace('/')
+        // history.replace('/')
     }
     const updateHandler = async (event) => {
         console.log('update')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/visits`, 'PATCH',
+            await sendRequest(`http://localhost:5000/patients/${patientId}/visits`, 'PATCH',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -141,7 +164,7 @@ const Visit = () => {
                     smkt: smktInputRef.current.value,
                     tekt: tektInputRef.current.value,
                     test_volume: test_volumeInputRef.current.value,
-                    therapeiaList: therapeiaList,
+                    therapeiaList: state.therapeiaList,
 
 
                 }), {
@@ -154,7 +177,7 @@ const Visit = () => {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            <form className={classes.visitForm} onSubmit={(visitId !== 'new') ? updateHandler : submitHandler}>
+            <form className={classes.visitForm} onSubmit={((visitId !== 'new') && (paramsId !== 'new')) ? updateHandler : submitHandler}>
                 <Container fluid>
                     <Collapsible trigger='Αντικειμενική Εξέταση' transitionTime={200}>
                         <Container className={classes.newVisit}>
@@ -258,10 +281,10 @@ const Visit = () => {
                         </Container>
                     </Collapsible>
                     <Collapsible trigger='Διαγνώσεις' transitionTime={200}>
-                        <Diagnosis loadedDiagnosisList={state.loadedDiagnosisList} diagnosisList={state.diagnosisList} setDiagnosisList={setDiagnosisList} state={state} dispatch={dispatch} />
+                        <Diagnosis loadedDiagnosisList={state.loadedDiagnosisList} diagnosisList={state.diagnosisList} state={state} dispatch={dispatch} />
                     </Collapsible>
                     <Collapsible trigger='Θεραπεία' transitionTime={200}>
-                        <Therapeia diagnosisList={state.diagnosisList} therapeiaList={therapeiaList} state={state} dispatch={dispatch} />
+                        <Therapeia diagnosisList={state.diagnosisList} loadedTherapeiaList={state.loadedTherapeiaList} therapeiaList={state.therapeiaList} state={state} dispatch={dispatch} />
                     </Collapsible>
                     <Row>
                         <Col>
