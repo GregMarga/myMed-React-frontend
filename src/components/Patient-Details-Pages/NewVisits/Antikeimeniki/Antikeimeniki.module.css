@@ -24,7 +24,7 @@
 .visitDetail h2 {
     border-bottom: dotted black 1px;
     margin-bottom: 2%;
-
+    margin-top:10px
 }
 
 .visitDetail label {

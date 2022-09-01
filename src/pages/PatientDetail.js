@@ -51,18 +51,19 @@ const PatientDetail = () => {
             {/* <h5 className={classes.mytitle}>Τα πεδία με <span>* </span>είναι απαραίτητα</h5> */}
 
             <Switch>
-                <Route path={`/patients/${params.patientId}/basic`} exact><Basic patient={loadedPatient} patientId={patientId} /></Route>
-                <Route path={`/patients/${params.patientId}/anamnistiko`}><History patientId={patientId} /></Route>
-                <Route path={`/patients/${params.patientId}/farmaka`}><Farmaka /></Route>
-                <Route path={`/patients/${params.patientId}/visits`} exact><div><Visit /></div></Route>
+                <Route path={`/patients/:patientId/basic`} exact><Basic patient={loadedPatient} patientId={patientId} /></Route>
+                <Route path={`/patients/:patientId/anamnistiko`}><History patientId={patientId} /></Route>
+                <Route path={`/patients/:patientId/farmaka`}><Farmaka /></Route>
+                <Route path={`/patients/:patientId/visits`} exact><div><Visit /></div></Route>
+                <Route path={`/patients/:patientId/visits/:visitId`} exact><div><Visit /></div></Route>
                
-                <Route path={`/patients/${params.patientId}/clinical`}><ClinicalExamination /></Route>
-                <Route path={`/patients/${params.patientId}/lab_test`} exact><LabAnalysis patientId={patientId} /></Route>
-                <Route path={`/patients/${params.patientId}/aad`} exact><Files patientId={patientId} /></Route>
-                <Route path={`/patients/${params.patientId}/aad/:fileId`} ><FileEdit patientId={patientId} /></Route>
-                <Route path={`/patients/${params.patientId}/lab_test/:type/:labId`}><NewLabAnalysis patientId={params.patientId} /></Route>
-                <Route path={`/patients/${params.patientId}/lab_test/:labId`}><NewLabAnalysis patientId={params.patientId} /></Route>
-                <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail patientId={params.patientId} /></Route>
+                <Route path={`/patients/:patientId/clinical`}><ClinicalExamination /></Route>
+                <Route path={`/patients/:patientId/lab_test`} exact><LabAnalysis patientId={patientId} /></Route>
+                <Route path={`/patients/:patientId/aad`} exact><Files patientId={patientId} /></Route>
+                <Route path={`/patients/:patientId/aad/:fileId`} ><FileEdit patientId={patientId} /></Route>
+                <Route path={`/patients/:patientId/lab_test/:type/:labId`}><NewLabAnalysis patientId={params.patientId} /></Route>
+                <Route path={`/patients/:patientId/lab_test/:labId`}><NewLabAnalysis patientId={params.patientId} /></Route>
+                {/* <Route path={`/patients/${params.patientId}/visits/:visitId`}><VisitDetail patientId={params.patientId} /></Route> */}
             </Switch>
         </Fragment>
     );

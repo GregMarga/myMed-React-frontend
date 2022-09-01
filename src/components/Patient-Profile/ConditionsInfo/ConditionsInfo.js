@@ -21,7 +21,7 @@ const [tabIsOpen,setTabIsOpen]=useState('atomiko')
 
     return (
         <Fragment>
-            <ConditionsNavBar setTabIsOpen={setTabIsOpen}/>
+            <ConditionsNavBar setTabIsOpen={setTabIsOpen} tabIsOpen={tabIsOpen}/>
         {/* <Card className={classes.conditionsInfoCard}> */}
             {tabIsOpen==='atomiko'&&<Atomiko/>}
             {tabIsOpen==='allergies'&&<AllergiesInfo/>}

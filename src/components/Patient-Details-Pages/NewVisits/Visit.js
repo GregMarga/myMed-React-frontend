@@ -1,8 +1,8 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useState, useEffect, useContext, useRef, Fragment } from "react";
+import { useState, useEffect, useContext, useRef, useReducer, Fragment } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import Collapsible from 'react-collapsible';
 import Card from "../../UI/Card";
-import Antikeimeniki from "./Antikeimeniki/Antikeimeniki";
 import BMI from "../Visits/BMI";
 import LoadingSpinner from '../../UI/LoadingSpinner'
 import moment from "moment";
@@ -13,9 +13,28 @@ import Diagnosis from "./Diagnosis/Diagnosis";
 import Therapeia from "./Therapeia/Therapeia";
 import classes from './Visit.module.css';
 import SaveButton from '../../UI/SaveButton'
-// import classes from './Antikeimeniki.module.css';
+
+const defaultState = { oldDiagnosis: false, oldTherapeia: false, diagnosisList: [], loadedDiagnosisList: [] }
+
+const reducer = (state, action) => {
+   
+    switch (action.type) {
+        case 'oldDiagnosis':
+            return { ...state, oldDiagnosis: action.payload.oldDiagnosis, diagnosisList: state.loadedDiagnosisList };
+        case 'oldTherapeia':
+            return { ...state, oldTherapeia: action.payload.oldTherapeia };
+        case 'addDiagnosisList':
+            return { ...state, diagnosisList: [...state.diagnosisList, action.payload.diagnosis] };
+        case 'loadDiagnosisList':
+            return { ...state, loadedDiagnosisList: action.payload.loadedDiagnosisList }
+
+        default:
+            return state;
+    }
+}
 
 const Visit = () => {
+    const [state, dispatch] = useReducer(reducer, defaultState);
     const [diagnosisList, setDiagnosisList] = useState([]);
     const [therapeiaList, setTherapeiaList] = useState([]);
     const [loadVisit, setLoadVisit] = useState('');
@@ -24,30 +43,33 @@ const Visit = () => {
         height: 1
     }
     );
-
-    const auth = useContext(AuthContext)
+    const history = useHistory();
+    const auth = useContext(AuthContext);
     const patientContext = useContext(PatientContext);
+    const paramsId = useParams().patientId;
+    const visitId = useParams().visitId
+    const patientId = (paramsId === 'new') ? patientContext.patientId : paramsId;
     const { isLoading, sendRequest, error, clearError } = useHttpClient()
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/visits`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits/${visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
-                setDiagnosisList(responseData.diagnosisList);
+                dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
+                // setDiagnosisList(responseData.diagnosisList);
                 setTherapeiaList(responseData.therapeiaList)
-                // setConditionsList(responseData.conditionsList);
-                // setSurgeriesList(responseData.surgeries);
-                // setPregnaciesList(responseData.maieutiko)
+
+
                 
-                
-                console.log(responseData)
-            } catch (err) { console.log(err)}
+            } catch (err) { console.log(err) }
 
         };
-        fetchHistory();
-    }, []);
-    
+        if (paramsId !== 'new') {
+            fetchHistory();
+        }
+    }, [patientId, sendRequest]);
+
 
     const dateInputRef = useRef();
     const aitia_proseleusisInputRef = useRef();
@@ -79,12 +101,12 @@ const Visit = () => {
         console.log('submit')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/visits`, 'POST',
+            await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/visits`, 'POST',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
                     aitia_proseleusis: aitia_proseleusisInputRef.current.value,
-                    diagnosisList: diagnosisList,
+                    diagnosisList: state.diagnosisList,
                     piesi: piesiInputRef.current.value,
                     sfiksis: sfiksisInputRef.current.value,
                     weight: weightInputRef.current.value,
@@ -100,17 +122,18 @@ const Visit = () => {
                 Authorization: 'Bearer ' + auth.token
             });
         } catch (err) { console.log(err) }
+        history.replace('/')
     }
-    const updateHandler=async (event)=>{
+    const updateHandler = async (event) => {
         console.log('update')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/visits`, 'PATCH',
+            await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/visits`, 'PATCH',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
                     aitia_proseleusis: aitia_proseleusisInputRef.current.value,
-                    diagnosisList: diagnosisList,
+                    diagnosisList: state.diagnosisList,
                     piesi: piesiInputRef.current.value,
                     sfiksis: sfiksisInputRef.current.value,
                     weight: weightInputRef.current.value,
@@ -131,7 +154,7 @@ const Visit = () => {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            <form className={classes.visitForm} onSubmit={updateHandler}>
+            <form className={classes.visitForm} onSubmit={(visitId !== 'new') ? updateHandler : submitHandler}>
                 <Container fluid>
                     <Collapsible trigger='Αντικειμενική Εξέταση' transitionTime={200}>
                         <Container className={classes.newVisit}>
@@ -235,10 +258,10 @@ const Visit = () => {
                         </Container>
                     </Collapsible>
                     <Collapsible trigger='Διαγνώσεις' transitionTime={200}>
-                        <Diagnosis diagnosisList={diagnosisList} setDiagnosisList={setDiagnosisList} />
+                        <Diagnosis loadedDiagnosisList={state.loadedDiagnosisList} diagnosisList={state.diagnosisList} setDiagnosisList={setDiagnosisList} state={state} dispatch={dispatch} />
                     </Collapsible>
                     <Collapsible trigger='Θεραπεία' transitionTime={200}>
-                        <Therapeia diagnosisList={diagnosisList} therapeiaList={therapeiaList} setTherapeiaList={setTherapeiaList} />
+                        <Therapeia diagnosisList={state.diagnosisList} therapeiaList={therapeiaList} state={state} dispatch={dispatch} />
                     </Collapsible>
                     <Row>
                         <Col>

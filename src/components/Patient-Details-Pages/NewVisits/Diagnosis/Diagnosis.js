@@ -9,18 +9,20 @@ import DiagnosisForm from "./DiagnosisForm";
 
 
 const Diagnosis = (props) => {
-    console.log(props.diagnosisList)
-    // const [diagnosisList, setDiagnosisList] = useState([]);
     const [addDiagnosis, setAddDiagnosis] = useState(false);
+    
+
     const openAddForm = (event) => {
         setAddDiagnosis(true);
+        
     }
 
-    const addDiagnosisHandler = (diagnosis) => {
-        props.setDiagnosisList((prevState) => {
-            return [...prevState, diagnosis];
-        })
-        console.log(diagnosis);
+    const addDiagnosisHandler = (newDiagnosis) => {
+        props.dispatch({ type: 'addDiagnosisList', payload: { diagnosis:  newDiagnosis} })
+        // props.setDiagnosisList((prevState) => {
+        //     return [...prevState, diagnosis];
+        // })
+        console.log(newDiagnosis);
     }
 
 
@@ -31,7 +33,7 @@ const Diagnosis = (props) => {
                 <ConditionsHeader />
 
                 {addDiagnosis && <DiagnosisForm setAddDiagnosis={setAddDiagnosis} addDiagnosisHandler={addDiagnosisHandler} />}
-                <DiagnosisList addDiagnosis={addDiagnosis} diagnosisList={props.diagnosisList} />
+                <DiagnosisList loadedDiagnosisList={props.loadedDiagnosisList} oldDiagnosis={props.state.oldDiagnosis} dispatch={props.dispatch} addDiagnosis={addDiagnosis} diagnosisList={props.diagnosisList} />
                 
                 <Row>
                     <Col>

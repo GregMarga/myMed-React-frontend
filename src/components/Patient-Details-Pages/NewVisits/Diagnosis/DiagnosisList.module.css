@@ -1,3 +1,11 @@
-.conditionsList{
+.conditionsList {
     font-size: 1rem;
+}
+
+.loadRow {
+    margin-top: 1%;
+}
+
+.loadRow button {
+    margin-left: 1%;
 }

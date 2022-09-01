@@ -1,11 +1,19 @@
-.navBar{
+.navBar {
     width: 80%;
     margin-left: 13%;
     font-size: 1.15rem;
     margin-top: 1%;
     /* background-color: lightblue; */
 }
-.navBar button{
+
+.navBar button {
     width: auto;
-    border-radius:5px ;
+    border-radius: 5px;
+
+}
+
+.activated {
+    background-color: rgb(158, 157, 157);
+    font-weight: 500;
+    font-size: 1.2rem;
 }

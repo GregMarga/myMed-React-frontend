@@ -1,34 +1,35 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import SmallSaveButton from "../../../UI/SmallSaveButton";
 import SmallDeleteButton from "../../../UI/SmallDeleteButton"
 import moment from 'moment'
 import classes from './DiagnosisForm.module.css';
 import ConditionsFinder from "../../History/Atomiko/ConditionsFinder";
-import { v4 as uuid } from 'uuid';
+import { AuthContext } from "../../../../context/auth-context";
+import { useHttpClient } from "../../../../hooks/http-hook";
 
 
 
 const DiagnosisForm = (props) => {
-    const [showHits, setShowHits] = useState(true);
+    const auth=useContext(AuthContext);
+    const {sendRequest}=useHttpClient()
     const [selectedCondition, setSelectedCondition] = useState({code:'',condition:''})
     const stateInputRef = useRef();
-    const severityInputRef = useRef();
+    
     const dateOfDiagnosisInputRef = useRef();
     const dateOfHealingInputRef = useRef();
 
-    console.log(selectedCondition)
+    const submitHandler =async (event) => {
+        const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
-    const submitHandler = (event) => {
-        console.log('submit conditionform')
         let diagnosis = {
             name: selectedCondition.code + ':' + selectedCondition.condition,
             state:stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
-            id: uuid()
+            _id: responseData
         }
-        console.log(diagnosis)
+        
         props.addDiagnosisHandler(diagnosis);
         props.setAddDiagnosis(false);
     }

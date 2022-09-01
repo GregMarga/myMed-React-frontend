@@ -1,6 +1,18 @@
 .visitsListCard{
     margin-top: 3%;
-    width: 80%;
-    margin-left: 10%;
+    /* width: 90%;
+    margin-left: 5%; */
     padding: 20px;
+}
+.visitButton{
+    margin-top: 2%;
+    padding: 5px;
+    font-size: 1.2rem;
+    border-radius: 6px;
+}
+
+.visitButton:hover{
+    margin-top: 2%;
+    padding: 5px;
+    font-size: 1.25rem;
 }

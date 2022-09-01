@@ -1,0 +1,6 @@
+.visitsListItem:hover a{
+    color: red;
+}
+.visitsListItem:hover a{
+    font-weight: 500;
+}
