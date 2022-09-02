@@ -16,6 +16,7 @@ import Card from "../../UI/Card";
 import classes from './Gynaikologiko/Gynaikologiko.module.css'
 import Gynaikologiko from "./Gynaikologiko/Gynaikologiko";
 import { PatientContext } from "../../../context/patient-context";
+import { useParams } from "react-router-dom";
 
 
 const History = (props) => {
@@ -29,8 +30,9 @@ const History = (props) => {
     const [gynaikologikoList, setGynaikologikoList] = useState({ emminarxi: null, stability: null, cycle_duration: null, period_duration: null, maieutiko: [], adk: null, tdk: null })
 
     const [stability, setStability] = useState(true);
-   
-    console.log(allergiesList)
+
+    const paramsId = useParams().patientId;
+
 
     const stabilityChangeHandler = (event) => {
         setStability(event.target.value === 'true')
@@ -54,7 +56,7 @@ const History = (props) => {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/anamnistiko/female`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/female`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 setConditionsList(responseData.conditionsList);
                 setSurgeriesList(responseData.surgeries);
@@ -71,31 +73,33 @@ const History = (props) => {
             } catch (err) { }
 
         };
-        fetchHistory();
+        if (!!patientContext.anamnistikoId) {
+            fetchHistory();
+        }
     }, []);
 
-   
+
 
     const addConditionHandler = (condition) => {
         setConditionsList((prevState) => {
             return [...prevState, condition];
         })
-        
+
     }
 
     const removeConditionHandler = (conditionIdToDelete) => {
         setConditionsList((prevState) => {
-            return prevState.filter(condition=>{
-                return condition._id!==conditionIdToDelete
+            return prevState.filter(condition => {
+                return condition._id !== conditionIdToDelete
             })
         })
     }
 
     const submitHandler = async (event) => {
         event.preventDefault();
-       
+        console.log('submit')
         try {
-            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/anamnistiko`, 'POST',
+            const responseDate = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko`, 'POST',
                 JSON.stringify({
                     allergies: allergiesList,
                     cleronomical: cleronomicalList,
@@ -112,20 +116,21 @@ const History = (props) => {
                         tdk: tdkInputRef.current.checked,
                     }
 
-
-
                 }), {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + auth.token
             });
+            console.log(responseDate)
+            patientContext.createAnamnistikoId(responseDate._id)
+
         } catch (err) { }
     }
 
     const updateHandler = async (event) => {
         event.preventDefault();
-       
+
         try {
-            await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/anamnistiko`, 'PATCH',
+            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko`, 'PATCH',
                 JSON.stringify({
                     allergies: allergiesList,
                     cleronomical: cleronomicalList,
@@ -156,10 +161,10 @@ const History = (props) => {
             {isLoading && <LoadingSpinner />}
             {!!error && <ErrorModal error={error} onClear={clearError} />}
 
-            <form className='history' onSubmit={updateHandler}>
+            <form className='history' onSubmit={(!patientContext.anamnistikoId) ? submitHandler : updateHandler}>
                 <Container fluid>
-                    <Collapsible trigger='Ατομικό' triggerWhenOpen={'Ατομικό^'} transitionTime={200}>
-                        <Conditions conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler}/>
+                    <Collapsible trigger='Ατομικό>' triggerWhenOpen={'Ατομικό^'} transitionTime={200}>
+                        <Conditions conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler} />
                         <Allergies allergiesList={allergiesList} setAllergiesList={setAllergiesList} />
                     </Collapsible>
                     <Collapsible trigger='Κληρονομικό' transitionTime={200}>
@@ -203,7 +208,7 @@ const History = (props) => {
                                     <Col sm={3} className='text-start'>Αυτόματη Διακοπή Κύησης</Col>
                                 </Row>
                                 <Row>
-                                    <Col sm={1} className='text-end'><input type='checkbox' ref={tdkInputRef} /></Col>
+                                    <Col sm={1} className='text-end'><input type='checkbox' ref={tdkInputRef} defaultChecked={gynaikologikoList.tdk} /></Col>
                                     <Col sm={3} className='text-start'>Τεχνητή Διακοπή Κύησης</Col>
                                 </Row>
                             </Card>

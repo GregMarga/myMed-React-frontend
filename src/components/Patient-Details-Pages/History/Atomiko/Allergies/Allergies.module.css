@@ -1,13 +1,18 @@
-.title{}
-.allergiesForm input{
+.title {}
+.allergiesForm{
+    padding: 20px;
+}
+.allergiesForm input {
     
-    margin:0
+    margin: 0
 }
-.allergiesForm label{
+
+.allergiesForm label {
     font-weight: 500;
-    font-size: 1.05rem;
-     margin-left: 0;
+    font-size: 1rem;
+    margin-left: 0;
 }
-.addCondition{
+
+.addCondition {
     margin-top: 2%;
 }

@@ -7,11 +7,13 @@ import classes from './ConditionsForm.module.css';
 import ConditionsFinder from "./ConditionsFinder";
 import { useHttpClient } from "../../../../hooks/http-hook";
 import { AuthContext } from "../../../../context/auth-context";
+import { PatientContext } from "../../../../context/patient-context";
 
 
 
 const ConditionsForm = (props) => {
     const auth=useContext(AuthContext);
+    const patientContext=useContext(PatientContext)
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' })
     const {sendRequest}=useHttpClient();
     const stateInputRef = useRef();
@@ -22,7 +24,7 @@ const ConditionsForm = (props) => {
     console.log(selectedCondition)
 
     const submitHandler = async (event) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
        
         
         let condition = {

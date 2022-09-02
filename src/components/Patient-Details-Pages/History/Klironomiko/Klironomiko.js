@@ -4,21 +4,29 @@ import KlironomikoOptions from "./KlironomikoOptions";
 import Card from "../../../UI/Card";
 import ConditionsFinder from "../Atomiko/ConditionsFinder";
 import KlirnomikoLoaded from "./KlironomikoLoaded";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { v4 as uuid } from 'uuid';
 import { AuthContext } from "../../../../context/auth-context";
 import { useHttpClient } from "../../../../hooks/http-hook";
+import { PatientContext } from "../../../../context/patient-context";
 
 
 const Klironomiko = (props) => {
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' })
-    const [klirnomikoLoaded, setKlironomikoLoaded] = useState(true);
+    const [klirnomikoLoaded, setKlironomikoLoaded] = useState(false);
     const auth = useContext(AuthContext)
+    const patientContext = useContext(PatientContext);
     const { sendRequest } = useHttpClient()
     const [selectedConditionsList, setSelectedConditionsList] = useState([])
     const [addKlironomiko, setAddKlironomiko] = useState(false);
 
     console.log(props.cleronomicalList)
+
+    useEffect(() => {
+        if (!!patientContext.anamnistikoId) {
+            setKlironomikoLoaded(true)
+        }
+    }, [patientContext.anamnistikoId])
 
     const checkIfInList = (selectedName) => {
         let res = false;
@@ -30,7 +38,7 @@ const Klironomiko = (props) => {
         return res;
     }
     const addToCleronomicalList = async (allergyName) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
         props.setCleronomicalList((prevState) => {
 
@@ -74,7 +82,7 @@ const Klironomiko = (props) => {
                     <KlironomikoOptions label='Z81.2: Οικογενειακό ιστορικό κατάχρησης καπνού' changeHandler={changeHandler} />
                     {selectedConditionsList.map((condition) => {
                         return (
-                            <KlironomikoOptions label={`${condition.code}: ${condition.condition}`} changeHandler={changeHandler} key={uuid()} />
+                            <KlironomikoOptions label={`${condition.code}: ${condition.condition}`} changeHandler={changeHandler} key={uuid()} defaultChecked />
 
                         );
                     })}

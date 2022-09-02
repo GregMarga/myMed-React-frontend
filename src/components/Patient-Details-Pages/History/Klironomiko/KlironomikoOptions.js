@@ -6,7 +6,7 @@ const KlironomikoOptions = (props) => {
 
     return (
         <Row>
-            <Col xs={1} className='text-end'><input type='checkbox' value={props.label} onChange={props.changeHandler} /></Col>
+            <Col xs={1} className='text-end'><input type='checkbox' value={props.label} onChange={props.changeHandler} defaultChecked={props.defaultChecked}/></Col>
             <Col cs={5} className='text-start'><label>{props.label}</label></Col>
         </Row>
     );

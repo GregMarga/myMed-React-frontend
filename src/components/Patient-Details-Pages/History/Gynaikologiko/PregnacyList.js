@@ -7,14 +7,15 @@ const PregnaciesList = (props) => {
         <Container>
             {props.pregnacyList.map(pregnacy => {
                 return <PregnacyListItem
-                    date={pregnacy.date}
+                    date={pregnacy.date_of_birth}
                     gennisi={pregnacy.gennisi}
                     babyWeight={pregnacy.baby_weight}
                     comments={pregnacy.comments}
-                    key={pregnacy.id}
+                    key={pregnacy._id}
+                    id={pregnacy._id}
                 />
             })}
-            {(props.pregnacyList.length === 0)  && <Row>
+            {(props.pregnacyList.length === 0) &&(props.addPregnacy) && <Row>
                 <Col className='text-center'>Η λίστα είναι άδεια.</Col>
             </Row>}
            

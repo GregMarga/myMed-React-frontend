@@ -8,11 +8,12 @@ const SurgeriesList = (props) => {
         <Container>
             {props.surgeriesList.map(surgery => {
                 return <SurgeriesListItem
-                    title={surgery.name}
+                    title={surgery.title}
                     dateOfEntrance={surgery.dateOfEntrance}
                     dateOfExit={surgery.dateOfExit}
                     hospital={surgery.hospital}
-                    key={surgery.id}
+                    key={surgery._id}
+                    id={surgery._id}
                 />
             })}
             {(props.surgeriesList.length === 0) && (!props.addSurgery) && <Row>

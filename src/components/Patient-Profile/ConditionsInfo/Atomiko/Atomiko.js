@@ -4,20 +4,20 @@ import Conditions from '../../../Patient-Details-Pages/History/Atomiko/Condition
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../../context/auth-context';
 import { useHttpClient } from '../../../../hooks/http-hook';
-// import {PatientContext} from '../../../context/patient-context'
+import { PatientContext } from '../../../../context/patient-context';
 
 
 const Atomiko = (props) => {
     const [conditionsList, setConditionsList] = useState([]);
     const { sendRequest, isLoading, error, clearError } = useHttpClient();
     const auth = useContext(AuthContext);
-    // const patientContext=useContext(PatientContext)
+    const patientContext=useContext(PatientContext)
+  
 
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setConditionsList(responseData.conditionsList)
             } catch (err) { }
 
@@ -32,7 +32,7 @@ const Atomiko = (props) => {
         })
 
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions`, 'POST',
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions`, 'POST',
                 JSON.stringify({
                     name: condition.name,
                     state: condition.state,
@@ -45,7 +45,7 @@ const Atomiko = (props) => {
                     Authorization: 'Bearer ' + auth.token
                 });
  
-        } catch (err) { }
+        } catch (err) {console.log(err) }
     }
 
 
@@ -56,7 +56,7 @@ const Atomiko = (props) => {
             })
         })
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/${conditionIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/${conditionIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
            
 
         } catch (err) { }

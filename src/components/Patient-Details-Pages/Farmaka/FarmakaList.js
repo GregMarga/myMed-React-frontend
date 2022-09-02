@@ -1,10 +1,9 @@
 import { Fragment } from "react";
 import { Row, Col } from "react-bootstrap";
 import FarmakaListItem from "./FarmakaListItem";
-
+import moment from "moment";
 
 const FarmakaList = (props) => {
-    console.log('list:',props.farmakaList)
 
     return (
         <Fragment>
@@ -12,8 +11,8 @@ const FarmakaList = (props) => {
                 return <FarmakaListItem
                     farmakoName={farmako.name}
                     farmakoType={farmako.ATC_name}
-                    dateOfStart={farmako.dateOfStart}
-                    dateOfEnd={farmako.dateOfEnd}
+                    dateOfStart={(!!farmako.dateOfStart)?moment(farmako.dateOfStart).format('DD-MM-YYYY'):''}
+                    dateOfEnd={(!!farmako.dateOfEnd)?moment(farmako.dateOfEnd).format('DD-MM-YYYY'):''}
                     key={farmako.id}
                     id={farmako._id}
                     removeFarmakoHandler={props.removeFarmakoHandler}

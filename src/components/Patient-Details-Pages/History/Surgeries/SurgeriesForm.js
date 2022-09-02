@@ -16,11 +16,11 @@ const SurgeriesForm = (props) => {
     const submitHandler = (event) => {
         console.log(nameInputRef.current.value);
         let surgery = {
-            name: nameInputRef.current.value,
+            title: nameInputRef.current.value,
             dateOfEntrance: dateOfEntranceInputRef.current.value,
             dateOfExit: dateOfExitInputRef.current.value,
             hospital: hospitalInputRef.current.value,
-            id: uuid()
+            _id: uuid()
         }
         props.addSurgeryHandler(surgery);
         props.setAddSurgery(false)
@@ -28,7 +28,7 @@ const SurgeriesForm = (props) => {
 
     return (
 
-        <Row className={classes.conditionsForm}>
+        <Row className={classes.surgeriesForm}>
             <Col className="text-center">
                 <input type='text' name='title' ref={nameInputRef} />
             </Col>

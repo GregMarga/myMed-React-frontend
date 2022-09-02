@@ -17,7 +17,7 @@ import moment from 'moment';
 
 
 const Basic = (props) => {
-    console.log(props.patientId)
+
     const [loading, SetLoading] = useState(false);
     const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '', imageName: null })
     const history = useHistory();
@@ -30,7 +30,11 @@ const Basic = (props) => {
 
     const patientContext = useContext(PatientContext)
 
-    // console.log(patientContext.gender, patientContext.patientId);
+    // useEffect(() => {
+    //     console.log(patientContext.gender, patientContext.patientId);
+    //     console.log(loadedBasics)
+    // }, [patientContext,loadedBasics])
+
 
 
     const [formState, inputHandler, setFormData] = useForm(
@@ -64,10 +68,15 @@ const Basic = (props) => {
 
     const fetchPatients = async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             console.log(responseData)
-            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, imageName: responseData.files.split('\\')[2] });
-           
+            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode,email:responseData.email });
+            if (!!responseData.files) {
+                setLoadedBasics((prevState) => {
+                    return { ...prevState, imageName: responseData.files.split('\\')[2] }
+                })
+            }
+            console.log(loadedBasics)
 
             setAge(responseData.dateOfBirth);
         } catch (err) { }
@@ -76,19 +85,19 @@ const Basic = (props) => {
 
     useEffect(() => {
 
-        // if (patientContext.patientId !== null) {
-
-        fetchPatients();
-        // }
-
-    }, [sendRequest, patientContext.patientId, loadedBasics.imageName]);
+        if (patientContext.patientId !== null) {
+            fetchPatients()
+        }
+    }, [sendRequest, patientContext.patientId]);
 
 
     const submitHandler = async (event) => {
         event.preventDefault();
+        console.log('submit')
         let patientId = null;
         if (!!formState.inputs.image.value) {
             try {
+                console.log(amkaInputRef.current.value)
                 const formData = new FormData();
                 formData.append('image', formState.inputs.image.value);
                 formData.append('uid', auth.userId);
@@ -108,7 +117,7 @@ const Basic = (props) => {
                 formData.append('fathersName', fathersNameInputRef.current.value)
                 formData.append('patientId', patientContext.patientId)   ////////
 
-                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic/image`,
+                const responseData = await sendRequest(`http://localhost:5000/patients/new/basic/image`,
                     'POST',
                     formData
                 );
@@ -124,7 +133,7 @@ const Basic = (props) => {
         } else {
             try {
 
-                const responseData = await sendRequest(`http://localhost:5000/patients/${props.patientId}/basic`,
+                const responseData = await sendRequest(`http://localhost:5000/patients/new/basic`,
                     'POST',
                     JSON.stringify({
                         uid: auth.userId,
@@ -158,7 +167,7 @@ const Basic = (props) => {
                 console.log(err)
             }
         }
-        fetchPatients()
+        // fetchPatients()
     }
 
     const updateHandler = async (event) => {
@@ -186,7 +195,7 @@ const Basic = (props) => {
                 formData.append('patientId', patientContext.patientId)   ////////
                 console.log(formData)
 
-                const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/basic/image`,
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic/image`,
                     'PATCH',
                     formData
                 );
@@ -196,8 +205,8 @@ const Basic = (props) => {
             catch (err) { }
         } else {
             try {
-               
-                const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/basic`,
+
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`,
                     'PATCH',
                     JSON.stringify({
                         patientId: patientContext.patientId,
@@ -243,7 +252,7 @@ const Basic = (props) => {
             {!!error && <ErrorModal error={error} onClear={clearError} />}
             {isLoading || loading && <LoadingSpinner asOverlay />}
 
-            {!isLoading && <form className={classes.basicForm} onSubmit={updateHandler}>
+            {!isLoading && <form className={classes.basicForm} onSubmit={(!!patientContext.patientId) ? updateHandler : submitHandler}>
 
                 <Container >
 
@@ -251,7 +260,7 @@ const Basic = (props) => {
                         <Col className={`text-sm-end ${classes.firstInputs}`} xs={6}>
                             <div><label htmlFor="sirname">Επώνυμο<span>* </span></label>&nbsp;<input id='sirname' type='text' ref={sirnameInputRef} required defaultValue={loadedBasics.sirname} /></div>
                             <div> <label htmlFor="name">Όνομα<span>* </span> &nbsp;</label><input ref={nameInputRef} id='name' type='text' required defaultValue={loadedBasics.name} /></div>
-                            <div> <label htmlFor="amka"  >ΑΜΚΑ<span>* </span>&nbsp;</label><input ref={amkaInputRef} name='amka' id='amka' type='text' defaultValue={loadedBasics.amka} required minLength={11} maxLength={11}/></div>
+                            <div> <label htmlFor="amka"  >ΑΜΚΑ<span>* </span>&nbsp;</label><input ref={amkaInputRef} name='amka' id='amka' type='text' defaultValue={loadedBasics.amka} required minLength={11} maxLength={11} /></div>
                             <div><label htmlFor="fathers-name">Πατρώνυμο</label>&nbsp;&nbsp;<input ref={fathersNameInputRef} name='fathersName' id='fathers-name' type='text' defaultValue={loadedBasics.fathersName} /></div>
                         </Col>
 

@@ -19,10 +19,11 @@ function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [patientId, setPatientId] = useState(null);
+  const [anamnistikoId, setAnamnistikoId] = useState(null);
   const [gender, setGender] = useState(null);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
-  const history=useHistory();
+  const history = useHistory();
 
 
   const createPatientId = useCallback((patientId) => {
@@ -39,13 +40,17 @@ function App() {
     setGender(null);
   })
 
+  const createAnamnistikoId = useCallback((anamnistikoId) => {
+    setAnamnistikoId(anamnistikoId);
+  }, []);
+  const setAnamnistikoNull = useCallback(() => {
+    setAnamnistikoId(null);
+  })
+
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
     setUserId(uid);
     const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60);
-    setInterval(()=>{
-      history.replace('/')
-    },3600001);
     setTokenExpirationDate(tokenExpirationDate);
     localStorage.setItem('userData', JSON.stringify({
       userId: uid,
@@ -60,6 +65,7 @@ function App() {
     setTokenExpirationDate();
     setUserId(null);
     localStorage.removeItem('userData');
+    history.replace('/')
   }, []);
 
   useEffect(() => {
@@ -99,15 +105,15 @@ function App() {
     routes = (
       <Switch>
         <Route path='/' exact>
-          <Logo />         
+          <Logo />
           <Patients />
         </Route>
 
         <Route path='/patients' exact>
-          <Logo />         
+          <Logo />
           <Patients />
 
-        </Route>        
+        </Route>
         <Route path='/patients/:patientId/profile' exact>
           <Logo />
           <PatientProfile />
@@ -132,7 +138,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ isLoggedIn: !!token, token: token, userId: userId, login: login, logout: logout }}>
-      <PatientContext.Provider value={{ gender: gender, patientId: patientId, createPatientId: createPatientId, setPatientIdNull: setPatientIdNull, setGenderNull: setGenderNull, changeGender: changeGender }}>
+      <PatientContext.Provider value={{ gender: gender, patientId: patientId, anamnistikoId: anamnistikoId, createPatientId: createPatientId, setPatientIdNull: setPatientIdNull, setGenderNull: setGenderNull, changeGender: changeGender, createAnamnistikoId: createAnamnistikoId, setAnamnistikoNull: setAnamnistikoNull }}>
         <div className='backgroundImage'>
           <main>
 

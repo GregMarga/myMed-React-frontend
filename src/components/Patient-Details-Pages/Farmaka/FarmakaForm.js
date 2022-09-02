@@ -20,15 +20,14 @@ const FarmakaForm = (props) => {
     const { sendRequest, error, clearError } = useHttpClient();
 
 
-    const nameInputRef = useRef();
-    const typeInputRef = useRef();
+   
     const dateOfDiagnosisInputRef = useRef();
     const dateOfVisitInputRef = useRef();
 
     const submitHandler = async (event) => {
         let farmakoId;
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/farmaka`, 'POST',
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/farmaka`, 'POST',
                 JSON.stringify({
                     name: selectedFarmako.name,
                     ATC_name: selectedFarmako.ATC_name,
@@ -61,8 +60,6 @@ const FarmakaForm = (props) => {
         <Row className={classes.farmakoForm}>
             <Col sm={8} md={6} className='text-center'>
                 <FarmakoFinder setSelectedFarmako={setSelectedFarmako} />
-                {/* <FileUploader addFileHandler={props.addFileHandler} setSelectedFile={setSelectedFile} /> */}
-                {/* <input type='file' name='title' ref={nameInputRef} /> */}
             </Col>
 
 

@@ -5,7 +5,7 @@ const SurgeriesListItem = (props) => {
         <Row>
             <Col className="text-center">{props.title}</Col>
             <Col className="text-center">{props.dateOfEntrance}</Col>
-            <Col className="text-center">{props.dateOFExit}</Col>
+            <Col className="text-center">{props.dateOfExit}</Col>
             <Col className="text-center" sm={4} md={2}>{props.hospital}</Col>
             <Col sm={2}></Col>
         </Row>

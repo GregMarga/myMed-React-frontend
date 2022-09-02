@@ -50,7 +50,7 @@ const reducer = (state, action) => {
 
 const Visit = () => {
     const [state, dispatch] = useReducer(reducer, defaultState);
-
+    console.log(state)
     const [diagnosisList, setDiagnosisList] = useState([]);
     const [therapeiaList, setTherapeiaList] = useState([]);
     const [loadVisit, setLoadVisit] = useState('');

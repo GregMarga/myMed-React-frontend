@@ -32,8 +32,8 @@ const Surgeries = (props) => {
                     <Col sm={2}></Col>
                 </Row>
                 {addSurgery && <SurgeriesForm setAddSurgery={setAddSurgery} addSurgeryHandler={addSurgeryHandler}/>}
-                <SurgeriesList surgeriesList={props.surgeriesList}  />    
-                {!addSurgery&&<Row><Col><button onClick={openSurgeryFormHandler}>Προσθήκη Χειρουργείου</button></Col></Row>}
+                <SurgeriesList surgeriesList={props.surgeriesList} addSurgery={addSurgery} />    
+                {!addSurgery&&<Row><Col><button onClick={openSurgeryFormHandler} className={classes.surgeryButton}>Προσθήκη Χειρουργείου</button></Col></Row>}
             </Card>
         </Container>
     );

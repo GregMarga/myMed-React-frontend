@@ -53,6 +53,7 @@ const PatientsList = (props) => {
                                     onClick={() => {
                                         patientContext.setGenderNull();
                                         patientContext.setPatientIdNull();
+                                        patientContext.setAnamnistikoNull();
                                     }}
                                     className={classes.addButton}>
                                     Προσθήκη Ασθενή

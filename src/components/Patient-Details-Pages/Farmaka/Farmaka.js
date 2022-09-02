@@ -5,10 +5,11 @@ import FarmakaForm from './FarmakaForm';
 // import SmallSAveButton from '../../UI/SmallSaveButton'
 
 import { useHttpClient } from '../../../hooks/http-hook';
-import { useState, useRef, useContext, useEffect,useCallback } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import { AuthContext } from '../../../context/auth-context';
 import FarmakaHeader from './FarmakaHeader';
 import classes from './Farmaka.module.css';
+import { PatientContext } from '../../../context/patient-context';
 
 
 
@@ -16,9 +17,10 @@ import classes from './Farmaka.module.css';
 const Farmaka = (props) => {
     const { sendRequest, isLoadding, error, clearError } = useHttpClient();
 
-  
-    const testInputRef = useRef();
-    const auth = useContext(AuthContext)
+
+
+    const auth = useContext(AuthContext);
+    const patientContext = useContext(PatientContext);
 
 
 
@@ -29,31 +31,33 @@ const Farmaka = (props) => {
 
     const fetchFarmaka = useCallback(async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/farmaka`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            setFarmakaList(responseData.farmakaList)         
-           
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/farmaka`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            setFarmakaList(responseData.farmakaList)
+
 
         } catch (err) { }
     }
     )
-    useEffect(()=>{
-        fetchFarmaka();
-    },[])
+    useEffect(() => {
+        if (!!patientContext.patientId) {
+            fetchFarmaka();
+        }
+    }, [])
 
 
 
-    const  addFarmakaHandler = (farmako) => {
+    const addFarmakaHandler = (farmako) => {
         setFarmakaList((prevState) => {
             return [...prevState, farmako];
         })
         console.log(farmakaList)
     }
 
-    
+
     const removeFarmakoHandler = (farmakoIdToDelete) => {
         setFarmakaList((prevState) => {
-            return prevState.filter(farmako=>{
-                return farmako._id!==farmakoIdToDelete
+            return prevState.filter(farmako => {
+                return farmako._id !== farmakoIdToDelete
             })
         })
     }
@@ -62,16 +66,16 @@ const Farmaka = (props) => {
 
     return (
         <Container>
-            <Card className={(props.info)?classes.farmakaCard2:classes.farmakaCard}>
+            <Card className={(props.info) ? classes.farmakaCard2 : classes.farmakaCard}>
                 <FarmakaHeader />
-                {addFarmako && <FarmakaForm addFarmakaHandler={addFarmakaHandler} setAddFarmako={setAddFarmako}/>}
-                <FarmakaList addFarmako={addFarmako} farmakaList={farmakaList} removeFarmakoHandler={removeFarmakoHandler}/>
+                {addFarmako && <FarmakaForm addFarmakaHandler={addFarmakaHandler} setAddFarmako={setAddFarmako} />}
+                <FarmakaList addFarmako={addFarmako} farmakaList={farmakaList} removeFarmakoHandler={removeFarmakoHandler} />
 
                 <Row>
                     {!addFarmako && <Col><button className={classes.addFarmako} onClick={() => { setAddFarmako(true) }}>Προσθήκη Φαρμάκου</button></Col>}
                 </Row>
             </Card>
-           
+
         </Container>
     );
 }

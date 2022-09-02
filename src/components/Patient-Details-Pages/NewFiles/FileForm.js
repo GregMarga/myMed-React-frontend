@@ -7,6 +7,8 @@ import classes from './FileForm.module.css';
 import moment from 'moment';
 import { useHttpClient } from "../../../hooks/http-hook";
 import { v4 as uuid } from 'uuid';
+import { useContext } from "react";
+import { PatientContext } from "../../../context/patient-context";
 
 
 const FilesForm = (props) => {
@@ -14,7 +16,7 @@ const FilesForm = (props) => {
     const { sendRequest, error } = useHttpClient();
 
 
-    const nameInputRef = useRef();
+    const patientContext=useContext(PatientContext)
     const typeInputRef = useRef();
     const dateOfDiagnosisInputRef = useRef();
     const dateOfVisitInputRef = useRef();
@@ -31,7 +33,7 @@ const FilesForm = (props) => {
             formData.append('dateOfDiagnosis', dateOfDiagnosisInputRef.current.value);
             formData.append('dateOfVisit', dateOfVisitInputRef.current.value);
 
-            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/uploads/exams`, 'POST', formData);
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/uploads/exams`, 'POST', formData);
             fileId=responseData.exam._id
             console.log(responseData);
 

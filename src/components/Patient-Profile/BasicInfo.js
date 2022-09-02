@@ -14,7 +14,10 @@ const BasicInfo = (props) => {
     const patientId = useParams().patientId
     console.log(patientId)
 
-    patientContext.createPatientId(patientId)
+    useEffect(()=>{
+        patientContext.createPatientId(patientId)
+    },[patientId])
+    
 
 
     return (

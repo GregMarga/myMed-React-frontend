@@ -11,11 +11,11 @@ const FilesListItem = (props) => {
     const {sendRequest,error,clearError}=useHttpClient();
     const auth=useContext(AuthContext);
     const patientContext=useContext(PatientContext);
-    console.log(props)
+   
 
     const clickHandler=async (event)=>{
         try{
-            const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/uploads/exams/${props.id}`, 'DELETE', null, {
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/uploads/exams/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
             }
             );
@@ -32,6 +32,7 @@ const FilesListItem = (props) => {
             <Col className="text-center" sm={4} md={2}>{props.dateOfVisit}</Col>
             <Col sm={2} className="text-center">
                 <SmallDeleteButton onClick={clickHandler}/>
+                <a href={`http://localhost:5000/uploads/exams/${props.path}`}  target="_blank">προβολή</a>
             </Col>
         </Row>
     );

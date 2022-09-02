@@ -16,11 +16,11 @@ const PregnacyForm = (props) => {
     const submitHandler = (event) => {
         
         let pregnacy = {
-            date: dateInputRef.current.value,
+            date_of_birth: dateInputRef.current.value,
             gennisi: gennisiInputRef.current.value,
             baby_weight: babyWeightInputRef.current.value,
             comments: commentsInputRef.current.value,
-            id: uuid()
+            _id: uuid()
         }
         props.addPregnacyHandler(pregnacy);
         props.setAddPregnacy(false)
@@ -35,11 +35,11 @@ const PregnacyForm = (props) => {
 
             <Col className="text-center">
                 <select ref={gennisiInputRef} >
-                    <option value='normal'>Φυσιολογικός τοκετός</option>
-                    <option value='kaisariki'>Καισαρική</option>
+                    <option value='Φυσιολογικός τοκετός'>Φυσιολογικός τοκετός</option>
+                    <option value='Καισαρική'>Καισαρική</option>
                 </select>
                 </Col>
-            <Col className="text-center"><input type='number' ref={babyWeightInputRef} /></Col>
+            <Col className="text-center"><input type='text' ref={babyWeightInputRef} /></Col>
             <Col className='text-center' >
                 <input type='text' name='comments' ref={commentsInputRef} />
             </Col>

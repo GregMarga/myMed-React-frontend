@@ -7,6 +7,7 @@ import AllergiesLoaded from "./AllergiesLoaded";
 import { v4 as uuid } from 'uuid';
 import { AuthContext } from "../../../../../context/auth-context";
 import { useHttpClient } from "../../../../../hooks/http-hook";
+import { PatientContext } from "../../../../../context/patient-context";
 
 
 const Allergies = (props) => {
@@ -14,10 +15,17 @@ const Allergies = (props) => {
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' })
     const [selectedConditionsList, setSelectedConditionsList] = useState([])
     const [addAllergy, setAddAllergy] = useState(false);
-    const [allergiesLoaded, setAllergiesLoaded] = useState(true);
+    const [allergiesLoaded, setAllergiesLoaded] = useState(false);
 
     const auth = useContext(AuthContext);
+    const patientContext = useContext(PatientContext)
     const { sendRequest } = useHttpClient()
+
+    useEffect(() => {
+        if (!!patientContext.anamnistikoId)
+            setAllergiesLoaded(true);
+
+    }, [patientContext.anamnistikoId])
 
 
     const checkIfInList = (selectedName) => {
@@ -30,7 +38,7 @@ const Allergies = (props) => {
         return res;
     }
     const addToAllergyList = async (allergyName) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
         props.setAllergiesList((prevState) => {
 
@@ -41,7 +49,7 @@ const Allergies = (props) => {
             else return [...prevState];
         })
     }
-    const removeFromAllergyList =  (allergyName) => {
+    const removeFromAllergyList = (allergyName) => {
         props.setAllergiesList((prevState) => {
             return prevState.filter((allergy) => {
                 return allergy.name !== allergyName
@@ -66,8 +74,8 @@ const Allergies = (props) => {
         <Container>
             <Row><Col className="text-center"><div className={classes.title}><h4>Αλλεργίες</h4></div></Col></Row>
             {/* <form className={classes.allergiesForm}> */}
-            <Card>
-                {allergiesLoaded && <AllergiesLoaded allergiesList={props.allergiesList} addToAllergyList={addToAllergyList} removeFromAllergyList={removeFromAllergyList}/>}
+            <Card className={classes.allergiesForm}>
+                {allergiesLoaded && <AllergiesLoaded allergiesList={props.allergiesList} addToAllergyList={addToAllergyList} removeFromAllergyList={removeFromAllergyList} />}
                 {!allergiesLoaded && <Fragment>
                     <Row className="justify-content-space-around">
                         <Col xs={1}></Col>
@@ -210,7 +218,7 @@ const Allergies = (props) => {
                         return (
                             <Row key={uuid()}>
                                 <Col className="text-end" xs={1}>
-                                    <input type='checkbox' value={`${condition.code}: ${condition.condition}`} onChange={changeHandler} />
+                                    <input defaultChecked type='checkbox' value={`${condition.code}: ${condition.condition}`} onChange={changeHandler} />
                                 </Col>
                                 <Col xs={6}>
                                     <label>{`${condition.code}: ${condition.condition}`}</label>

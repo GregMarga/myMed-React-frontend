@@ -28,7 +28,7 @@ const Pregnacy = (props) => {
                     <Col sm={2}></Col>
                 </Row>
                 {addPregnacy && <PregnacyForm setAddPregnacy={setAddPregnacy} addPregnacyHandler={addPregnacyHandler} />}
-                {!(addPregnacy) && <PregnaciesList pregnacyList={props.pregnacyList} />}
+                <PregnaciesList pregnacyList={props.pregnacyList} addPregnacy={addPregnacy}/>
                 <Row><Col><button type='button' onClick={() => { setAddPregnacy(true) }} className={classes.addPregnacy}>Προσθήκη Κύησης</button></Col></Row>
             </Card>
         </Container>
