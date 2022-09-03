@@ -16,12 +16,12 @@ const VisitsListItem = (props) => {
 
     const clickHandler = async (event) => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/farmaka/${props.id}`, 'DELETE', null, {
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
             }
             );
         } catch (err) { console.log(err) }
-        props.removeFarmakoHandler(props.id)
+        // props.removeFarmakoHandler(props.id)
     }
 
     return (

@@ -42,7 +42,7 @@ const Farmaka = (props) => {
         if (!!patientContext.patientId) {
             fetchFarmaka();
         }
-    }, [])
+    }, [patientContext.patientId])
 
 
 

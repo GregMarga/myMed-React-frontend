@@ -3,27 +3,30 @@ import { Row, Col, Container } from 'react-bootstrap'
 import Card from '../../UI/Card';
 import VisitsListHeader from './VisitsListHeader';
 import VisitsListItem from './VisitsListItem';
-import { useParams,Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/auth-context';
 import { useHttpClient } from '../../../hooks/http-hook';
 import moment from 'moment';
+import { PatientContext } from '../../../context/patient-context';
 
 
 const VisitsList = (props) => {
-    let patientId = useParams().patientId
     const [visitList, setVisitList] = useState([])
     const auth = useContext(AuthContext);
+    const patientContext = useContext(PatientContext)
     const { error, isLoading, sendRequest, clearError } = useHttpClient();
 
     useEffect(() => {
-        const fetchVisits = async (allergyName) => {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const fetchVisits = async () => {
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             console.log(responseData)
             setVisitList(responseData.visitList)
         }
-        fetchVisits();
-    }, [sendRequest])
+        if (!!patientContext.patientId) {
+            fetchVisits();
+        }
+    }, [sendRequest,patientContext.patientId])
 
 
 
@@ -51,7 +54,7 @@ const VisitsList = (props) => {
             </Card>
             <Row>
                 <Col className='text-end'>
-                <Link to={`/patients/${patientId}/visits/new`} style={{ textDecoration: 'none', color: 'black' }}> <button className={classes.visitButton}>Δημιουργία Επίσκεψης</button></Link>
+                    <Link to={`/patients/${patientContext.patientId}/visits/new`} style={{ textDecoration: 'none', color: 'black' }}> <button className={classes.visitButton}>Δημιουργία Επίσκεψης</button></Link>
                 </Col>
             </Row>
         </Container>

@@ -32,7 +32,7 @@ const Files = (props) => {
         if (!!patientContext.patientId) {
             fetchFiles();
         }
-    }, [])
+    }, [patientContext.patientId])
 
     
 

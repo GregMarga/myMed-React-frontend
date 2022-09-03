@@ -13,6 +13,8 @@ import Diagnosis from "./Diagnosis/Diagnosis";
 import Therapeia from "./Therapeia/Therapeia";
 import classes from './Visit.module.css';
 import SaveButton from '../../UI/SaveButton'
+import Ozoi from "./Antikeimeniki/Ozoi/Ozoi";
+import ErrorModal from '../../UI/ErrorModal'
 
 const defaultState = { oldDiagnosis: false, touchDiagnosisForm: false, oldTherapeia: false, touchTherapeiaForm: false, diagnosisList: [], loadedDiagnosisList: [], therapeiaList: [], loadedTherapeiaList: [] }
 
@@ -39,8 +41,8 @@ const reducer = (state, action) => {
         case 'removeTherapeiaList':
             return { ...state, therapeiaList: action.payload.therapeiaList }
         case 'oldVisit':
-           
-            return { ...state,oldDiagnosis:true,loadedDiagnosisList:action.payload.diagnosisList,loadedTherapeiaList:action.payload.therapeiaList,oldTherapeia:true, diagnosisList: action.payload.diagnosisList, therapeiaList: action.payload.therapeiaList }
+
+            return { ...state, oldDiagnosis: true, loadedDiagnosisList: action.payload.diagnosisList, loadedTherapeiaList: action.payload.therapeiaList, oldTherapeia: true, diagnosisList: action.payload.diagnosisList, therapeiaList: action.payload.therapeiaList }
 
 
         default:
@@ -50,9 +52,8 @@ const reducer = (state, action) => {
 
 const Visit = () => {
     const [state, dispatch] = useReducer(reducer, defaultState);
-    console.log(state)
-    const [diagnosisList, setDiagnosisList] = useState([]);
-    const [therapeiaList, setTherapeiaList] = useState([]);
+
+    const [ozosList, setOzosList] = useState([]);
     const [loadVisit, setLoadVisit] = useState('');
     const [bmiParams, setBmiParams] = useState({
         weight: 1,
@@ -68,6 +69,9 @@ const Visit = () => {
     const { isLoading, sendRequest, error, clearError } = useHttpClient()
 
 
+    console.log(ozosList)
+
+
 
     useEffect(() => {
 
@@ -75,6 +79,7 @@ const Visit = () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits/${visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
+                setOzosList(responseData.ozosList)
                 if (visitId === 'new') {
                     dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
                     dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData.therapeiaList } })
@@ -120,16 +125,33 @@ const Visit = () => {
         });
     }
 
+    const addOzoiHandler = (ozos) => {
+        setOzosList((prevState) => {
+            return [...prevState, ozos];
+        })
+
+    }
+
+
+    const removeOzoiHandler = (ozosIdToDelete) => {
+        setOzosList((prevState) => {
+            return prevState.filter(ozos => {
+                return ozos._id !== ozosIdToDelete
+            })
+        })
+    }
+
     const submitHandler = async (event) => {
         console.log('submit')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/630f258526f26797265a226c/visits`, 'POST',
+            await sendRequest(`http://localhost:5000/patients/${patientId}/visits`, 'POST',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
                     aitia_proseleusis: aitia_proseleusisInputRef.current.value,
                     diagnosisList: state.diagnosisList,
+                    ozosList: ozosList,
                     piesi: piesiInputRef.current.value,
                     sfiksis: sfiksisInputRef.current.value,
                     weight: weightInputRef.current.value,
@@ -157,6 +179,7 @@ const Visit = () => {
                     geniki_eikona: geniki_eikonaInputRef.current.value,
                     aitia_proseleusis: aitia_proseleusisInputRef.current.value,
                     diagnosisList: state.diagnosisList,
+                    ozosList: ozosList,
                     piesi: piesiInputRef.current.value,
                     sfiksis: sfiksisInputRef.current.value,
                     weight: weightInputRef.current.value,
@@ -177,6 +200,7 @@ const Visit = () => {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
+            {!!error&&<ErrorModal error={error} onClear={clearError}/>}
             <form className={classes.visitForm} onSubmit={((visitId !== 'new') && (paramsId !== 'new')) ? updateHandler : submitHandler}>
                 <Container fluid>
                     <Collapsible trigger='Αντικειμενική Εξέταση' transitionTime={200}>
@@ -264,7 +288,12 @@ const Visit = () => {
                                     <Col className={classes.threeInput}><label>Όγκος Όρχεων(ml)</label><input ref={test_volumeInputRef} defaultValue={loadVisit.test_volume} name='test_volume' /></Col>
                                 </Row>
                                 {/* </Row>} */}
-                                <Row>
+                            </Card>
+                            <Row>
+                                <Col> <span className={classes.subtitle}>Υπερηχογράφημα Θυρεοειδούς</span></Col>
+                            </Row>
+                            <Ozoi ozosList={ozosList} setOzosList={setOzosList} removeOzosHandler={removeOzoiHandler} addOzosHandler={addOzoiHandler} />
+                            {/* <Row>
                                     <Col> <span className={classes.subtitle}>Υπερηχογράφημα Θυρεοειδούς</span></Col>
                                 </Row>
                                 <Row className={`justify-content-start ${classes.threeInput}`}>
@@ -274,9 +303,9 @@ const Visit = () => {
 
 
                                 </Row>
-                                <Row className="justify-content-center"><Col md='10' className='text-center'><h2> </h2></Col></Row>
+                                <Row className="justify-content-center"><Col md='10' className='text-center'><h2> </h2></Col></Row> */}
 
-                            </Card>
+
 
                         </Container>
                     </Collapsible>

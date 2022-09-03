@@ -8,19 +8,19 @@ import { useContext } from "react";
 
 
 const FilesListItem = (props) => {
-    const {sendRequest,error,clearError}=useHttpClient();
-    const auth=useContext(AuthContext);
-    const patientContext=useContext(PatientContext);
-   
+    const { sendRequest, isLoading, error, clearError } = useHttpClient();
+    const auth = useContext(AuthContext);
+    const patientContext = useContext(PatientContext);
 
-    const clickHandler=async (event)=>{
-        try{
+
+    const clickHandler = async (event) => {
+        try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/uploads/exams/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
             }
             );
-        }catch(err){console.log(err)}
-        props.removeFileHandler(props.id)
+        } catch (err) { console.log(err) }
+        props.removeFileHandler(props._id)
     }
 
 
@@ -31,8 +31,8 @@ const FilesListItem = (props) => {
             <Col className="text-center" sm={4} md={2}>{props.dateOfDiagnosis}</Col>
             <Col className="text-center" sm={4} md={2}>{props.dateOfVisit}</Col>
             <Col sm={2} className="text-center">
-                <SmallDeleteButton onClick={clickHandler}/>
-                <a href={`http://localhost:5000/uploads/exams/${props.path}`}  target="_blank">προβολή</a>
+                {!isLoading && <SmallDeleteButton onClick={clickHandler} />}
+                <a href={`http://localhost:5000/uploads/exams/${props.path}`} target="_blank">προβολή</a>
             </Col>
         </Row>
     );

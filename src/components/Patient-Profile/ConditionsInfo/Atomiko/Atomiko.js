@@ -11,8 +11,8 @@ const Atomiko = (props) => {
     const [conditionsList, setConditionsList] = useState([]);
     const { sendRequest, isLoading, error, clearError } = useHttpClient();
     const auth = useContext(AuthContext);
-    const patientContext=useContext(PatientContext)
-  
+    const patientContext = useContext(PatientContext)
+
 
     useEffect(() => {
         const fetchHistory = async () => {
@@ -22,11 +22,13 @@ const Atomiko = (props) => {
             } catch (err) { }
 
         };
-        fetchHistory();
-    }, []);
+        if (!!patientContext.patientId) {
+            fetchHistory();
+        }
+    }, [patientContext.patientId,sendRequest]);
 
     const addConditionHandler = async (condition) => {
-      
+
         setConditionsList((prevState) => {
             return [...prevState, condition];
         })
@@ -44,8 +46,8 @@ const Atomiko = (props) => {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + auth.token
                 });
- 
-        } catch (err) {console.log(err) }
+
+        } catch (err) { console.log(err) }
     }
 
 
@@ -57,15 +59,15 @@ const Atomiko = (props) => {
         })
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/${conditionIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
-           
+
 
         } catch (err) { }
-       
+
     }
 
     return (
         <Container>
-            <Conditions conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler} />
+            <Conditions profil conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler} />
         </Container>
     );
 

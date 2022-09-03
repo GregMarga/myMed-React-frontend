@@ -37,18 +37,23 @@ const FilesForm = (props) => {
             fileId=responseData.exam._id
             console.log(responseData);
 
+            let file = {
+                name: selectedFile.path,
+                file:responseData.exam.file,
+                type: typeInputRef.current.value,
+                dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
+                dateOfVisit: dateOfVisitInputRef.current.value,
+                id: responseData.exam._id
+            }
+
+            console.log(file)
+    
+            props.addFileHandler(file);
+            props.setAddFile(false);
+    
+
         } catch (err) { console.log(err) }
-        let file = {
-            name: selectedFile.path,
-            type: typeInputRef.current.value,
-            dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
-            dateOfVisit: dateOfVisitInputRef.current.value,
-            id: fileId
-        }
-
-        props.addFileHandler(file);
-        props.setAddFile(false);
-
+        
 
 
         // console.log(nameInputRef.current.value);
