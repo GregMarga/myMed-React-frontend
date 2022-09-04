@@ -48,13 +48,15 @@ const AllergiesInfo = (props) => {
     useEffect(() => {
         const fetchAllergies = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/allergies`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/allergies`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 setAllergiesList(responseData.allergiesList)
             } catch (err) { }
 
         };
-        fetchAllergies();
+        if (!!patientContext.patientId) {
+            fetchAllergies();
+        }
     }, []);
     console.log(allergiesList)
     return (

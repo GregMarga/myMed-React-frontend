@@ -1,6 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import classes from './FilesListItem.module.css'
-import SmallDeleteButton from '../../UI/SmallDeleteButton'
+import DeleteButton from '../../UI/DeleteButton'
+import ViewButton from "../../UI/ViewButton";
 import { useHttpClient } from "../../../hooks/http-hook";
 import { PatientContext } from "../../../context/patient-context";
 import { AuthContext } from "../../../context/auth-context";
@@ -30,9 +31,11 @@ const FilesListItem = (props) => {
             <Col className="text-center" sm={4} md={2}>{props.fileType}</Col>
             <Col className="text-center" sm={4} md={2}>{props.dateOfDiagnosis}</Col>
             <Col className="text-center" sm={4} md={2}>{props.dateOfVisit}</Col>
-            <Col sm={2} className="text-center">
-                {!isLoading && <SmallDeleteButton onClick={clickHandler} />}
-                <a href={`http://localhost:5000/uploads/exams/${props.path}`} target="_blank">προβολή</a>
+            <Col sm={1} className="text-end">
+                <a href={`http://localhost:5000/uploads/exams/${props.path}`} target="_blank"><ViewButton /></a>
+            </Col>
+            <Col sm={1} className="text-start">
+                {!isLoading && <DeleteButton onClick={clickHandler} />}
             </Col>
         </Row>
     );

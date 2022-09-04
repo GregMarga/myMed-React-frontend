@@ -16,7 +16,7 @@ const Ozoi=(props)=>{
             <Card className={classes.ozoiCard}>
                 <OzoiHeader />
                 {addOzos && <OzosForm addOzosHandler={props.addOzosHandler} setAddOzos={setAddOzos} />}
-                <OzoiList addOzos={addOzos} ozosList={props.ozosList} removeOzosHandler={props.removeOzosHandler} />
+                <OzoiList addOzos={addOzos} ozosList={props.ozosList} removeOzosHandler={props.removeOzosHandler} editOzosHanlder={props.editOzosHanlder}/>
 
                 <Row>
                     {!addOzos && <Col><button className={classes.addOzos} onClick={() => { setAddOzos(true) }}>Προσθήκη Όζου</button></Col>}

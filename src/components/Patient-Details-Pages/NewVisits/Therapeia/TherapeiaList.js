@@ -14,11 +14,13 @@ const TherapeiaList = (props) => {
 
         props.dispatch({ type: 'oldTherapeia', payload: { oldTherapeia: true } })
     }
+    console.log(props.oldTherapeia,visitId !== 'new',props.touchForm,props.loadedTherapeiaList.length===0,props.therapeiaList.length !== 0)
+    console.log((((props.oldTherapeia) || (visitId !== 'new')) || (((props.touchForm)||(props.loadedTherapeiaList.length === 0))&&(props.therapeiaList.length !== 0))))
 
 
     return (
         <Fragment>
-            {(((props.oldTherapeia)||(visitId!=='new'))||(props.loadedTherapeiaList.length === 0))&&props.therapeiaList.map((therapeia) => {
+            {(((props.oldTherapeia) || (visitId !== 'new')) || (((props.touchForm)||(props.loadedTherapeiaList.length === 0))&&(props.therapeiaList.length !== 0)))&&props.therapeiaList.map((therapeia) => {
                 return <TherapeiaListItem
                     condition={therapeia.condition}
                     drugName={therapeia.name}
@@ -30,12 +32,13 @@ const TherapeiaList = (props) => {
                     removeTherapeiaHandler={props.removeTherapeiaHandler}
                 />
             })}
-            {(props.loadedTherapeiaList.length !== 0)&& (!props.addTherapeia) && (!props.oldTherapeia) && (visitId === 'new') && <Row>
+            
+            {(props.loadedTherapeiaList.length !== 0) && (!props.addTherapeia)&& (!props.oldTherapeia)&&(props.therapeiaList.length === 0) && (visitId === 'new') && <Row>
                 <Col className={`text-center ${classes.loadRow}`}>
                     Για να φορτώσετε τις  θεραπείες της τελευταίας επίσκεψης πατήστε το κουμπί <button type='button' onClick={loadHandler}>Φόρτωση</button>
                 </Col>
             </Row>}
-            {((patientId==='new'&&(props.therapeiaList.length===0))||((props.therapeiaList.length === 0) && (!props.addTherapeia) && (props.oldTherapeia)||((props.loadedTherapeiaList.length === 0)&&(patientId!=='new') && (!props.addTherapeia)))) && <Row>
+            {(((props.therapeiaList.length === 0) && (!props.addTherapeia) && (props.oldTherapeia)) || ((props.loadedTherapeiaList.length === 0) &&(!props.touchForm)&& (!props.addTherapeia))) && <Row>
                 <Col className='text-center'>Η λίστα είναι άδεια,προσθέστε μια θεραπεία.</Col>
             </Row>}
         </Fragment>

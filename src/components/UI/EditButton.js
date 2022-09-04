@@ -4,7 +4,7 @@ import editLogo from './edit.png';
 const EditButton = (props) => {
     return (
 
-        <button className={classes.editButton} onClick={props.onClick}>
+        <button type='button' className={classes.editButton} onClick={props.onClick} title='Επεξεργασία'>
 
             <img src={editLogo} alt='Edit ' />
         </button>

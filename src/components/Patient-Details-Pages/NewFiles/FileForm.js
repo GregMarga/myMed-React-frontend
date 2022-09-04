@@ -43,7 +43,7 @@ const FilesForm = (props) => {
                 type: typeInputRef.current.value,
                 dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
                 dateOfVisit: dateOfVisitInputRef.current.value,
-                id: responseData.exam._id
+                _id: responseData.exam._id
             }
 
             console.log(file)

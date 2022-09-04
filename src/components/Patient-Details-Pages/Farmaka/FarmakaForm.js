@@ -20,7 +20,7 @@ const FarmakaForm = (props) => {
     const { sendRequest, error, clearError } = useHttpClient();
 
 
-   
+
     const dateOfDiagnosisInputRef = useRef();
     const dateOfVisitInputRef = useRef();
 
@@ -39,19 +39,20 @@ const FarmakaForm = (props) => {
                     Authorization: 'Bearer ' + auth.token
                 });
             farmakoId = responseData.farmako._id
-            console.log(responseData);
+           
+            let farmako = {
+                name: selectedFarmako.name,
+                ATC_name: selectedFarmako.ATC_name,
+                dateOfStart: dateOfDiagnosisInputRef.current.value,
+                dateOfEnd: dateOfVisitInputRef.current.value,
+                _id: farmakoId
+            }
+            console.log(farmako);
+            props.addFarmakaHandler(farmako);
+            props.setAddFarmako(false);
 
         } catch (err) { console.log(err) }
-        let farmako = {
-            name: selectedFarmako.name,
-            ATC_name: selectedFarmako.ATC_name,
-            dateOfStart: dateOfDiagnosisInputRef.current.value,
-            dateOfEnd: dateOfVisitInputRef.current.value,
-            _id: farmakoId
-        }
 
-        props.addFarmakaHandler(farmako);
-        props.setAddFarmako(false);
 
     }
 

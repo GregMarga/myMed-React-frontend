@@ -32,6 +32,10 @@ const reducer = (state, action) => {
             return { ...state, touchTherapeiaForm: action.payload.touchTherapeiaForm };
         case 'addDiagnosisList':
             return { ...state, diagnosisList: [...state.diagnosisList, action.payload.diagnosis] };
+        case 'removeDiagnosisList':
+            return { ...state, diagnosisList: action.payload.diagnosisList }
+        case 'editDiagnosisList':
+            return { ...state, diagnosisList: action.payload.diagnosisList }
         case 'loadDiagnosisList':
             return { ...state, loadedDiagnosisList: action.payload.loadedDiagnosisList }
         case 'loadTherapeiaList':
@@ -69,7 +73,7 @@ const Visit = () => {
     const { isLoading, sendRequest, error, clearError } = useHttpClient()
 
 
-    console.log(ozosList)
+    console.log(state.touchDiagnosisForm)
 
 
 
@@ -80,6 +84,9 @@ const Visit = () => {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits/${visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 setOzosList(responseData.ozosList)
+                if (visitId !== 'new') {
+                    setLoadVisit(responseData.visit)
+                }
                 if (visitId === 'new') {
                     dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
                     dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData.therapeiaList } })
@@ -141,6 +148,16 @@ const Visit = () => {
         })
     }
 
+    const editOzosHanlder = (addedOzos, ozosIdtoUpdate) => {
+        setOzosList(prevState => {
+            return prevState.map(ozos => {
+                if (ozos._id === ozosIdtoUpdate) {
+                    return ozos = addedOzos
+                }
+            })
+        })
+    }
+
     const submitHandler = async (event) => {
         console.log('submit')
         event.preventDefault();
@@ -173,7 +190,7 @@ const Visit = () => {
         console.log('update')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientId}/visits`, 'PATCH',
+            await sendRequest(`http://localhost:5000/patients/${patientId}/visits/${visitId}`, 'PATCH',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -200,7 +217,7 @@ const Visit = () => {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {!!error&&<ErrorModal error={error} onClear={clearError}/>}
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
             <form className={classes.visitForm} onSubmit={((visitId !== 'new') && (paramsId !== 'new')) ? updateHandler : submitHandler}>
                 <Container fluid>
                     <Collapsible trigger='Αντικειμενική Εξέταση' transitionTime={200}>
@@ -292,19 +309,7 @@ const Visit = () => {
                             <Row>
                                 <Col> <span className={classes.subtitle}>Υπερηχογράφημα Θυρεοειδούς</span></Col>
                             </Row>
-                            <Ozoi ozosList={ozosList} setOzosList={setOzosList} removeOzosHandler={removeOzoiHandler} addOzosHandler={addOzoiHandler} />
-                            {/* <Row>
-                                    <Col> <span className={classes.subtitle}>Υπερηχογράφημα Θυρεοειδούς</span></Col>
-                                </Row>
-                                <Row className={`justify-content-start ${classes.threeInput}`}>
-                                    <Col lg='3'><label >Ύψος Όζου(mm)</label> <input type='number' min={1} max={99} maxLength={2} /></Col>
-                                    <Col lg='3'><label >Βάθος Όζου(mm)</label> <input type='number' min={1} max={99} maxLength={2} /></Col>
-                                    <Col lg='3'><label >Μήκος Όζου(mm)</label> <input type='number' min={1} max={99} maxLength={2} /></Col>
-
-
-                                </Row>
-                                <Row className="justify-content-center"><Col md='10' className='text-center'><h2> </h2></Col></Row> */}
-
+                            <Ozoi ozosList={ozosList} setOzosList={setOzosList} removeOzosHandler={removeOzoiHandler} addOzosHandler={addOzoiHandler} editOzosHanlder={editOzosHanlder} />
 
 
                         </Container>

@@ -17,14 +17,13 @@ const BasicInfo = (props) => {
     const fetchPatients = async () => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            console.log(responseData)
             setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode,email:responseData.email });
             if (!!responseData.files) {
                 setLoadedBasics((prevState) => {
                     return { ...prevState, imageName: responseData.files.split('\\')[2] }
                 })
             }
-            console.log(loadedBasics)
+          
         } catch (err) { }
     }
 

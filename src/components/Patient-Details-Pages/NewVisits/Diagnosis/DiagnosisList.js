@@ -23,8 +23,12 @@ const DiagnosisList = (props) => {
                         state={diagnosis.state}
                         dateOfDiagnosis={(!!diagnosis.dateOfDiagnosis)?moment(diagnosis.dateOfDiagnosis).format('DD-MM-YYYY'):''}
                         dateOfHealing={(!!diagnosis.dateOfHealing)?moment(diagnosis.dateOfHealing).format('DD-MM-YYYY'):''}
+                        date_of_diagnosis={diagnosis.dateOfDiagnosis}
+                        date_of_healing={diagnosis.dateOfHealing}
                         key={diagnosis._id}
                         id={diagnosis._id}
+                        removeDiagnosisHandler={props.removeDiagnosisHandler}
+                        editDiagnosisHanlder={props.editDiagnosisHanlder}
                     />
                 })}
                 {(props.loadedDiagnosisList.length !== 0) && (!props.addDiagnosis)&& (!props.oldDiagnosis)&&(props.diagnosisList.length === 0) && (visitId === 'new') && <Row>

@@ -10,21 +10,35 @@ import DiagnosisForm from "./DiagnosisForm";
 
 const Diagnosis = (props) => {
     const [addDiagnosis, setAddDiagnosis] = useState(false);
-    
+
 
     const openAddForm = (event) => {
         setAddDiagnosis(true);
-        props.dispatch({ type: 'touchDiagnosis', payload: { touchDiagnosisForm:  true} })
-        
+        props.dispatch({ type: 'touchDiagnosis', payload: { touchDiagnosisForm: true } })
+
     }
 
     const addDiagnosisHandler = (newDiagnosis) => {
-        props.dispatch({ type: 'addDiagnosisList', payload: { diagnosis:  newDiagnosis} })
-        // props.setDiagnosisList((prevState) => {
-        //     return [...prevState, diagnosis];
-        // })
-        console.log(newDiagnosis);
+        props.dispatch({ type: 'addDiagnosisList', payload: { diagnosis: newDiagnosis } })
+
     }
+    const removeDiagnosisHandler = (diagnosisIdToDelete) => {
+        let diagnosisList = props.state.therapeiaList.filter(diagnosis => {
+            return diagnosis._id !== diagnosisIdToDelete
+        })
+
+        props.dispatch({ type: 'removeDiagnosisList', payload: { diagnosisList: diagnosisList } })
+    }
+    const editDiagnosisHanlder = (addedDiagnosis, diagnosisIdtoUpdate) => {
+        let tempList = props.state.diagnosisList;
+        tempList = tempList.map(diagnosis => {
+            if (diagnosis._id, diagnosisIdtoUpdate) {
+                return diagnosis = addedDiagnosis
+            }
+        })
+        props.dispatch({type:'editDiagnosisList',payload:{diagnosisList: tempList}})
+    }
+    
 
 
     return (
@@ -34,8 +48,8 @@ const Diagnosis = (props) => {
                 <ConditionsHeader />
 
                 {addDiagnosis && <DiagnosisForm setAddDiagnosis={setAddDiagnosis} addDiagnosisHandler={addDiagnosisHandler} />}
-                <DiagnosisList loadedDiagnosisList={props.loadedDiagnosisList} touchForm={props.state.touchDiagnosisForm} oldDiagnosis={props.state.oldDiagnosis} dispatch={props.dispatch} addDiagnosis={addDiagnosis} diagnosisList={props.diagnosisList} />
-                
+                <DiagnosisList editDiagnosisHanlder={editDiagnosisHanlder} removeDiagnosisHandler={removeDiagnosisHandler} loadedDiagnosisList={props.loadedDiagnosisList} touchForm={props.state.touchDiagnosisForm} oldDiagnosis={props.state.oldDiagnosis} dispatch={props.dispatch} addDiagnosis={addDiagnosis} diagnosisList={props.diagnosisList} />
+
                 <Row>
                     <Col>
                         {!addDiagnosis && <button className={classes.addCondition} onClick={openAddForm}>Προσθήκη Διάγνωσης</button>}

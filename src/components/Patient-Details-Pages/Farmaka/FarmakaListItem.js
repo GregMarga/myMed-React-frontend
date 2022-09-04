@@ -1,6 +1,6 @@
 import { Row, Col } from "react-bootstrap";
 import classes from './FarmakaListItem.module.css';
-import SmallDeleteButton from '../../UI/SmallDeleteButton'
+import DeleteButton from '../../UI/DeleteButton'
 import { useHttpClient } from "../../../hooks/http-hook";
 import { useContext } from "react";
 import { AuthContext } from "../../../context/auth-context";
@@ -31,7 +31,7 @@ const FarmakaListItem = (props) => {
             <Col className="text-center" sm={4} md={2}>{(!!props.dateOfStart)?moment(props.dateOfStart).format('DD-MM-YYYY'):''}</Col>
             <Col className="text-center" sm={4} md={2}>{(!!props.dateOfEnd)?moment(props.dateOfEnd).format('DD-MM-YYYY'):''}</Col>
             <Col sm={2} className="text-center">
-                <SmallDeleteButton onClick={clickHandler} />
+                <DeleteButton onClick={clickHandler} />
             </Col>
         </Row>
     );

@@ -6,7 +6,7 @@ import { AuthContext } from "../../../../context/auth-context";
 import { PatientContext } from "../../../../context/patient-context";
 import { useHttpClient } from "../../../../hooks/http-hook";
 import classes from './Klironomiko.module.css'
-// import file from './monasept2022.pdf'
+
 
 
 const AllergiesInfo = (props) => {
@@ -49,15 +49,17 @@ const AllergiesInfo = (props) => {
     useEffect(() => {
         const fetchAllergies = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/klironomiko`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/klironomiko`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 setCleronomicalList(responseData.klironomiko)
             } catch (err) { }
 
         };
-        fetchAllergies();
-    }, []);
-    
+        if (!!patientContext.patientId) {
+            fetchAllergies();
+        }
+    }, [patientContext.patientId]);
+
     return (
         <Container>
             <Card className={classes.allergiesCard}>

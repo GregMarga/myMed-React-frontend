@@ -29,7 +29,8 @@ const DiagnosisForm = (props) => {
             dateOfHealing: dateOfHealingInputRef.current.value,
             _id: responseData
         }
-        
+        console.log(dateOfHealingInputRef.current.value)
+        console.log(diagnosis)
         props.addDiagnosisHandler(diagnosis);
         props.setAddDiagnosis(false);
     }

@@ -11,6 +11,7 @@ const Therapeia = (props) => {
     const [addTherapeia, setAddTherapeia] = useState(false);
     const openAddForm = (event) => {
         setAddTherapeia(true);
+        props.dispatch({ type: 'touchTherapeia', payload: { touchTherapeiaForm:  true} })
     }
 
     const addTherapeiaHandler = (newTherapeia) => {
@@ -32,7 +33,7 @@ const Therapeia = (props) => {
     return (
         <Container>
             <Card className={classes.therapeiaCard}>
-                <TherapeiaList loadedTherapeiaList={props.loadedTherapeiaList} therapeiaList={props.therapeiaList} oldTherapeia={props.state.oldTherapeia} dispatch={props.dispatch} addTherapeia={addTherapeia} removeTherapeiaHandler={removeTherapeiaHandler}/>
+                <TherapeiaList touchForm={props.state.touchTherapeiaForm} loadedTherapeiaList={props.loadedTherapeiaList} therapeiaList={props.therapeiaList} oldTherapeia={props.state.oldTherapeia} dispatch={props.dispatch} addTherapeia={addTherapeia} removeTherapeiaHandler={removeTherapeiaHandler}/>
                 <Row>
                     <Col>
                         {addTherapeia && <TherapeiaForm addTherapeia={addTherapeia} addTherapeiaHandler={addTherapeiaHandler} diagnosisList={props.diagnosisList} setAddTherapeia={setAddTherapeia}/>}

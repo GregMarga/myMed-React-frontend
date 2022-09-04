@@ -20,7 +20,6 @@ const VisitsList = (props) => {
     useEffect(() => {
         const fetchVisits = async () => {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            console.log(responseData)
             setVisitList(responseData.visitList)
         }
         if (!!patientContext.patientId) {

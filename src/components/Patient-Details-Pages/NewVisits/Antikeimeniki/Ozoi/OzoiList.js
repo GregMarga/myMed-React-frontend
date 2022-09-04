@@ -18,6 +18,8 @@ const OzoiList = (props) => {
                     key={ozos._id}
                     id={ozos._id}
                     removeOzosHandler={props.removeOzosHandler}
+                    editOzosHanlder={props.editOzosHanlder}
+                    ozosList={props.ozosList}
                 />
             })}
             {(props.ozosList.length === 0) && (!props.addOzos) && <Row>
