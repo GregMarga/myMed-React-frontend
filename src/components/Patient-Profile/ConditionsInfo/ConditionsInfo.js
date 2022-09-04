@@ -9,6 +9,7 @@ import SurgeriesInfo from './Surgeries/SurgeriesInfo';
 import AllergiesInfo from './AllergiesInfo/AllergiesInfo';
 import KlironomikoInfo from './KlironomikoInfo/KlironomikoInfo'
 import FilesInfo from './Files/FilesInfo';
+import GynaikologikoInfo from './GynaikologikoInfo/GynaikologikoInfo';
 
 
 
@@ -29,6 +30,7 @@ const [tabIsOpen,setTabIsOpen]=useState('atomiko')
             {tabIsOpen==='surgeries'&&<SurgeriesInfo/>}
             {tabIsOpen==='farmaka'&&<Farmaka/>}
             {tabIsOpen==='files'&&<FilesInfo/>}
+            {tabIsOpen==='gynaikologiko'&&<GynaikologikoInfo/>}
         {/* </Card> */}
         </Fragment>
     );

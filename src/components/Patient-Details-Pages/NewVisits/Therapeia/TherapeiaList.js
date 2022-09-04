@@ -14,8 +14,8 @@ const TherapeiaList = (props) => {
 
         props.dispatch({ type: 'oldTherapeia', payload: { oldTherapeia: true } })
     }
-    console.log(props.oldTherapeia,visitId !== 'new',props.touchForm,props.loadedTherapeiaList.length===0,props.therapeiaList.length !== 0)
-    console.log((((props.oldTherapeia) || (visitId !== 'new')) || (((props.touchForm)||(props.loadedTherapeiaList.length === 0))&&(props.therapeiaList.length !== 0))))
+    // console.log(props.oldTherapeia,visitId !== 'new',props.touchForm,props.loadedTherapeiaList.length===0,props.therapeiaList.length !== 0)
+    // console.log((((props.oldTherapeia) || (visitId !== 'new')) || (((props.touchForm)||(props.loadedTherapeiaList.length === 0))&&(props.therapeiaList.length !== 0))))
 
 
     return (

@@ -9,11 +9,11 @@ const ErrorModal = props => {
       <Backdrop onClick={props.onClear} />
       <div className={classes.errorModal}>
         <header>
-          <h3> An Error Occured!</h3>
+          <h3> Υπήρξε ένα σφάλμα!</h3>
         </header>
         <div>{props.error}</div>
         <span className={classes.myButton}>
-          <button className={classes.delete} onClick={props.onClear}>Okay</button>
+          <button className={classes.delete} onClick={props.onClear}>Εντάξει</button>
         </span>
       </div>
     </Fragment>

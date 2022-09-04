@@ -29,7 +29,7 @@ const ConditionsForm = (props) => {
         
         let condition = {
             name: selectedCondition.code + ': ' + selectedCondition.condition,
-            state: stateInputRef.current.value,
+            status: stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
             _id: responseData
@@ -47,9 +47,9 @@ const ConditionsForm = (props) => {
             </Col>
             <Col sm={2} className='text-center'>
                 <select ref={stateInputRef}>
-                    <option>Ύφεση</option>
-                    <option>Υποτροπή</option>
-                    <option>Χρόνια</option>
+                    <option value='Ύφεση'>Ύφεση</option>
+                    <option value='Υποτροπή'>Υποτροπή</option>
+                    <option value='Χρόνια'>Χρόνια</option>
                 </select>
             </Col>
 

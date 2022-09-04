@@ -4,7 +4,6 @@ import OzoiListItem from "./OzoiListItem";
 
 
 const OzoiList = (props) => {
-    console.log(props.ozosList)
 
     return (
         <Fragment>

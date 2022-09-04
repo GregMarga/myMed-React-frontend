@@ -1,5 +1,6 @@
 import classes from './Atomiko.module.css'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, } from 'react-bootstrap'
+import ErrorModal from '../../../UI/ErrorModal'
 import Conditions from '../../../Patient-Details-Pages/History/Atomiko/Conditions';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../../context/auth-context';
@@ -25,7 +26,7 @@ const Atomiko = (props) => {
         if (!!patientContext.patientId) {
             fetchHistory();
         }
-    }, [patientContext.patientId,sendRequest]);
+    }, [patientContext.patientId, sendRequest]);
 
     const addConditionHandler = async (condition) => {
 
@@ -64,10 +65,34 @@ const Atomiko = (props) => {
         } catch (err) { }
 
     }
+    const editConditionHandler = async (addedCondition, conditionIdtoUpdate) => {
+        setConditionsList(prevState => {
+            return prevState.map(condition => {
+                if (condition._id === conditionIdtoUpdate) {
+                    return condition = addedCondition
+                } else return condition = condition
+            })
+        })
+        console.log(addedCondition.status)
+        try {
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/${conditionIdtoUpdate}`, 'PATCH',
+                JSON.stringify({
+                    status: addedCondition.status,
+                    dateOfDiagnosis: addedCondition.dateOfDiagnosis,
+                    dateOfHealing: addedCondition.dateOfHealing
+                })
+                , {
+                    Authorization: 'Bearer ' + auth.token,
+                    'Content-Type': 'application/json'
+                });
+
+        } catch (err) { console.log(err) }
+    }
 
     return (
         <Container>
-            <Conditions profil conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler} />
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
+            <Conditions profil conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler} editConditionHandler={editConditionHandler} />
         </Container>
     );
 

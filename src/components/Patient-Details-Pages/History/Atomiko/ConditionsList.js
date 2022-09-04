@@ -2,24 +2,26 @@ import { Container, Row, Col } from "react-bootstrap";
 import classes from './ConditionsList.module.css'
 import ConditionsListItem from "./ConditionsListItem";
 import moment from 'moment'
-import { v4 as uuid } from 'uuid';
 
 
 const ConditionsList = (props) => {
-   
-
+    
     return (
         <Container fluid className={classes.conditionsList}>
             <Row>
                 {props.conditionsList.map((condition) => {
+                    
                     return <ConditionsListItem
                         condition={condition.name}
-                        state={condition.state}
+                        status={condition.status}
                         dateOfDiagnosis={(!!condition.dateOfDiagnosis)?moment(condition.dateOfDiagnosis).format('DD-MM-YYYY'):''}
                         dateOfHealing={(!!condition.dateOfHealing)?moment(condition.dateOfHealing).format('DD-MM-YYYY'):''}
+                        date_of_diagnosis={condition.dateOfDiagnosis}
+                        date_of_healing={condition.dateOfHealing}
                         key={condition._id}
                         id={condition._id}
                         removeConditionHandler={props.removeConditionHandler}
+                        editConditionHandler={props.editConditionHandler}
                     />
                 })}
                 {(props.conditionsList.length === 0)&&(!props.addCondition) && <Row>

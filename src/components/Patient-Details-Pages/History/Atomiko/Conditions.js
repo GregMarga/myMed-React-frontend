@@ -9,6 +9,7 @@ import ConditionsHeader from './ConditionsHeader'
 
 
 const Conditions = (props) => {
+    
 
     const [addCondition, setAddCondition] = useState(false);
     const openAddForm = (event) => {
@@ -23,7 +24,7 @@ const Conditions = (props) => {
                 <ConditionsHeader />
 
                 {addCondition && <ConditionsForm setAddCondition={setAddCondition} addConditionHandler={props.addConditionHandler} />}
-                <ConditionsList addCondition={addCondition} conditionsList={props.conditionsList} removeConditionHandler={props.removeConditionHandler} />
+                <ConditionsList addCondition={addCondition} conditionsList={props.conditionsList} editConditionHandler={props.editConditionHandler} removeConditionHandler={props.removeConditionHandler} />
 
                 <Row>
                     <Col>

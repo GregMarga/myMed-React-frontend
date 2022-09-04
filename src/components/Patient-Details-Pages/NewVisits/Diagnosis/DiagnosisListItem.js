@@ -20,7 +20,7 @@ const DiagnosisListItem = (props) => {
         <Fragment>
             {!editForm && <Row className={classes.conditionsListItem}>
                 <Col className="text-center" sm={4}><span>{props.condition}</span></Col>
-                <Col className="text-center" sm={2}><span>{props.state}</span></Col>
+                <Col className="text-center" sm={2}><span>{props.status}</span></Col>
                 {/* <Col className="text-center" sm={2}><span>{props.severity}</span></Col> */}
                 <Col className="text-center"><span>{props.dateOfDiagnosis}</span></Col>
                 <Col className="text-center" ><span>{props.dateOfHealing}</span></Col>
@@ -34,7 +34,7 @@ const DiagnosisListItem = (props) => {
             {editForm&&<DiagnosisEditForm
             id={props.id}
             condition={props.condition}
-            state={props.state}
+            status={props.status}
             dateOfDiagnosis={props.date_of_diagnosis}
             dateOfHealing={props.date_of_healing}
             setEditForm={setEditForm}

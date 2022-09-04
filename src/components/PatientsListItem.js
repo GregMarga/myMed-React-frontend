@@ -1,16 +1,13 @@
 import { Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import DeleteButton from './UI/DeleteButton'
-import EditButton from './UI/EditButton';
 import classes from './PatientsListItem.module.css'
 
 const PatientsListItems = (props) => {
         function deleteHandler(){
-                props.onDelete(props.id);
+                props.onDelete({id:props.id,amka:props.amka});
         }
-        function editHandler(){
-                props.onEdit(props.id);
-        }
+       
         return (
 
 
@@ -22,8 +19,8 @@ const PatientsListItems = (props) => {
                         <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.age}</span></Link></Col>
                         <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.tel}</span></Link></Col>
                         <Col className='text-center'><Link to={`/patients/${props.id}/profile`} style={{ textDecoration: 'none', color: 'black' }}><span>{props.amka}</span></Link></Col>
-                        <Col className='text-end' >
-                                <EditButton onClick={editHandler}/>
+                        <Col className='text-center' sm={2}>
+                                
                                 <DeleteButton onClick={deleteHandler} />
                         </Col>
 

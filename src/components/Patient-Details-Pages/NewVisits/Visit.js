@@ -73,7 +73,6 @@ const Visit = () => {
     const { isLoading, sendRequest, error, clearError } = useHttpClient()
 
 
-    console.log(state.touchDiagnosisForm)
 
 
 
@@ -153,7 +152,7 @@ const Visit = () => {
             return prevState.map(ozos => {
                 if (ozos._id === ozosIdtoUpdate) {
                     return ozos = addedOzos
-                }
+                }else {return ozos=ozos}
             })
         })
     }

@@ -20,7 +20,7 @@ const DiagnosisList = (props) => {
                    
                     return <DiagnosisListItem
                         condition={diagnosis.name}
-                        state={diagnosis.state}
+                        status={diagnosis.status}
                         dateOfDiagnosis={(!!diagnosis.dateOfDiagnosis)?moment(diagnosis.dateOfDiagnosis).format('DD-MM-YYYY'):''}
                         dateOfHealing={(!!diagnosis.dateOfHealing)?moment(diagnosis.dateOfHealing).format('DD-MM-YYYY'):''}
                         date_of_diagnosis={diagnosis.dateOfDiagnosis}

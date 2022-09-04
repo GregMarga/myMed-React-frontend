@@ -32,9 +32,9 @@ const Diagnosis = (props) => {
     const editDiagnosisHanlder = (addedDiagnosis, diagnosisIdtoUpdate) => {
         let tempList = props.state.diagnosisList;
         tempList = tempList.map(diagnosis => {
-            if (diagnosis._id, diagnosisIdtoUpdate) {
+            if (diagnosis._id=== diagnosisIdtoUpdate) {
                 return diagnosis = addedDiagnosis
-            }
+            }else {return diagnosis=diagnosis}
         })
         props.dispatch({type:'editDiagnosisList',payload:{diagnosisList: tempList}})
     }

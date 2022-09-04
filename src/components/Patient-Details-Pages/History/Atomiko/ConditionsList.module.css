@@ -1,3 +1,7 @@
 .conditionsList{
     font-size: 1rem;
 }
+.editButton{
+    margin-top: 10px;
+    /* background-color: red; */
+}

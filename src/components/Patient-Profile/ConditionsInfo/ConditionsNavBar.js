@@ -11,7 +11,7 @@ const ConditionsNavBar = (props) => {
             <button className={(props.tabIsOpen==='surgeries')?classes.activated:null} onClick={()=>{props.setTabIsOpen('surgeries')}}> Χειρουργεία</button>
             <button className={(props.tabIsOpen==='farmaka')?classes.activated:null} onClick={()=>{props.setTabIsOpen('farmaka')}}>Φάρμακα</button>
             <button className={(props.tabIsOpen==='files')?classes.activated:null} onClick={()=>{props.setTabIsOpen('files')}}>Αρχεία</button>
-            <button className={(props.tabIsOpen==='gynaikologiko')?classes.activated:null} onClick={()=>{props.setTabIsOpen('')}}> Γυναικολογικό</button>
+            <button className={(props.tabIsOpen==='gynaikologiko')?classes.activated:null} onClick={()=>{props.setTabIsOpen('gynaikologiko')}}> Γυναικολογικό</button>
         </Row>
     )
 }

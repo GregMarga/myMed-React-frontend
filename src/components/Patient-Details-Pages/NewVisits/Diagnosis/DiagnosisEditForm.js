@@ -10,9 +10,7 @@ import classes from './DiagnosisForm.module.css';
 
 
 const DiagnosisEditForm = (props) => {
-    console.log(props)
-    console.log(props.dateOfHealing)
-    console.log(moment(props.dateOfHealing).format('YYYY-MM-DD'))
+   
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' })
     const stateInputRef = useRef();
 
@@ -24,13 +22,13 @@ const DiagnosisEditForm = (props) => {
 
         let diagnosis = {
             name: props.condition,
-            state: stateInputRef.current.value,
+            status: stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
             _id: props.id
 
         }
-        console.log(diagnosis)
+       
         props.editDiagnosisHanlder(diagnosis,props.id);
         props.setEditForm(false);
     }
@@ -43,9 +41,9 @@ const DiagnosisEditForm = (props) => {
             </Col>
             <Col sm={2} className='text-center'>
                 <select ref={stateInputRef}>
-                    <option value='Ύφεση' selected={props.state === 'Ύφεση'}>Ύφεση</option>
-                    <option value='Υποτροπή' selected={props.state === 'Υποτροπή'}>Υποτροπή</option>
-                    <option value='Χρόνια' selected={props.state === 'Χρόνια'}>Χρόνια</option>
+                    <option value='Ύφεση' selected={props.status === 'Ύφεση'}>Ύφεση</option>
+                    <option value='Υποτροπή' selected={props.status === 'Υποτροπή'}>Υποτροπή</option>
+                    <option value='Χρόνια' selected={props.status === 'Χρόνια'}>Χρόνια</option>
                 </select>
             </Col>
 

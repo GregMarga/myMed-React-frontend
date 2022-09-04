@@ -93,7 +93,7 @@ const Patients = () => {
         });
     }
     async function deletePatientHandler() {
-        const responseDeletedPatient = await sendRequest(`http://localhost:5000/patients/${patientToDelete}`, 'DELETE', null, {
+        const responseDeletedPatient = await sendRequest(`http://localhost:5000/patients/${patientToDelete.id}`, 'DELETE', null, {
             Authorization: 'Bearer ' + auth.token
         }
         );
@@ -113,7 +113,7 @@ const Patients = () => {
                 {!isLoading && loadedPatients && <PatientsList patients={loadedPatients} onDelete={deleteHandler} onEdit={editHandler} />}
                 {modalIsOpen && <Modal onClose={closeHandler} onSubmit={submitPatientHandler} patients={loadedPatients} />}
                 {modalIsOpen && !error && <Backdrop onClick={closeHandler} />}
-                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} onCancel={closeDeleteModal} description="Do you want to proceed and delete this patient?Please note that it can't be undone once thereafter." />}
+                {deleteModalIsOpen && <DeleteModal onConfirm={deletePatientHandler} amka={patientToDelete.amka} onCancel={closeDeleteModal} description={`Για να επιβεβαιώσετε την διαγραφή του ασθενή, συμπληρώστε το ΑΜΚΑ:${patientToDelete.amka} στο πλαίσιο.`} />}
                 {deleteModalIsOpen && !error && <Backdrop onClick={closeDeleteModal} />}
                 {editModalIsOpen && !error && <Backdrop onClick={closeEditModal} />}
                 {editModalIsOpen && <EditPatient onClose={closeEditModal} patientId={patientToEdit} />}
