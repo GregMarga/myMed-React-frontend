@@ -23,7 +23,7 @@ const OzosForm = (props) => {
     const dateOfFindingInputRef = useRef();
 
     const submitHandler = async (event) => {
-       
+
         const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
 
@@ -33,6 +33,7 @@ const OzosForm = (props) => {
             length: lengthInputRef.current.value,
             depth: depthInputRef.current.value,
             dateOfFinding: dateOfFindingInputRef.current.value,
+            identifier: responseData,
             _id: responseData
         }
 
@@ -45,21 +46,21 @@ const OzosForm = (props) => {
 
 
     return (
-      
-            <Row className={classes.ozosForm}>
 
-                <Col className='text-center' sm={4} md={2}><input ref={nameInputRef} /></Col>
-                <Col className='text-center' sm={4} md={2}><input type='number' min={1} max={100} ref={lengthInputRef} /></Col>
-                <Col className='text-center' sm={4} md={2}><input type='number' min={1} max={100} ref={heightInputRef} /></Col>
-                <Col className='text-center' sm={4} md={2}><input type='number' min={1} max={100} ref={depthInputRef} /></Col>
-                <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfFindingInputRef} defaultValue={moment(new Date()).format('YYYY-MM-DD')}/></Col>
-                <Col className='text-center' sm={2}>
-                    <SmallSaveButton onClick={submitHandler} />
-                    <SmallDeleteButton onClick={() => { props.setAddOzos(false) }} />
-                </Col>
+        <Row className={classes.ozosForm}>
 
-            </Row>
-       
+            <Col className='text-center' sm={4} md={2}><input ref={nameInputRef} /></Col>
+            <Col className='text-center' sm={4} md={2}><input type='number' min={1} max={100} ref={lengthInputRef} /></Col>
+            <Col className='text-center' sm={4} md={2}><input type='number' min={1} max={100} ref={heightInputRef} /></Col>
+            <Col className='text-center' sm={4} md={2}><input type='number' min={1} max={100} ref={depthInputRef} /></Col>
+            <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfFindingInputRef} defaultValue={moment(new Date()).format('YYYY-MM-DD')} /></Col>
+            <Col className='text-center' sm={2}>
+                <SmallSaveButton onClick={submitHandler} />
+                <SmallDeleteButton onClick={() => { props.setAddOzos(false) }} />
+            </Col>
+
+        </Row>
+
     );
 }
 

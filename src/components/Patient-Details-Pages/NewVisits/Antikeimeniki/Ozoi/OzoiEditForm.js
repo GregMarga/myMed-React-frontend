@@ -29,11 +29,12 @@ const OzoiEditForm = (props) => {
             length: lengthInputRef.current.value,
             depth: depthInputRef.current.value,
             dateOfFinding: dateOfFindingInputRef.current.value,
-            _id:props.id
-                        
+            identifier: props.identifier,
+            _id: props.id
+
         }
 
-        props.editOzosHanlder(ozos,props.id)
+        props.editOzosHanlder(ozos, props.id)
         props.setEditForm(false);
     }
 

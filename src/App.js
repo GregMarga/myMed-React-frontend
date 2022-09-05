@@ -3,7 +3,7 @@ import SideNavigation from './components/SideNavigation';
 import Appointment from './pages/Appointment';
 import PatientDetail from './pages/PatientDetail';
 import PatientProfile from './components/Patient-Profile/PatientProfile';
-import Statistics from './pages/Statistics';
+import Statistics from './components/Patient-Profile/Statistics/Statistics';
 import Patients from './pages/Patients';
 import Auth from './authentication/Auth';
 import { AuthContext } from './context/auth-context';
@@ -117,6 +117,11 @@ function App() {
         <Route path='/patients/:patientId/profile' exact>
           <Logo />
           <PatientProfile />
+        </Route>
+
+        <Route path='/patients/:patientId/statistics' exact>
+          <Logo />
+          <Statistics />
         </Route>
 
         <Route path='/patients/:patientId' >

@@ -41,6 +41,7 @@ const OzoiListItem = (props) => {
                 id={props.id}
                 name={props.name}
                 length={props.length}
+                identifier={props.identifier}
                 height={props.height}
                 depth={props.depth}
                 dateOfFinding={props.dateOfFinding}

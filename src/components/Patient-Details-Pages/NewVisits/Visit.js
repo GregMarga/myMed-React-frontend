@@ -89,6 +89,10 @@ const Visit = () => {
                 if (visitId === 'new') {
                     dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
                     dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData.therapeiaList } })
+                    setLoadVisit((prevState)=>{
+                        return {...prevState,height:responseData.visit.height,weight:responseData.visit.weight};
+                    })
+                    setBmiParams({height:responseData.visit.height,weight:responseData.visit.weight})
                 } else {
                     dispatch({ type: 'oldVisit', payload: { diagnosisList: responseData.diagnosisList, therapeiaList: responseData.therapeiaList } })
 
@@ -256,14 +260,14 @@ const Visit = () => {
 
                                 </Row>
                                 <Row className={`justify-content-start ${classes.threeInput}`}>
-                                    <Col lg='3'><label >Βάρος</label> <input ref={weightInputRef} name='weight' defaultValue={loadVisit.weight} onChange={changeWeightHandler} /></Col>
-                                    <Col lg='3'><label >Ύψος</label> <input ref={heightInputRef} name='height' defaultValue={loadVisit.height} onChange={changeHeightHandler} /></Col>
+                                    <Col lg='3'><label >Βάρος(kg)</label> <input ref={weightInputRef} minLength={2} maxLength={3} name='weight' defaultValue={loadVisit.weight} onChange={changeWeightHandler} /></Col>
+                                    <Col lg='3'><label >Ύψος(mt)</label> <input ref={heightInputRef} minLength={4} maxLength={4} name='height' defaultValue={loadVisit.height} onChange={changeHeightHandler} /></Col>
                                     <Col lg='3' className={classes.readOnly}><BMI height={bmiParams.height} weight={bmiParams.weight} /></Col>
 
                                 </Row>
 
                                 <Row>
-                                    <Col> <span className={classes.subtitle}>Γεννετικά Όργανα</span></Col>
+                                    <Col> <span className={classes.subtitle}>Γεννητικά Όργανα</span></Col>
                                 </Row>
                                 <Row>
                                     <Col>

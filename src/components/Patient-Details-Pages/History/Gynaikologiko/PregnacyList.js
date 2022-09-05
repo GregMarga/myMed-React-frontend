@@ -15,7 +15,7 @@ const PregnaciesList = (props) => {
                     id={pregnacy._id}
                 />
             })}
-            {(props.pregnacyList.length === 0) &&(props.addPregnacy) && <Row>
+            {(props.pregnacyList.length === 0) &&(!props.addPregnacy) && <Row>
                 <Col className='text-center'>Η λίστα είναι άδεια.</Col>
             </Row>}
            

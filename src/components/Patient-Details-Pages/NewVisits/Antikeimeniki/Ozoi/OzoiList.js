@@ -4,12 +4,14 @@ import OzoiListItem from "./OzoiListItem";
 
 
 const OzoiList = (props) => {
+    console.log(props.ozosList)
 
     return (
         <Fragment>
             {props.ozosList.map(ozos => {
                 return <OzoiListItem
                     name={ozos.name}
+                    identifier={ozos.identifier}
                     length={ozos.length}
                     height={ozos.height}
                     depth={ozos.depth}
