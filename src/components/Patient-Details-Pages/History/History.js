@@ -163,17 +163,17 @@ const History = (props) => {
 
             <form className='history' onSubmit={(!patientContext.anamnistikoId) ? submitHandler : updateHandler}>
                 <Container fluid>
-                    <Collapsible trigger='Ατομικό>' triggerWhenOpen={'Ατομικό^'} transitionTime={200}>
+                    <Collapsible trigger='Ατομικό >' triggerWhenOpen={'Ατομικό ^'} transitionTime={200}>
                         <Conditions conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler} />
                         <Allergies allergiesList={allergiesList} setAllergiesList={setAllergiesList} />
                     </Collapsible>
-                    <Collapsible trigger='Κληρονομικό' transitionTime={200}>
+                    <Collapsible trigger='Κληρονομικό >' transitionTime={200}>
                         <Klironomiko cleronomicalList={cleronomicalList} setCleronomicalList={setCleronomicalList} />
                     </Collapsible>
-                    <Collapsible trigger='Χειρουργεία' transitionTime={200}>
+                    <Collapsible trigger='Χειρουργεία >' transitionTime={200}>
                         <Surgeries surgeriesList={surgeriesList} setSurgeriesList={setSurgeriesList} />
                     </Collapsible>
-                    <Collapsible trigger='Γυναικολογικό' transitionTime={200}>
+                    <Collapsible trigger='Γυναικολογικό >' transitionTime={200}>
                         <Container>
                             <Row><Col className="text-center"><div ><h4>Έμμηνος Ρύση</h4></div></Col></Row>
                             <Card className={classes.erCard}>

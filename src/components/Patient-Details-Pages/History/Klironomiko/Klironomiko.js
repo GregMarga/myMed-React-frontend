@@ -93,7 +93,7 @@ const Klironomiko = (props) => {
                     </Row>
                     <Row>
                         <Col>
-                            {!addKlironomiko && <button className={classes.addCondition} onClick={() => { setAddKlironomiko(true) }}>Προσθήκη Πάθησης</button>}
+                            {!addKlironomiko && <button className={classes.addKlironomiko} onClick={() => { setAddKlironomiko(true) }}>Προσθήκη Πάθησης</button>}
                         </Col>
                     </Row>
                 </Fragment>}

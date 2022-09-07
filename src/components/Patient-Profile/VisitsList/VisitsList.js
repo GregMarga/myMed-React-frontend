@@ -51,11 +51,11 @@ const VisitsList = (props) => {
                     </Row>
                 }
             </Card>
-            <Row>
+            {/* <Row>
                 <Col className='text-end'>
                     <Link to={`/patients/${patientContext.patientId}/visits/new`} style={{ textDecoration: 'none', color: 'black' }}> <button className={classes.visitButton}>Δημιουργία Επίσκεψης</button></Link>
                 </Col>
-            </Row>
+            </Row> */}
         </Container>
     );
 }

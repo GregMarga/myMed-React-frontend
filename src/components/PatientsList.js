@@ -35,7 +35,7 @@ const PatientsList = (props) => {
                             id={patient._id}
                             sirname={patient.sirname}
                             name={patient.name}
-                            diagnosis={patient.diagnosis}
+                            fathersName={patient.fathersName}
                             age={(patient.dateOfBirth) ? getAge(patient.dateOfBirth) : ''}
                             tel={patient.tel}
                             amka={patient.amka}
@@ -43,7 +43,7 @@ const PatientsList = (props) => {
 
                     ))}
                     {(props.patients.length === 0) && <Row>
-                        <Col className='text-center'>List is empty,add a patient.</Col>
+                        <Col className='text-center'>Η λίστα είναι άδεια, προσθέστε έναν ασθενή.</Col>
                     </Row>}
 
                     <Row className='justify-content-end'>

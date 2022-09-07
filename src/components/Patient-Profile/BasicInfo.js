@@ -5,6 +5,7 @@ import { useContext, useEffect,useState } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { PatientContext } from "../../context/patient-context";
 import { useHttpClient } from "../../hooks/http-hook";
+import moment from "moment";
 import { useParams } from "react-router-dom";
 
 const BasicInfo = (props) => {
@@ -49,7 +50,7 @@ const BasicInfo = (props) => {
                 </div>
                 <div>
                     <label>Επάγγελμα:</label>
-                    <span></span>
+                    <span>{loadedBasics.job}</span>
                 </div>
                 <div>
                     <label>Τ.Κ:</label>
@@ -63,7 +64,7 @@ const BasicInfo = (props) => {
                 </div>
                 <div>
                     <label>Ημ/ Γεννήσης:</label>
-                    <span>{loadedBasics.dateOfBirth}</span>
+                    <span>{(!!loadedBasics.dateOfBirth)?moment(loadedBasics.dateOfBirth).format('DD-MM-YYYY'):''}</span>
                 </div>
                 <div>
                     <label>Οικογενειακή Κατάσταση:</label>
@@ -71,7 +72,7 @@ const BasicInfo = (props) => {
                 </div>
                 <div>
                     <label>E-mail:</label>
-                    <span></span>
+                    <span>{loadedBasics.email}</span>
                 </div>
             </Col>
             <Col md={2} className='text-center'>
@@ -81,15 +82,15 @@ const BasicInfo = (props) => {
                 </div>
                 <div>
                     <label>Φύλο:</label>
-                    <span></span>
+                    <span>Θήλυ</span>
                 </div>
                 <div>
                     <label>Περιοχή:</label>
-                    <span></span>
+                    <span>{loadedBasics.area}</span>
                 </div>
                 <div>
                     <label>Τηλέφωνο:</label>
-                    <span></span>
+                    <span>{loadedBasics.tel}</span>
                 </div>
             </Col>
             <Col md={2} className='text-center'>

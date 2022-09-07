@@ -178,7 +178,7 @@ const Visit = () => {
                     height: heightInputRef.current.value,
                     smkt: smktInputRef.current.value,
                     tekt: tektInputRef.current.value,
-                    test_volume: test_volumeInputRef.current.value,
+                    // test_volume: test_volumeInputRef.current.value,
                     therapeiaList: state.therapeiaList,
 
 
@@ -297,16 +297,16 @@ const Visit = () => {
                                     </Col>
                                 </Row>
                                 {/* </Row>} */}
-                                {/* {(patientContext.gender === 'female') && <Row>
+                                {(true) && <Row>
                                     <Col>
                                         <label>Τελευταία Έμμηνος Ρύση</label>
                                         <input className={classes.date} type='date' />
                                     </Col>
-                                </Row>} */}
+                                </Row>}
                                 {/* {(patientContext.gender === 'male') && <Row> */}
-                                <Row>
+                                {/* <Row>
                                     <Col className={classes.threeInput}><label>Όγκος Όρχεων(ml)</label><input ref={test_volumeInputRef} defaultValue={loadVisit.test_volume} name='test_volume' /></Col>
-                                </Row>
+                                </Row> */}
                                 {/* </Row>} */}
                             </Card>
                             <Row>
