@@ -1,14 +1,16 @@
-.title {}
-.allergiesForm{
+.allergiesForm {
     padding: 20px;
 }
+
 .allergiesForm input {
-    
+
     margin: 0
 }
-
+.infoAllergiesCard{
+    padding: 20px;
+}
 .allergiesForm label {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 1rem;
     margin-left: 0;
 }

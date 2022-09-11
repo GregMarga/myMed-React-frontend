@@ -16,30 +16,31 @@ const FilesForm = (props) => {
     const { sendRequest, error } = useHttpClient();
 
 
-    const patientContext=useContext(PatientContext)
+    const patientContext = useContext(PatientContext)
     const typeInputRef = useRef();
     const dateOfDiagnosisInputRef = useRef();
     const dateOfVisitInputRef = useRef();
 
     const submitHandler = async (event) => {
+        event.preventDefault();
         console.log(selectedFile);
         let fileId;
 
         try {
             const formData = new FormData();
             formData.append('exam', selectedFile);
-            formData.append('name',selectedFile.name)
+            formData.append('name', selectedFile.name)
             formData.append('type', typeInputRef.current.value);
             formData.append('dateOfDiagnosis', dateOfDiagnosisInputRef.current.value);
             formData.append('dateOfVisit', dateOfVisitInputRef.current.value);
 
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/uploads/exams`, 'POST', formData);
-            fileId=responseData.exam._id
+            fileId = responseData.exam._id
             console.log(responseData);
 
             let file = {
                 name: selectedFile.path,
-                file:responseData.exam.file,
+                file: responseData.exam.file,
                 type: typeInputRef.current.value,
                 dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
                 dateOfVisit: dateOfVisitInputRef.current.value,
@@ -47,42 +48,45 @@ const FilesForm = (props) => {
             }
 
             console.log(file)
-    
+
             props.addFileHandler(file);
             props.setAddFile(false);
-    
+
 
         } catch (err) { console.log(err) }
-        
+
 
 
         // console.log(nameInputRef.current.value);
     }
 
     return (
+        <form onSubmit={submitHandler}>
+            <Row className={classes.fileForm}>
+                <Col sm={4} md={4} className='text-center'>
+                    <FileUploader addFileHandler={props.addFileHandler} setSelectedFile={setSelectedFile} />
+                    {/* <input type='file' name='title' ref={nameInputRef} /> */}
+                </Col>
+                <Col className='text-center' sm={4} md={2}>
+                    {/* <label>Κατάσταση</label> */}
+                    <select ref={typeInputRef}>
+                        <option>Αίματος</option>
+                        <option>Απεικονιστικές </option>
+                        <option>Άλλη</option>
+                        <option></option>
+                    </select>
+                </Col>
 
-        <Row className={classes.fileForm}>
-            <Col sm={4} md={4} className='text-center'>
-                <FileUploader addFileHandler={props.addFileHandler} setSelectedFile={setSelectedFile} />
-                {/* <input type='file' name='title' ref={nameInputRef} /> */}
-            </Col>
-            <Col className='text-center' sm={4} md={2}>
-                {/* <label>Κατάσταση</label> */}
-                <select ref={typeInputRef}>
-                    <option>Αίματος</option>
-                    <option>Απεικονιστικές </option>
-                    <option>Άλλη</option>
-                    <option></option>
-                </select>
-            </Col>
-
-            <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfDiagnosisInputRef} /></Col>
-            <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfVisitInputRef} defaultValue={moment(new Date()).format('YYYY-MM-DD')} /></Col>
-            <Col className='text-center' sm={2}>
-                {!!selectedFile && <SmallSaveButton onClick={submitHandler} />}
-                <SmallDeleteButton onClick={() => { props.setAddFile(false) }} />
-            </Col>
-        </Row>
+                <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfDiagnosisInputRef} /></Col>
+                <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfVisitInputRef} defaultValue={moment(new Date()).format('YYYY-MM-DD')} /></Col>
+                <Col className='text-end' sm={1}>
+                    {!!selectedFile && <SmallSaveButton />}
+                </Col>
+                <Col className='text-start' sm={1}>
+                    <SmallDeleteButton onClick={() => { props.setAddFile(false) }} />
+                </Col>
+            </Row>
+        </form>
 
     );
 }

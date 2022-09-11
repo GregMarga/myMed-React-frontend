@@ -8,7 +8,6 @@ const KlirnomikoLoaded = (props) => {
     const [addAllergy, setAddAllergy] = useState(false);
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' });
     
-    console.log(props.allergiesList)
     
     
     let removeHandler=(nameToDelete)=>{
@@ -40,7 +39,7 @@ const KlirnomikoLoaded = (props) => {
                             </span>
                         </Col>
                         <Col sm={2}>
-                            <button type='button' onClick={()=>{removeHandler(allergy.name)}}>Διαγραφή</button>
+                            <button type='button' onClick={()=>{removeHandler(allergy._id)}}>Διαγραφή</button>
                         </Col>
                     </Row>
                 )

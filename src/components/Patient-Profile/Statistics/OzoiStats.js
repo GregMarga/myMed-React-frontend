@@ -13,6 +13,7 @@ import {
 import { Animation } from '@devexpress/dx-react-chart';
 // import { styled } from '@mui/material/styles';
 import classes from './OzoiStats.module.css';
+import DefaultMessage from "./DefaultMessage";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/auth-context";
 import { PatientContext } from "../../../context/patient-context";
@@ -20,11 +21,8 @@ import { useHttpClient } from "../../../hooks/http-hook";
 
 
 const OzoiStats = (props) => {
-    // const StyledChart = styled(Chart)(() => ({
-    //     [`&.${classes.chart}`]: {
-    //         paddingRight: '20px',
-    //     },
-    // }));
+    const [showDefault, setShowDefault] = useState(true)
+
     const [ozoiData, setOzoiData] = useState([]);
     const [namesList, setNamesList] = useState([])
     const auth = useContext(AuthContext);
@@ -36,9 +34,12 @@ const OzoiStats = (props) => {
         const fetchOzoiStats = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/statistics/ozoi`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
+                if (responseData.ozoiData.length>0){
                 setOzoiData(responseData.ozosData)
                 setNamesList(responseData.namesList)
+                setShowDefault(false)
+            }
+
             } catch (err) { }
 
         };
@@ -50,7 +51,7 @@ const OzoiStats = (props) => {
 
     return (
         <Fragment>
-            <Row>
+            {!showDefault && <Row>
                 <Col>
                     <Container className={classes.biometrics}>
                         <Paper>
@@ -71,18 +72,6 @@ const OzoiStats = (props) => {
                                         />)
                                     })}
                                 </Plugin>
-
-                                {/* <LineSeries
-                                    name='01'
-                                    valueField="01volume"
-                                    argumentField="01date"
-                                />
-
-                                <LineSeries
-                                    name='o2'
-                                    valueField="o2volume"
-                                    argumentField="o2date"
-                                /> */}
                                 <Legend position="bottom" />
                                 <Title text="Όγκος Όζων" />
                                 <Animation />
@@ -92,7 +81,9 @@ const OzoiStats = (props) => {
                         </Paper>
                     </Container>
                 </Col>
-            </Row>
+            </Row>}
+            {showDefault && <DefaultMessage message='Δεν υπάρχουν καταγεγραμμένοι Όζοι για την δημιουργία Στατιστικών' />}
+
         </Fragment>
     )
 }

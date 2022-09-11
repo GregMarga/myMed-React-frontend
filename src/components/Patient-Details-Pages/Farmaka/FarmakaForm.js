@@ -1,6 +1,5 @@
 import { Row, Col } from "react-bootstrap";
 import { useState, useRef, useContext } from "react";
-// import FileUploader from "./FileUploader";
 import SmallSaveButton from "../../UI/SmallSaveButton";
 import SmallDeleteButton from "../../UI/SmallDeleteButton"
 import classes from './FarmakaForm.module.css';
@@ -8,7 +7,7 @@ import FarmakoFinder from "./FarmakoFinder";
 import { useHttpClient } from "../../../hooks/http-hook";
 import { AuthContext } from "../../../context/auth-context";
 import { PatientContext } from "../../../context/patient-context";
-import { v4 as uuid } from 'uuid';
+
 
 
 const FarmakaForm = (props) => {
@@ -25,6 +24,7 @@ const FarmakaForm = (props) => {
     const dateOfVisitInputRef = useRef();
 
     const submitHandler = async (event) => {
+        event.preventDefault();
         let farmakoId;
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/farmaka`, 'POST',
@@ -39,7 +39,7 @@ const FarmakaForm = (props) => {
                     Authorization: 'Bearer ' + auth.token
                 });
             farmakoId = responseData.farmako._id
-           
+
             let farmako = {
                 name: selectedFarmako.name,
                 ATC_name: selectedFarmako.ATC_name,
@@ -57,21 +57,21 @@ const FarmakaForm = (props) => {
     }
 
     return (
+        <form onSubmit={submitHandler}>
+            <Row className={classes.farmakoForm}>
+                <Col sm={8} md={6} className='text-center'>
+                    <FarmakoFinder setSelectedFarmako={setSelectedFarmako} />
+                </Col>
 
-        <Row className={classes.farmakoForm}>
-            <Col sm={8} md={6} className='text-center'>
-                <FarmakoFinder setSelectedFarmako={setSelectedFarmako} />
-            </Col>
 
-
-            <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfDiagnosisInputRef} /></Col>
-            <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfVisitInputRef} /></Col>
-            <Col className='text-center' sm={2}>
-                {!!selectedFarmako && <SmallSaveButton onClick={submitHandler} />}
-                <SmallDeleteButton onClick={() => { props.setAddFarmako(false) }} />
-            </Col>
-        </Row>
-
+                <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfDiagnosisInputRef} /></Col>
+                <Col className='text-center' sm={4} md={2}><input type='date' ref={dateOfVisitInputRef} /></Col>
+                <Col className='text-center' sm={2}>
+                    {!!selectedFarmako && <SmallSaveButton />}
+                    <SmallDeleteButton onClick={() => { props.setAddFarmako(false) }} />
+                </Col>
+            </Row>
+        </form>
     );
 }
 

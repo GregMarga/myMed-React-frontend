@@ -1,5 +1,5 @@
 .conditionsForm {
-    /* background-color: red; */
+
     margin-top: 1%;
     font-size: 0.9rem;
 }
@@ -20,16 +20,19 @@
     font-size: 1rem;
     font-weight: 500;
 }
-.dosologia input{
+
+.dosologia select {
     width: 50%;
     margin-left: 20px;
     margin-top: 20px;
 }
-.dosologia label{
+
+.dosologia label {
     font-size: 1rem;
     font-weight: 500;
 }
-.therapeiaButton{
+
+.therapeiaButton {
     padding: 0.4rem;
     font-size: 1.1rem;
     margin-top: 2%;

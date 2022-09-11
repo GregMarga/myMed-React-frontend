@@ -13,6 +13,7 @@ const PregnaciesList = (props) => {
                     comments={pregnacy.comments}
                     key={pregnacy._id}
                     id={pregnacy._id}
+                    removePregnacyHandler={props.removePregnacyHandler}
                 />
             })}
             {(props.pregnacyList.length === 0) &&(!props.addPregnacy) && <Row>

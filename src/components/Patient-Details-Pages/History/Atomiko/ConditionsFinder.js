@@ -9,7 +9,6 @@ import { useHttpClient } from '../../../../hooks/http-hook';
 
 
 const ConditionsFinder = (props) => {
-    const [showHits, setShowHits] = useState(true);
     const [selectedHit, setSelectedHit] = useState('');
     const [hitList, setHitList] = useState([])
     const [conditionInput, setConditionInput] = useState('');
@@ -24,7 +23,7 @@ const ConditionsFinder = (props) => {
             } catch (err) { }
 
         };
-       
+
         if (conditionInput !== '') {
             fetchConditionHits();
         }
@@ -40,26 +39,24 @@ const ConditionsFinder = (props) => {
             if (hitList[i].code === event.target.value.split(":")[0]) {       /// find selected
                 setSelectedHit(hitList[i]);
                 props.setSelectedCondition({ code: hitList[i].code, condition: hitList[i].condition });
-                hit={ code: hitList[i].code, condition: hitList[i].condition }
+                hit = { code: hitList[i].code, condition: hitList[i].condition }
 
-                if (!!props.add){
-                    props.setSelectedConditionsList((prevState)=>{
-                        return [...prevState,hit];
-                    })
-                   setConditionInput('')
-                   props.setAddAllergy(false);
+                if (!!props.add) {
+                    props.addToSelectedConditionsList(hit)
+                    setConditionInput('')
+                    props.setAddAllergy(false);
                 }
             }
-           
+
         }
-        
+
     }
-    
+
 
     return (
         <Row>
             <Col>
-                <input list="conditionNames" name="conditionName" id="conditionName" value={conditionInput} onChange={nameChangeHandler}  />
+                <input list="conditionNames" name="conditionName" id="conditionName" value={conditionInput} onChange={nameChangeHandler} required />
                 <datalist id="conditionNames" >
                     <ConditionsHits hit={hitList} />
                 </datalist>

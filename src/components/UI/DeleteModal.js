@@ -35,18 +35,6 @@ const DeleteModal = (props) => {
                 <Col sm={3}><button disabled={!activatedButton} className={(!activatedButton) ? classes.disabled : classes.delete} onClick={props.onConfirm}>Διαγραφή</button></Col>
             </Row>
         </Container>
-        // <div className={classes.deleteModal}>
-        //     <header>
-        //         <h3> Διαγραφή Ασθενή</h3>
-        //     </header>
-        //     <div>{props.description}</div>
-        //     <span className={classes.myButtons}>
-        //         <button className={classes.cancel} onClick={props.onCancel}>Ακύρωση</button>
-        //         <button className={classes.delete} onClick={props.onConfirm}>Διαγραφή</button>
-        //     </span>
-
-
-        // </div>
     );
 }
 

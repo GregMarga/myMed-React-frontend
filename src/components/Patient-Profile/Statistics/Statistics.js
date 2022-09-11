@@ -13,10 +13,10 @@ const Statistics = () => {
         <Container fluid className={classes.statistics}>
             <Row className={classes.buttonRow}>
                 <Col>
-                    <button className={classes.statsButton} onClick={() => { setTab('biometrics') }} >Βιομετρικά</button>
+                    <button className={(tab==='biometrics')?classes.activated:classes.statsButton} onClick={() => { setTab('biometrics') }} >Βιομετρικά</button>
                 
                 
-                    <button className={classes.statsButton} onClick={() => { setTab('ozoi') }} >Όζοι</button>
+                    <button className={(tab==='ozoi')?classes.activated:classes.statsButton} onClick={() => { setTab('ozoi') }} >Όζοι</button>
                 </Col>
             </Row>
             <Card className={classes.statsCard}>

@@ -1,26 +1,4 @@
-.gynaikologikoInfoCard{
-    padding: 20px;
-}
-.erCard{
-    width: 100%;
-    padding: 1rem 0.5rem;
-    margin-bottom: 0.5rem;
-}
-.erCard label{
-    margin-top:0.5rem;
-    margin-bottom:0.5rem;
-}
-.erCard input,select{
-    margin-top:0.5rem;
-    margin-bottom:0.5rem;
-}
-.gynaikologikoCard{
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    margin-top: 2rem;
-}
-.editGynaikologikoButton{
-    margin-top: 20px;
-    font-size: 1.2rem;
-    padding: 5px;
+.gynaikologikoInfo{
+    width: 80%;
+    margin-left: 10%;
 }

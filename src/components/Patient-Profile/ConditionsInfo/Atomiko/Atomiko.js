@@ -1,6 +1,6 @@
 import classes from './Atomiko.module.css'
 import { Container, } from 'react-bootstrap'
-import ErrorModal from '../../../UI/ErrorModal'
+import ErrorModal from '../../../UI/ErrorModal';
 import Conditions from '../../../Patient-Details-Pages/History/Atomiko/Conditions';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../../context/auth-context';
@@ -28,71 +28,12 @@ const Atomiko = (props) => {
         }
     }, [patientContext.patientId, sendRequest]);
 
-    const addConditionHandler = async (condition) => {
-
-        setConditionsList((prevState) => {
-            return [...prevState, condition];
-        })
-
-        try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions`, 'POST',
-                JSON.stringify({
-                    name: condition.name,
-                    state: condition.state,
-                    dateOfDiagnosis: condition.dateOfDiagnosis,
-                    dateOfHealing: condition.dateOfHealing,
-                    _id: condition._id
-                })
-                , {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + auth.token
-                });
-
-        } catch (err) { console.log(err) }
-    }
-
-
-    const removeConditionHandler = async (conditionIdToDelete) => {
-        setConditionsList((prevState) => {
-            return prevState.filter(condition => {
-                return condition._id !== conditionIdToDelete
-            })
-        })
-        try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/${conditionIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
-
-
-        } catch (err) { }
-
-    }
-    const editConditionHandler = async (addedCondition, conditionIdtoUpdate) => {
-        setConditionsList(prevState => {
-            return prevState.map(condition => {
-                if (condition._id === conditionIdtoUpdate) {
-                    return condition = addedCondition
-                } else return condition = condition
-            })
-        })
-        console.log(addedCondition.status)
-        try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/${conditionIdtoUpdate}`, 'PATCH',
-                JSON.stringify({
-                    status: addedCondition.status,
-                    dateOfDiagnosis: addedCondition.dateOfDiagnosis,
-                    dateOfHealing: addedCondition.dateOfHealing
-                })
-                , {
-                    Authorization: 'Bearer ' + auth.token,
-                    'Content-Type': 'application/json'
-                });
-
-        } catch (err) { console.log(err) }
-    }
+   
 
     return (
         <Container>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            <Conditions profil conditionsList={conditionsList} setConditionsList={setConditionsList} addConditionHandler={addConditionHandler} removeConditionHandler={removeConditionHandler} editConditionHandler={editConditionHandler} />
+            <Conditions profil conditionsList={conditionsList}/>
         </Container>
     );
 

@@ -12,9 +12,9 @@ import { PatientContext } from "../../../context/patient-context";
 import Diagnosis from "./Diagnosis/Diagnosis";
 import Therapeia from "./Therapeia/Therapeia";
 import classes from './Visit.module.css';
-import SaveButton from '../../UI/SaveButton'
 import Ozoi from "./Antikeimeniki/Ozoi/Ozoi";
 import ErrorModal from '../../UI/ErrorModal'
+import Antikeimeniki from "./Antikeimeniki/Antikeimeniki";
 
 const defaultState = { oldDiagnosis: false, touchDiagnosisForm: false, oldTherapeia: false, touchTherapeiaForm: false, diagnosisList: [], loadedDiagnosisList: [], therapeiaList: [], loadedTherapeiaList: [] }
 
@@ -89,10 +89,10 @@ const Visit = () => {
                 if (visitId === 'new') {
                     dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
                     dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData.therapeiaList } })
-                    setLoadVisit((prevState)=>{
-                        return {...prevState,height:responseData.visit.height,weight:responseData.visit.weight};
+                    setLoadVisit((prevState) => {
+                        return { ...prevState, height: responseData.visit.height, weight: responseData.visit.weight };
                     })
-                    setBmiParams({height:responseData.visit.height,weight:responseData.visit.weight})
+                    setBmiParams({ height: responseData.visit.height, weight: responseData.visit.weight })
                 } else {
                     dispatch({ type: 'oldVisit', payload: { diagnosisList: responseData.diagnosisList, therapeiaList: responseData.therapeiaList } })
 
@@ -103,7 +103,7 @@ const Visit = () => {
 
         };
         if (paramsId !== 'new') {
-            fetchHistory();
+            // fetchHistory();
         }
 
     }, [patientId, sendRequest, visitId]);
@@ -135,31 +135,6 @@ const Visit = () => {
         });
     }
 
-    const addOzoiHandler = (ozos) => {
-        setOzosList((prevState) => {
-            return [...prevState, ozos];
-        })
-
-    }
-
-
-    const removeOzoiHandler = (ozosIdToDelete) => {
-        setOzosList((prevState) => {
-            return prevState.filter(ozos => {
-                return ozos._id !== ozosIdToDelete
-            })
-        })
-    }
-
-    const editOzosHanlder = (addedOzos, ozosIdtoUpdate) => {
-        setOzosList(prevState => {
-            return prevState.map(ozos => {
-                if (ozos._id === ozosIdtoUpdate) {
-                    return ozos = addedOzos
-                }else {return ozos=ozos}
-            })
-        })
-    }
 
     const submitHandler = async (event) => {
         console.log('submit')
@@ -221,116 +196,22 @@ const Visit = () => {
         <Fragment>
             {isLoading && <LoadingSpinner />}
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            <form className={classes.visitForm} onSubmit={((visitId !== 'new') && (paramsId !== 'new')) ? updateHandler : submitHandler}>
-                <Container fluid>
-                    <Collapsible trigger='Αντικειμενική Εξέταση' transitionTime={200}>
-                        <Container className={classes.newVisit}>
-                            <Card className={classes.cardsNewVisit}>
+            {/* <form className={classes.visitForm} onSubmit={((visitId !== 'new') && (paramsId !== 'new')) ? updateHandler : submitHandler}> */}
+            <Container fluid className={classes.visitForm}>
+                <Collapsible trigger='Αντικειμενική Εξέταση >' triggerWhenOpen={'Αντικειμενική Εξέταση ^'} transitionTime={200}>
+                    <Antikeimeniki />
+                    <Ozoi />
+                </Collapsible>
+                <Collapsible trigger='Διαγνώσεις >' triggerWhenOpen={'Διαγνώσεις ^'} transitionTime={200}>
+                    <Diagnosis loadedDiagnosisList={state.loadedDiagnosisList} diagnosisList={state.diagnosisList} state={state} dispatch={dispatch} />
+                </Collapsible>
+                <Collapsible trigger='Θεραπεία >' triggerWhenOpen={'Θεραπεία ^'} transitionTime={200}>
+                    <Therapeia diagnosisList={state.diagnosisList} loadedTherapeiaList={state.loadedTherapeiaList} therapeiaList={state.therapeiaList} state={state} dispatch={dispatch} />
+                </Collapsible>
 
-                                <Row>
-                                    <Col> <span className={classes.subtitle}>Γενικά</span></Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <label>Ημερομηνία*</label>
-                                        <input ref={dateInputRef} className={classes.date} name='date' type='date' defaultValue={moment(new Date()).format('YYYY-MM-DD')} required />
-                                        {/* <input  className={classes.date} name='date' type='date' required /> */}
-                                    </Col>
-                                </Row>
+            </Container>
 
-                                <Row>
-                                    <Col>
-                                        <label>Γενική εικόνα</label>
-                                        <input ref={geniki_eikonaInputRef} name='geniki_eikona' defaultValue={loadVisit.geniki_eikona} className={classes.fullSize} />
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <label>Αιτία Προσέλευσης</label>
-                                        <input ref={aitia_proseleusisInputRef} name='geniki_eikona' defaultValue={loadVisit.geniki_eikona} className={classes.fullSize} />
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col> <span className={classes.subtitle}>Βιομετρικά</span></Col>
-                                </Row>
-                                <Row className={classes.multiInputs}>
-                                    <Col><label >Αρτηριακή πίεση</label><input ref={piesiInputRef} name='piesi' defaultValue={loadVisit.piesi} /></Col>
-                                    <Col ><label >Σφύξεις</label><input ref={sfiksisInputRef} name='sfiksis' defaultValue={loadVisit.sfiksis} /></Col>
-
-
-                                </Row>
-                                <Row className={`justify-content-start ${classes.threeInput}`}>
-                                    <Col lg='3'><label >Βάρος(kg)</label> <input ref={weightInputRef} minLength={2} maxLength={3} name='weight' defaultValue={loadVisit.weight} onChange={changeWeightHandler} /></Col>
-                                    <Col lg='3'><label >Ύψος(mt)</label> <input ref={heightInputRef} minLength={4} maxLength={4} name='height' defaultValue={loadVisit.height} onChange={changeHeightHandler} /></Col>
-                                    <Col lg='3' className={classes.readOnly}><BMI height={bmiParams.height} weight={bmiParams.weight} /></Col>
-
-                                </Row>
-
-                                <Row>
-                                    <Col> <span className={classes.subtitle}>Γεννητικά Όργανα</span></Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <label>Τριχοφυΐα Εφηβαίου Κατά Tanner</label>
-                                        <select ref={tektInputRef} name='tekt'>
-                                            <option value={0} selected disabled hidden>Select an Option</option>
-                                            <option value={1} selected={loadVisit.tekt === 1}>1</option>
-                                            <option value={1} selected={loadVisit.tekt === 1}>2</option>
-                                            <option value={1} selected={loadVisit.tekt === 1}>3</option>
-                                            <option value={1} selected={loadVisit.tekt === 1}>4</option>
-                                            <option value={1} selected={loadVisit.tekt === 1}>5</option>
-                                        </select>
-                                    </Col>
-                                </Row>
-                                {/* {(patientContext.gender === 'female') && <Row> */}
-                                <Row>
-                                    <Col>
-                                        <label>Στάδιο Μαστών Κατά Tanner</label>
-                                        <select ref={smktInputRef} name='smkt'>
-                                            <option value={0} selected disabled hidden>Select an Option</option>
-                                            <option value={1} selected={loadVisit.smkt === 1}>1</option>
-                                            <option value={2} selected={loadVisit.smkt === 2}>2</option>
-                                            <option value={3} selected={loadVisit.smkt === 3}>3</option>
-                                            <option value={4} selected={loadVisit.smkt === 4}>4</option>
-                                            <option value={5} selected={loadVisit.smkt === 5}>5</option>
-                                        </select>
-                                    </Col>
-                                </Row>
-                                {/* </Row>} */}
-                                {(true) && <Row>
-                                    <Col>
-                                        <label>Τελευταία Έμμηνος Ρύση</label>
-                                        <input className={classes.date} type='date' />
-                                    </Col>
-                                </Row>}
-                                {/* {(patientContext.gender === 'male') && <Row> */}
-                                {/* <Row>
-                                    <Col className={classes.threeInput}><label>Όγκος Όρχεων(ml)</label><input ref={test_volumeInputRef} defaultValue={loadVisit.test_volume} name='test_volume' /></Col>
-                                </Row> */}
-                                {/* </Row>} */}
-                            </Card>
-                            <Row>
-                                <Col> <span className={classes.subtitle}>Υπερηχογράφημα Θυρεοειδούς</span></Col>
-                            </Row>
-                            <Ozoi ozosList={ozosList} setOzosList={setOzosList} removeOzosHandler={removeOzoiHandler} addOzosHandler={addOzoiHandler} editOzosHanlder={editOzosHanlder} />
-
-
-                        </Container>
-                    </Collapsible>
-                    <Collapsible trigger='Διαγνώσεις' transitionTime={200}>
-                        <Diagnosis loadedDiagnosisList={state.loadedDiagnosisList} diagnosisList={state.diagnosisList} state={state} dispatch={dispatch} />
-                    </Collapsible>
-                    <Collapsible trigger='Θεραπεία' transitionTime={200}>
-                        <Therapeia diagnosisList={state.diagnosisList} loadedTherapeiaList={state.loadedTherapeiaList} therapeiaList={state.therapeiaList} state={state} dispatch={dispatch} />
-                    </Collapsible>
-                    <Row>
-                        <Col>
-                            <SaveButton />
-                        </Col>
-                    </Row>
-                </Container>
-
-            </form>
+            {/* </form> */}
         </Fragment>
     );
 }

@@ -17,7 +17,7 @@ const OzoiListItem = (props) => {
     const auth = useContext(AuthContext);
     const patientContext = useContext(PatientContext);
 
-    const deleteHandler = async (event) => {
+    const deleteHandler =  (event) => {
         props.removeOzosHandler(props.id)
     }
     const editHandler = () => {
@@ -32,8 +32,10 @@ const OzoiListItem = (props) => {
                 <Col sm={4} md={2} className='text-center'>{props.height}</Col>
                 <Col sm={4} md={2} className='text-center'>{props.depth}</Col>
                 <Col sm={4} md={2} className='text-center'>{(!!props.dateOfFinding) ? moment(props.dateOfFinding).format('DD-MM-YYYY') : ''}</Col>
-                <Col sm={2}>
+                <Col sm={1} className='text-end'>
                     <EditButton onClick={editHandler} />
+                </Col>
+                <Col sm={1} className='text-start'>
                     <DeleteButton onClick={deleteHandler} />
                 </Col>
             </Row>}

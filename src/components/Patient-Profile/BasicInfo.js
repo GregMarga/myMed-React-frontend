@@ -1,7 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import classes from './PatientProfile.module.css';
 import profile from './profile.webp';
-import { useContext, useEffect,useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { PatientContext } from "../../context/patient-context";
 import { useHttpClient } from "../../hooks/http-hook";
@@ -18,13 +18,14 @@ const BasicInfo = (props) => {
     const fetchPatients = async () => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode,email:responseData.email });
+            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, email: responseData.email });
+            patientContext.changeGender(responseData.gender)
             if (!!responseData.files) {
                 setLoadedBasics((prevState) => {
                     return { ...prevState, imageName: responseData.files.split('\\')[2] }
                 })
             }
-          
+
         } catch (err) { }
     }
 
@@ -34,7 +35,7 @@ const BasicInfo = (props) => {
             fetchPatients()
         }
     }, [sendRequest, patientContext.patientId]);
-    
+
 
 
     return (
@@ -57,14 +58,14 @@ const BasicInfo = (props) => {
                     <span></span>
                 </div>
             </Col>
-            <Col md={2} className='text-center'>
+            <Col md={3} className='text-center'>
                 <div>
                     <label>Πατρώνυμο:</label>
                     <span>{loadedBasics.fathersName}</span>
                 </div>
                 <div>
                     <label>Ημ/ Γεννήσης:</label>
-                    <span>{(!!loadedBasics.dateOfBirth)?moment(loadedBasics.dateOfBirth).format('DD-MM-YYYY'):''}</span>
+                    <span>{(!!loadedBasics.dateOfBirth) ? moment(loadedBasics.dateOfBirth).format('DD-MM-YYYY') : ''}</span>
                 </div>
                 <div>
                     <label>Οικογενειακή Κατάσταση:</label>
@@ -82,7 +83,7 @@ const BasicInfo = (props) => {
                 </div>
                 <div>
                     <label>Φύλο:</label>
-                    <span>Θήλυ</span>
+                    <span>{(loadedBasics.gender === 'male') ? 'Άρρεν' : 'Θήλυ'}</span>
                 </div>
                 <div>
                     <label>Περιοχή:</label>
@@ -111,7 +112,7 @@ const BasicInfo = (props) => {
 
             <Col md={3} className='text-end' xs={{ order: 'first' }} sm={{ order: 'last' }}>
                 <span className={classes.profileImage}>
-                    <img src={(!!loadedBasics.imageName)?`http://localhost:5000/uploads/images/${loadedBasics.imageName}`:profile} />
+                    <img src={(!!loadedBasics.imageName) ? `http://localhost:5000/uploads/images/${loadedBasics.imageName}` : profile} />
                 </span>
 
             </Col>

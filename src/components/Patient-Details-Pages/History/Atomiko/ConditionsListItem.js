@@ -7,9 +7,9 @@ import { Fragment, useState } from "react";
 
 
 const ConditionsListItem = (props) => {
-    // console.log(props)
     const [editForm, setEditForm] = useState(false)
     const clickHandler = (event) => {
+        console.log(props.id)
         props.removeConditionHandler(props.id)
     }
     const editHanlder = () => {

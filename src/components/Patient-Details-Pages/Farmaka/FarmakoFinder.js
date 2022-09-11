@@ -82,7 +82,7 @@ const FarmakoFinder = (props) => {
             
             <Col className="text-start">
             {(props.therapeia) && <label className="drastiki__ousia">Δραστική Ουσία</label>}
-                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugATCs" name="drugATC" id="drugATC" defaultValue={selectedHit.ATC_name} onChange={atcNameChangeHandler} />
+                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugATCs" name="drugATC" id="drugATC" defaultValue={selectedHit.ATC_name} onChange={atcNameChangeHandler} required/>
                 <datalist id="drugATCs">
                     <FarmakaATC hit={hitList} />
                 </datalist>

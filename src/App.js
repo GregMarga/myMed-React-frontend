@@ -1,6 +1,4 @@
 import { Route, Switch, Redirect } from 'react-router-dom';
-import SideNavigation from './components/SideNavigation';
-import Appointment from './pages/Appointment';
 import PatientDetail from './pages/PatientDetail';
 import PatientProfile from './components/Patient-Profile/PatientProfile';
 import Statistics from './components/Patient-Profile/Statistics/Statistics';
@@ -13,12 +11,14 @@ import Logo from './components/UI/Logo'
 import { useHistory } from 'react-router-dom';
 import EmailConfirmation from './authentication/EmailConfirmation'
 
+
 let logoutTimer;
 
 function App() {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [patientId, setPatientId] = useState(null);
+  const [visitId, setVisitId] = useState(null);
   const [anamnistikoId, setAnamnistikoId] = useState(null);
   const [gender, setGender] = useState(null);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
@@ -28,16 +28,29 @@ function App() {
 
   const createPatientId = useCallback((patientId) => {
     setPatientId(patientId);
+    localStorage.setItem('patientId', patientId)
   }, []);
   const setPatientIdNull = useCallback(() => {
     setPatientId(null);
+    localStorage.removeItem('patientId')
+  })
+
+  const createVisitId = useCallback((visitId) => {
+    setVisitId(visitId);
+    localStorage.setItem('visitId', visitId)
+  }, []);
+  const setVisitNull = useCallback(() => {
+    setVisitId(null);
+    localStorage.removeItem('visitId')
   })
 
   const changeGender = useCallback((gender) => {
     setGender(gender);
+    localStorage.setItem('gender', gender)
   }, []);
   const setGenderNull = useCallback(() => {
     setGender(null);
+    localStorage.removeItem('gender')
   })
 
   const createAnamnistikoId = useCallback((anamnistikoId) => {
@@ -65,6 +78,9 @@ function App() {
     setTokenExpirationDate();
     setUserId(null);
     localStorage.removeItem('userData');
+    localStorage.removeItem('patientId');
+    localStorage.removeItem('gender');
+    localStorage.removeItem('visitId')
     history.replace('/')
   }, []);
 
@@ -83,6 +99,20 @@ function App() {
       login(storedData.userId, storedData.token, new Date(storedData.expiration));
     }
   }, [login]);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('patientId');
+    if (storedData) {
+      createPatientId(storedData);
+    }
+  }, [createPatientId]);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('visitId');
+    if (storedData) {
+      createVisitId(storedData);
+    }
+  }, [createVisitId]);
 
 
   let routes;
@@ -143,7 +173,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ isLoggedIn: !!token, token: token, userId: userId, login: login, logout: logout }}>
-      <PatientContext.Provider value={{ gender: gender, patientId: patientId, anamnistikoId: anamnistikoId, createPatientId: createPatientId, setPatientIdNull: setPatientIdNull, setGenderNull: setGenderNull, changeGender: changeGender, createAnamnistikoId: createAnamnistikoId, setAnamnistikoNull: setAnamnistikoNull }}>
+      <PatientContext.Provider value={{ gender: gender, patientId: patientId, visitId: visitId, createPatientId: createPatientId, setPatientIdNull: setPatientIdNull, setGenderNull: setGenderNull, changeGender: changeGender, createVisitId: createVisitId, setVisitNull: setVisitNull }}>
         <div className='backgroundImage'>
           <main>
 

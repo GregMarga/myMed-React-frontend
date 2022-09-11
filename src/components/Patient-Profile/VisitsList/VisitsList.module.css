@@ -1,17 +1,19 @@
-.visitsListCard{
+.visitsTitle {
     margin-top: 3%;
-    /* width: 90%;
-    margin-left: 5%; */
+}
+
+.visitsListCard {
     padding: 20px;
 }
-.visitButton{
+
+.visitButton {
     margin-top: 2%;
     padding: 5px;
     font-size: 1.2rem;
     border-radius: 6px;
 }
 
-.visitButton:hover{
+.visitButton:hover {
     margin-top: 2%;
     padding: 5px;
     font-size: 1.25rem;

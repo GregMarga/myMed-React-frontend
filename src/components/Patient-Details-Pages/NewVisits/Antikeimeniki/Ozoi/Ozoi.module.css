@@ -1,6 +1,15 @@
-.ozoiCard{
+.subtitle {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 2%;
+
+}
+
+.ozoiCard {
     padding: 20px;
 }
-.addOzos{
+
+.addOzos {
     margin-top: 2%;
 }

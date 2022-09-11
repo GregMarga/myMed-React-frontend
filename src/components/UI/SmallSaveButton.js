@@ -8,7 +8,7 @@ const SmallSaveButton = (props = { onClick: () => { } }) => {
 
     return (
         <span className={classes.buttonSpan}>
-            <button className={classes.saveButton} type='button' onClick={clickHandler}>
+            <button className={classes.saveButton} type='submit' >
                 <img src={saveLogo} alt='save ' title='Αποθήκευση' />
             </button>
         </span>

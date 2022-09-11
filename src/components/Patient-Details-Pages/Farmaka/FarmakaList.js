@@ -13,8 +13,9 @@ const FarmakaList = (props) => {
                     farmakoType={farmako.ATC_name}
                     dateOfStart={(!!farmako.dateOfStart)?moment(farmako.dateOfStart).format('DD-MM-YYYY'):''}
                     dateOfEnd={(!!farmako.dateOfEnd)?moment(farmako.dateOfEnd).format('DD-MM-YYYY'):''}
-                    key={farmako.id}
+                    key={farmako._id}
                     id={farmako._id}
+                    editFarmakoHandler={props.editFarmakoHandler}
                     removeFarmakoHandler={props.removeFarmakoHandler}
                 />
             })}

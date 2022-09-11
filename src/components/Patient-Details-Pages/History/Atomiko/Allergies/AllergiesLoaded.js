@@ -1,14 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import ConditionsFinder from "../ConditionsFinder";
-import SmallDeleteButton from '../../../../UI/SmallDeleteButton'
 import classes from './AllergiesLoaded.module.css'
 
 const AllergiesLoaded = (props) => {
     const [addAllergy, setAddAllergy] = useState(false);
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' });
     
-    console.log(props.allergiesList)
    
     
     let removeHandler=(nameToDelete)=>{
@@ -40,7 +38,7 @@ const AllergiesLoaded = (props) => {
                             </span>
                         </Col>
                         <Col sm={2}>
-                            <button type='button' onClick={()=>{removeHandler(allergy.name)}}>Διαγραφή</button>
+                            <button type='button' onClick={()=>{removeHandler(allergy._id)}}>Διαγραφή</button>
                         </Col>
                     </Row>
                 )

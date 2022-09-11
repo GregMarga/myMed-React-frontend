@@ -9,6 +9,8 @@ import { AuthContext } from '../../../context/auth-context';
 import { useHttpClient } from '../../../hooks/http-hook';
 import moment from 'moment';
 import { PatientContext } from '../../../context/patient-context';
+import ErrorModal from '../../UI/ErrorModal';
+import LoadingSpinner from '../../UI/LoadingSpinner'
 
 
 const VisitsList = (props) => {
@@ -17,22 +19,32 @@ const VisitsList = (props) => {
     const patientContext = useContext(PatientContext)
     const { error, isLoading, sendRequest, clearError } = useHttpClient();
 
+
     useEffect(() => {
         const fetchVisits = async () => {
+            try{
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-            setVisitList(responseData.visitList)
+            setVisitList(responseData)
+            }catch(err){}
         }
         if (!!patientContext.patientId) {
             fetchVisits();
         }
-    }, [sendRequest,patientContext.patientId])
+    }, [sendRequest, patientContext.patientId])
 
 
 
 
     return (
         <Container>
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
+            <Row>
+                <Col className={`text-center ${classes.visitsTitle}`}>
+                <h4>Επισκέψεις</h4>
+                </Col>
+            </Row>
             <Card className={classes.visitsListCard}>
+                {isLoading && <LoadingSpinner />}
                 <VisitsListHeader />
                 {visitList.map(visit => {
                     return <VisitsListItem
