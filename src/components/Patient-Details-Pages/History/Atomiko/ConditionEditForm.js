@@ -19,7 +19,7 @@ const ConditionsEditForm = (props) => {
         event.preventDefault();
         let condition = {
             name: props.condition,
-            status: stateInputRef.current.value,
+            status: (stateInputRef.current.value !== 'none') ? stateInputRef.current.value : null,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
             _id: props.id

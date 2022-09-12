@@ -8,7 +8,7 @@ import { AuthContext } from "../context/auth-context";
 
 
 const EmailConfirmation = () => {
-    const [confirming, setConfirming] = useState(true);
+    // const [confirming, setConfirming] = useState(true);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 

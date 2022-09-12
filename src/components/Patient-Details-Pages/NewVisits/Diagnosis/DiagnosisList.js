@@ -7,7 +7,7 @@ import DiagnosisListItem from "./DiagnosisListItem";
 
 const DiagnosisList = (props) => {
     const visitId = useParams().visitId
-    console.log(props)
+   
     const loadHandler = async (event) => {
 
         props.dispatch({ type: 'oldDiagnosis', payload: { oldDiagnosis: true } })
@@ -16,13 +16,13 @@ const DiagnosisList = (props) => {
     return (
         <Container fluid className={classes.diagnosisList}>
             <Row>
-                {(((props.oldDiagnosis) || (visitId !== 'new')) || (((props.touchForm)||(props.loadedDiagnosisList.length === 0))&&(props.diagnosisList.length !== 0))) && props.diagnosisList.map((diagnosis) => {
-                   
+                {(props.diagnosisList.length !== 0) && props.diagnosisList.map((diagnosis) => {
+
                     return <DiagnosisListItem
                         condition={diagnosis.name}
                         status={diagnosis.status}
-                        dateOfDiagnosis={(!!diagnosis.dateOfDiagnosis)?moment(diagnosis.dateOfDiagnosis).format('DD-MM-YYYY'):''}
-                        dateOfHealing={(!!diagnosis.dateOfHealing)?moment(diagnosis.dateOfHealing).format('DD-MM-YYYY'):''}
+                        dateOfDiagnosis={(!!diagnosis.dateOfDiagnosis) ? moment(diagnosis.dateOfDiagnosis).format('DD-MM-YYYY') : ''}
+                        dateOfHealing={(!!diagnosis.dateOfHealing) ? moment(diagnosis.dateOfHealing).format('DD-MM-YYYY') : ''}
                         date_of_diagnosis={diagnosis.dateOfDiagnosis}
                         date_of_healing={diagnosis.dateOfHealing}
                         key={diagnosis._id}
@@ -31,12 +31,12 @@ const DiagnosisList = (props) => {
                         editDiagnosisHanlder={props.editDiagnosisHanlder}
                     />
                 })}
-                {(props.loadedDiagnosisList.length !== 0) && (!props.addDiagnosis)&& (!props.oldDiagnosis)&&(props.diagnosisList.length === 0) && (visitId === 'new') && <Row>
+                {/* {(props.loadedDiagnosisList.length !== 0) && (!props.addDiagnosis)&& (!props.oldDiagnosis)&&(props.diagnosisList.length === 0) && (visitId === 'new') && <Row>
                     <Col className={`text-center ${classes.loadRow}`}>
                         Για να φορτώσετε τις  διαγνώσεις της τελευταίας επίσκεψης πατήστε το κουμπί <button type='button' onClick={loadHandler}>Φόρτωση</button>
                     </Col>
-                </Row>}
-                {(((props.diagnosisList.length === 0) && (!props.addDiagnosis) && (props.oldDiagnosis)) || ((props.loadedDiagnosisList.length === 0) &&(!props.touchForm)&& (!props.addDiagnosis))) && <Row>
+                </Row>} */}
+                {(props.diagnosisList.length === 0) && <Row>
                     <Col className='text-center'>Η λίστα είναι άδεια,προσθέστε μια διάγνωση.</Col>
                 </Row>}
 

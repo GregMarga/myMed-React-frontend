@@ -25,14 +25,12 @@ const Antikeimeniki = () => {
     const auth = useContext(AuthContext)
     const patientContext = useContext(PatientContext);
     const { error, sendRequest, clearError, isLoading } = useHttpClient();
-
-
+   
     useEffect(() => {
 
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visits/${patientContext.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/${patientContext.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setLoadVisit(responseData);
                 setBmiParams({ height: responseData.height, weight: responseData.weight })
                 setEditAntikemeniki(true)
@@ -42,8 +40,26 @@ const Antikeimeniki = () => {
 
         };
 
-        if (!!patientContext.visitId) {
+        const fetchPreviousHistory = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/oldAntikeimeniki`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                setLoadVisit(prevState => {
+                    return { test_volume: '', height: responseData }
+                });
+                setBmiParams({ height: responseData })
+                setEditAntikemeniki(false)
+
+
+            } catch (err) { console.log(err) }
+
+        };
+
+        if (!!patientContext.visitId && patientContext.visitId !== 'new') {
+
             fetchHistory();
+        }
+        if (!!patientContext.visitId && patientContext.visitId === 'new') {
+            fetchPreviousHistory()
         }
 
     }, [patientContext.visitId, sendRequest]);
@@ -78,7 +94,7 @@ const Antikeimeniki = () => {
         event.preventDefault();
         console.log('submit')
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/antikeimeniki`, 'POST',
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/antikeimeniki`, 'POST',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -106,7 +122,7 @@ const Antikeimeniki = () => {
         console.log('update')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visits/${patientContext.visitId}/antikeimeniki`, 'PATCH',
+            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/${patientContext.visitId}/antikeimeniki`, 'PATCH',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -130,12 +146,11 @@ const Antikeimeniki = () => {
         } catch (err) { console.log(err) }
     }
 
-
     return (
         <Container className={classes.newVisit}>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
             {!!isLoading && <LoadingSpinner />}
-            <form onSubmit={(!patientContext.visitId) ? submitHandler : updateHandler}>
+            <form onSubmit={(!patientContext.visitId || (patientContext.visitId === 'new')) ? submitHandler : updateHandler}>
                 <Card className={classes.cardsNewVisit}>
 
                     <Row>
@@ -144,7 +159,8 @@ const Antikeimeniki = () => {
                     <Row>
                         <Col>
                             <label>Ημερομηνία*</label>
-                            <input ref={dateInputRef} className={classes.date} name='date' type='date' defaultValue={moment(new Date()).format('YYYY-MM-DD')} required disabled={editAntikemeniki} />
+                            {!!loadVisit.date && <input ref={dateInputRef} className={classes.date} name='date' type='date' defaultValue={moment(loadVisit.date).format('YYYY-MM-DD')} required disabled={editAntikemeniki} />}
+                            {!loadVisit.date && <input ref={dateInputRef} className={classes.date} name='date' type='date' defaultValue={moment(new Date()).format('YYYY-MM-DD')} required disabled={editAntikemeniki} />}
                             {/* <input  className={classes.date} name='date' type='date' required /> */}
                         </Col>
                     </Row>

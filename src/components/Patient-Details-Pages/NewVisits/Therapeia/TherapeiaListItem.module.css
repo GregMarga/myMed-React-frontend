@@ -1,12 +1,17 @@
-.therapeiaListItem{
+.therapeiaListItem {
     padding: 5px;
     border: 1px solid grey;
     border-radius: 8px;
     margin-bottom: 1%;
 }
 
-.therapeiaLabel{
+.therapeiaLabel {
     font-size: 1.1rem;
     font-weight: 500;
     margin-right: 10px;
+}
+
+.deleteButton {
+    font-size: 1.1rem;
+    padding: 3px;
 }

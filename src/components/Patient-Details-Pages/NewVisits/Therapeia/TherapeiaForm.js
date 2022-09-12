@@ -1,35 +1,25 @@
-import { Container, Row, Col } from "react-bootstrap";
-import { useState, useRef, Fragment, useContext, useEffect } from "react";
+import { Row, Col } from "react-bootstrap";
+import { useState, useRef, Fragment } from "react";
 import FarmakoFinder from "../../Farmaka/FarmakoFinder";
 import classes from './TherapeiaForm.module.css';
 import { v4 as uuid } from 'uuid';
-import { AuthContext } from "../../../../context/auth-context";
-import { useHttpClient } from "../../../../hooks/http-hook";
+
 
 
 
 const TherapeiaForm = (props) => {
-    const auth = useContext(AuthContext);
-    const { error, sendRequest } = useHttpClient();
     const [selectedFarmako, setSelectedFarmako] = useState({ name: '', ATC_name: '' });
     const [nameInput, setNameInput] = useState('')
-    const [allowSave, setAllowSave] = useState(false);
-
 
     const conditionInputRef = useRef();
     const posotitaInputRef = useRef();
     const syxnotitaInputRef = useRef();
+    const durationInputRef = useRef();
 
     const changeHandler = (event) => {
         setNameInput(event.target.value)
     }
-    useEffect(() => {
-        if (nameInput !== '' && selectedFarmako.name != '') {
-            setAllowSave(true)
-        } else {
-            setAllowSave(false)
-        }
-    }, [selectedFarmako, nameInput])
+
 
     const submitHandler = async (event) => {
         event.preventDefault();
@@ -40,7 +30,7 @@ const TherapeiaForm = (props) => {
             ATC_name: selectedFarmako.ATC_name,
             posotita: posotitaInputRef.current.value,
             syxnotita: syxnotitaInputRef.current.value,
-
+            duration: durationInputRef.current.value,
         }
 
         props.addTherapeiaHandler(therapeia);
@@ -70,7 +60,7 @@ const TherapeiaForm = (props) => {
                     <Col xl={4}>
                         <label>Ποσό Δόσης</label>
                         <select ref={posotitaInputRef} required>
-                            <option value="none" selected disabled hidden>Επιλέξτε</option>
+                            <option value="" selected disabled hidden>Επιλέξτε</option>
                             <option value='0.25'>0.25</option>
                             <option value='0.5'>0.5</option>
                             <option value='1'>1</option>
@@ -127,7 +117,7 @@ const TherapeiaForm = (props) => {
                     <Col xl={4}>
                         <label>Συχνότητα</label>
                         <select ref={syxnotitaInputRef} required>
-                            <option value="none" selected disabled hidden>Επιλέξτε</option>
+                            <option value="" selected disabled hidden>Επιλέξτε</option>
                             <option value='1 φορά την ημέρα'>1 φορά την ημέρα</option>
                             <option value='2 φορές την ημέρα'>2 φορές την ημέρα</option>
                             <option value='3 φορές την ημέρα'>3 φορές την ημέρα</option>
@@ -145,8 +135,8 @@ const TherapeiaForm = (props) => {
                     </Col>
                     <Col xl={4}>
                         <label>Ημέρες</label>
-                        <select >
-                            <option value="none" selected disabled hidden>Επιλέξτε</option>
+                        <select ref={durationInputRef}>
+                            <option value="" selected disabled hidden>Επιλέξτε</option>
                             <option value='1 ημέρα'>1 ημέρα</option>
                             <option value='2 ημέρες'>2 ημέρες</option>
                             <option value='3 ημέρες'>3 ημέρες</option>
@@ -187,7 +177,7 @@ const TherapeiaForm = (props) => {
                 </Row>
                 <Row>
                     <Col xs={4} md={2} className={`text-center ${classes.therapeiaButton}`}>
-                        {allowSave && <button type='submit' >Αποθήκευση</button>}
+                        <button type='submit' >Αποθήκευση</button>
                     </Col>
                     <Col xs={4} md={2} className={`text-center ${classes.therapeiaButton}`}>
                         <button type='button' onClick={() => { props.setAddTherapeia(false) }}>Ακύρωση</button>

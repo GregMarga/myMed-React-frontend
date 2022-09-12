@@ -17,8 +17,8 @@ const Auth = () => {
     const [isLoginMode, setIsLoginMode] = useState(true);
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-    const [emailLoading, setEmailLoading] = useState(true);
-    const [sendingEmail, setSendingEmail] = useState(false);
+    // const [emailLoading, setEmailLoading] = useState(true);
+    // const [sendingEmail, setSendingEmail] = useState(false);
 
     // componentDidMount = () => {
     //     fetch(`${API_URL}/wake-up`)

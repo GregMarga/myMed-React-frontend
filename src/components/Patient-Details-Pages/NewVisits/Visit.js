@@ -1,11 +1,8 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect, useContext, useRef, useReducer, Fragment } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Collapsible from 'react-collapsible';
-import Card from "../../UI/Card";
-import BMI from "../Visits/BMI";
 import LoadingSpinner from '../../UI/LoadingSpinner'
-import moment from "moment";
 import { useHttpClient } from "../../../hooks/http-hook";
 import { AuthContext } from "../../../context/auth-context";
 import { PatientContext } from "../../../context/patient-context";
@@ -64,7 +61,7 @@ const Visit = () => {
         height: 1
     }
     );
-    const history = useHistory();
+
     const auth = useContext(AuthContext);
     const patientContext = useContext(PatientContext);
     const paramsId = useParams().patientId;
@@ -73,36 +70,38 @@ const Visit = () => {
     const { isLoading, sendRequest, error, clearError } = useHttpClient()
 
 
-
+    useEffect(() => {
+        if (!!visitId && visitId !== 'new') {
+            patientContext.createVisitId(visitId)
+        }
+    }, [visitId]);
 
 
     useEffect(() => {
 
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits/${visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits/info`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
-                setOzosList(responseData.ozosList)
-                if (visitId !== 'new') {
-                    setLoadVisit(responseData.visit)
-                }
-                if (visitId === 'new') {
-                    dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
-                    dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData.therapeiaList } })
-                    setLoadVisit((prevState) => {
-                        return { ...prevState, height: responseData.visit.height, weight: responseData.visit.weight };
-                    })
-                    setBmiParams({ height: responseData.visit.height, weight: responseData.visit.weight })
-                } else {
-                    dispatch({ type: 'oldVisit', payload: { diagnosisList: responseData.diagnosisList, therapeiaList: responseData.therapeiaList } })
+                // setOzosList(responseData.ozosList)
+                // if (visitId !== 'new') {
+                //     setLoadVisit(responseData.visit)
+                // }
+                // if (visitId === 'new') {
+                //     dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData.diagnosisList } })
+                //     dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData.therapeiaList } })
+                //     setLoadVisit((prevState) => {
+                //         return { ...prevState, height: responseData.visit.height, weight: responseData.visit.weight };
+                //     })
+                //     setBmiParams({ height: responseData.visit.height, weight: responseData.visit.weight })
+                // } else {
+                //     dispatch({ type: 'oldVisit', payload: { diagnosisList: responseData.diagnosisList, therapeiaList: responseData.therapeiaList } })
 
-                }
-
-
+                // }
             } catch (err) { console.log(err) }
 
         };
-        if (paramsId !== 'new') {
+        if (paramsId === 'new') {
             // fetchHistory();
         }
 

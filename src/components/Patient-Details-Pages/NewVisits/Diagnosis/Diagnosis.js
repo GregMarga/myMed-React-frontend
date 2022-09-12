@@ -20,9 +20,9 @@ const Diagnosis = (props) => {
     const { error, isLoading, sendRequest, clearError } = useHttpClient();
 
     useEffect(() => {
-        const fetchOzoi = async () => {
+        const fetchDiagnosis = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/diagnosis`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 props.dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData } })
                 props.dispatch({ type: 'oldDiagnosis', payload: { oldDiagnosis: true } })
@@ -31,8 +31,8 @@ const Diagnosis = (props) => {
             } catch (err) { console.log(err) }
 
         };
-        if (!!patientContext.visitId) {
-            fetchOzoi();
+        if (!!patientContext.visitId && patientContext.visitId !== 'new') {
+            fetchDiagnosis();
         }
 
     }, [patientContext.visitId, sendRequest]);
@@ -48,7 +48,7 @@ const Diagnosis = (props) => {
         console.log('add')
         try {
             props.dispatch({ type: 'addDiagnosisList', payload: { diagnosis: newDiagnosis } })
-            const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/diagnosis`, 'POST',
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis`, 'POST',
                 JSON.stringify({
                     _id: newDiagnosis._id,
                     name: newDiagnosis.name,
@@ -68,11 +68,11 @@ const Diagnosis = (props) => {
         let diagnosisList = props.state.diagnosisList.filter(diagnosis => {
             return diagnosis._id !== diagnosisIdToDelete
         })
-        
+
         try {
             props.dispatch({ type: 'removeDiagnosisList', payload: { diagnosisList: diagnosisList } })
 
-            await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/diagnosis/${diagnosisIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis/${diagnosisIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
         } catch (err) { }
 
 
@@ -86,7 +86,7 @@ const Diagnosis = (props) => {
         })
         try {
             props.dispatch({ type: 'editDiagnosisList', payload: { diagnosisList: tempList } })
-            const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/diagnosis/${diagnosisIdtoUpdate}`, 'PATCH',
+            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis/${diagnosisIdtoUpdate}`, 'PATCH',
                 JSON.stringify({
                     status: addedDiagnosis.length,
                     dateOfDiagnosis: addedDiagnosis.dateOfDiagnosis,

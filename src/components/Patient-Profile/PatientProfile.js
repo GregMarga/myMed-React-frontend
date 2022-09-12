@@ -9,19 +9,23 @@ import { useParams } from "react-router-dom";
 
 
 const PatientProfile = () => {
-    const patientContext=useContext(PatientContext);
-    const patientId = useParams().patientId
+    const patientContext = useContext(PatientContext);
+    const patientId = useParams().patientId;
 
-     useEffect(()=>{
+    useEffect(() => {
         patientContext.createPatientId(patientId)
-    },[patientId])
+        // patientContext.setVisitNull()
+        patientContext.createVisitId('new')
+    }, [patientId]);
+
+    
 
 
     return (
         <Container fluid className={classes.patientProfile}>
             <BasicInfo />
-            <ConditionsInfo/>
-            <VisitsList/>
+            <ConditionsInfo />
+            <VisitsList />
         </Container >
     );
 }

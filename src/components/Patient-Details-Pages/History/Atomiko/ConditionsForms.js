@@ -30,7 +30,7 @@ const ConditionsForm = (props) => {
 
         let condition = {
             name: selectedCondition.code + ': ' + selectedCondition.condition,
-            status: stateInputRef.current.value,
+            status: (stateInputRef.current.value !== 'none') ? stateInputRef.current.value : null,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
             _id: id

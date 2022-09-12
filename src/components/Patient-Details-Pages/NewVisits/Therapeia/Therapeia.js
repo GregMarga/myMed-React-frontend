@@ -31,7 +31,7 @@ const Therapeia = (props) => {
             } catch (err) { console.log(err) }
 
         };
-        if (!!patientContext.visitId) {
+        if (!!patientContext.visitId && patientContext.visitId !== 'new') {
             fetchTherapeia();
         }
 
@@ -43,19 +43,19 @@ const Therapeia = (props) => {
     }
 
     const addTherapeiaHandler = async (newTherapeia) => {
-        const therapeiaId = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const therapeiaId = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
-        console.log('add')
         try {
-            props.dispatch({ type: 'addTherapeiaList', payload: { therapeia: newTherapeia } })
-            await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/therapeia`, 'POST',
+            props.dispatch({ type: 'addTherapeiaList', payload: { therapeia: {...newTherapeia,_id: therapeiaId} } })
+            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia`, 'POST',
                 JSON.stringify({
                     _id: therapeiaId,
                     posotita: newTherapeia.posotita,
                     syxnotita: newTherapeia.syxnotita,
                     ATC_name: newTherapeia.ATC_name,
                     condition: newTherapeia.condition,
-                    name: newTherapeia.name
+                    name: newTherapeia.name,
+                    duration: newTherapeia.duration
                 })
                 , {
                     'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Therapeia = (props) => {
         try {
             props.dispatch({ type: 'removeTherapeiaList', payload: { therapeiaList: therapeiaList } })
 
-            await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/therapeia/${therapeiaIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia/${therapeiaIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
         } catch (err) { }
 
     }

@@ -1,5 +1,4 @@
 import { Container, Row, Col } from "react-bootstrap";
-import Paper from '@mui/material/Paper';
 import { Plugin } from '@devexpress/dx-react-core';
 import {
     Chart,
@@ -34,7 +33,8 @@ const OzoiStats = (props) => {
         const fetchOzoiStats = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/statistics/ozoi`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                if (responseData.ozoiData.length>0){
+                console.log(responseData)
+                if (responseData.ozosData.length>0){
                 setOzoiData(responseData.ozosData)
                 setNamesList(responseData.namesList)
                 setShowDefault(false)
@@ -54,7 +54,6 @@ const OzoiStats = (props) => {
             {!showDefault && <Row>
                 <Col>
                     <Container className={classes.biometrics}>
-                        <Paper>
                             <Chart
                                 data={ozoiData}
                                 className={classes.chart}
@@ -76,9 +75,6 @@ const OzoiStats = (props) => {
                                 <Title text="Όγκος Όζων" />
                                 <Animation />
                             </Chart>
-
-
-                        </Paper>
                     </Container>
                 </Col>
             </Row>}

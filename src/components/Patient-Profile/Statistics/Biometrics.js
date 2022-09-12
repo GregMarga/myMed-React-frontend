@@ -1,6 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
 import ErrorModal from "../../UI/ErrorModal";
-import Paper from '@mui/material/Paper';
 import {
     Chart,
     LineSeries,
@@ -49,7 +48,6 @@ const Biometrics = (props) => {
 
                 <Col >
                     <Container className={classes.biometrics}>
-                        <Paper>
                             <Chart
                                 data={bmiData}
                             >
@@ -62,7 +60,6 @@ const Biometrics = (props) => {
                                 <Title text="BMI" />
                                 <Animation />
                             </Chart>
-                        </Paper>
                     </Container>
                 </Col>
             </Row>}

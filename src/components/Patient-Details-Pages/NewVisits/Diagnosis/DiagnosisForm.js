@@ -24,7 +24,7 @@ const DiagnosisForm = (props) => {
         const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
         let diagnosis = {
-            name: selectedCondition.code + ':' + selectedCondition.condition,
+            name: selectedCondition.code + ': ' + selectedCondition.condition,
             status: stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,

@@ -4,7 +4,7 @@ import classes from './ErrorModal.module.css';
 import Backdrop from './Backdrop';
 
 const ErrorModal = props => {
-  console.log(props.error)
+  
   return (
     <Fragment>
       <Backdrop onClick={props.onClear} />

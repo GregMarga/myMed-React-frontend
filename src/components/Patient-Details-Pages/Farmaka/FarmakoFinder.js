@@ -10,13 +10,12 @@ import './FarmakoFinder.css'
 
 
 const FarmakoFinder = (props) => {
-    const [showHits, setShowHits] = useState(true);
     const [selectedHit, setSelectedHit] = useState('');
     const [hitList, setHitList] = useState([])
     const [drugInput, setDrugInput] = useState('');
     const [atcInput, setAtcInput] = useState('');
     const auth = useContext(AuthContext);
-    const { sendRequest, error, clearError } = useHttpClient();
+    const { sendRequest } = useHttpClient();
 
     useEffect(() => {
         const fetchNameHits = async () => {
@@ -40,7 +39,7 @@ const FarmakoFinder = (props) => {
             fetchATCNameHits();
         }
 
-    }, [drugInput, sendRequest, atcInput]);
+    }, [drugInput, sendRequest, atcInput,auth.token]);
 
     const nameChangeHandler = (event) => {
         setDrugInput(event.target.value);

@@ -1,4 +1,4 @@
-import { Fragment, useCallback } from "react";
+import { Fragment } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import classes from './Basic.module.css';
 import SaveButton from '../UI/SaveButton';
@@ -11,16 +11,11 @@ import { useHttpClient } from '../../hooks/http-hook';
 import { useForm } from "../../hooks/form-hook";
 import { AuthContext } from "../../context/auth-context";
 import { PatientContext } from "../../context/patient-context";
-import { useHistory } from "react-router-dom";
-import Card from 'react-bootstrap/Card'
 import moment from 'moment';
 
 
 const Basic = (props) => {
-
-    const [loading, SetLoading] = useState(false);
     const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '', imageName: null })
-    const history = useHistory();
 
 
 
@@ -37,7 +32,7 @@ const Basic = (props) => {
 
 
 
-    const [formState, inputHandler, setFormData] = useForm(
+    const [formState, inputHandler] = useForm(
         {
             image: {
                 image: undefined
@@ -70,7 +65,7 @@ const Basic = (props) => {
         try {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             console.log(responseData)
-            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode,email:responseData.email });
+            setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, email: responseData.email });
             if (!!responseData.files) {
                 setLoadedBasics((prevState) => {
                     return { ...prevState, imageName: responseData.files.split('\\')[2] }
@@ -94,7 +89,6 @@ const Basic = (props) => {
     const submitHandler = async (event) => {
         event.preventDefault();
         console.log('submit')
-        let patientId = null;
         if (!!formState.inputs.image.value) {
             try {
                 console.log(amkaInputRef.current.value)
@@ -124,7 +118,6 @@ const Basic = (props) => {
 
                 patientContext.createPatientId(responseData.patient._id);
                 patientContext.changeGender(responseData.patient.gender);
-                patientId = responseData.patient._id;
 
             }
             catch (err) {
@@ -160,8 +153,7 @@ const Basic = (props) => {
 
                 patientContext.createPatientId(responseData.patient._id);
                 patientContext.changeGender(responseData.patient.gender);
-                patientId = responseData.patient._id;
-
+        
             }
             catch (err) {
                 console.log(err)
@@ -250,7 +242,7 @@ const Basic = (props) => {
     return (
         <Fragment>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
-            {isLoading || loading && <LoadingSpinner asOverlay />}
+            {isLoading && <LoadingSpinner asOverlay />}
 
             {!isLoading && <form className={classes.basicForm} onSubmit={(!!patientContext.patientId) ? updateHandler : submitHandler}>
 
