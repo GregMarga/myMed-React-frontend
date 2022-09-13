@@ -43,12 +43,18 @@ const Klironomiko = (props) => {
     }, [patientContext.patientId, sendRequest]);
 
     useEffect(() => {
-        if (cleronomicalList.length === 0) {
-            setKlironomikoLoaded(false)
+        if (!!props.profil) {
+            setKlironomikoLoaded(true)
         }
-    }, [cleronomicalList])
+    }, [props.profil])
 
-    
+    useEffect(() => {
+        if (klirnomikoLoaded) {
+            setSelectedConditionsList([])
+        }
+    }, [klirnomikoLoaded])
+
+
 
     const checkIfInList = (selectedName, list) => {
         let res = false;
@@ -64,12 +70,30 @@ const Klironomiko = (props) => {
 
         setCleronomicalList((prevState) => {
 
-            if (!checkIfInList(allergyName,cleronomicalList)) {
+            if (!checkIfInList(allergyName, cleronomicalList)) {
 
                 return [...prevState, { name: allergyName, _id: responseData }]
             }
             else return [...prevState];
         })
+        if (klirnomikoLoaded && cleronomicalList.length > 0) {
+            console.log('innnnnnnnnn')
+            try {
+                await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/klironomiko_loaded`, 'POST',
+                    JSON.stringify({
+                        name: allergyName,
+                        _id: responseData
+                    })
+                    , {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + auth.token
+                    }
+                );
+
+            } catch (err) {
+
+            }
+        }
     }
     const removeFromCleronomicalList = async (klironomikoId) => {
         console.log(klironomikoId)
@@ -87,18 +111,18 @@ const Klironomiko = (props) => {
         }
     }
 
-    const changeHandler = async (event) => {        
+    const changeHandler = async (event) => {
         if (event.target.checked) {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             setCleronomicalList((prevState) => {
-                if (!checkIfInList(event.target.value,cleronomicalList)) {
+                if (!checkIfInList(event.target.value, cleronomicalList)) {
                     return [...prevState, { name: event.target.value, _id: responseData }]
                 }
                 else return [...prevState];
             })
         }
         else if (!event.target.checked) {
-            console.log(event.target.value,selectedConditionsList)
+            console.log(event.target.value, selectedConditionsList)
             if (checkIfInList(event.target.value, selectedConditionsList)) {
                 setSelectedConditionsList(prevState => {
                     return prevState.filter(allergy => {
@@ -120,10 +144,10 @@ const Klironomiko = (props) => {
     const addToSelectedConditionsList = async (hit) => {
         const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         setSelectedConditionsList((prevState) => {
-            return [...prevState, { name: hit.code + ': ' + hit.condition, _id: responseData  }];
+            return [...prevState, { name: hit.code + ': ' + hit.condition, _id: responseData }];
         })
         console.log(hit)
-        addToCleronomicalList(hit.code+': '+hit.condition)
+        addToCleronomicalList(hit.code + ': ' + hit.condition)
     }
 
 
@@ -152,7 +176,15 @@ const Klironomiko = (props) => {
             <form onSubmit={submitHandler} >
                 <Card className={(!!props.profil) ? classes.klironomikoInfoCard : classes.klironomikoCard}>
                     {isLoading && klirnomikoLoaded && <LoadingSpinner />}
-                    {klirnomikoLoaded && <KlirnomikoLoaded cleronomicalList={cleronomicalList} addToCleronomicalList={addToCleronomicalList} removeFromCleronomicalList={removeFromCleronomicalList} />}
+                    {klirnomikoLoaded && cleronomicalList.length > 0 && <KlirnomikoLoaded cleronomicalList={cleronomicalList} addToCleronomicalList={addToCleronomicalList} removeFromCleronomicalList={removeFromCleronomicalList} />}
+                    {klirnomikoLoaded && (cleronomicalList.length === 0) && <Fragment>
+                        <Row>
+                            <Col className="text-center">
+                                Δεν υπάρχουν καταγεγραμμένες κληρονομικές παθήσεις,για να προσθέσετε πατήστε
+                                <button type='button' className={classes.addLoaded} onClick={() => { setKlironomikoLoaded(false) }}>Προσθήκη</button>
+                            </Col>
+                        </Row>
+                    </Fragment>}
                     {!klirnomikoLoaded && <Fragment>
                         <KlironomikoOptions label='Z83.3: Οικογενειακό ιστορικό σακχαρώδους διαβήτη' changeHandler={changeHandler} />
                         <KlironomikoOptions label='Z83.4: Οικογενειακό ιστορικό άλλων ενδοκρινικών, διατροφικών και μεταβολικών νοσημάτων' changeHandler={changeHandler} />

@@ -3,12 +3,13 @@
 }
 
 .allergiesForm input {
-
     margin: 0
 }
-.infoAllergiesCard{
+
+.infoAllergiesCard {
     padding: 20px;
 }
+
 .allergiesForm label {
     font-weight: 400;
     font-size: 1rem;
@@ -17,4 +18,8 @@
 
 .addCondition {
     margin-top: 2%;
+}
+
+.addLoaded {
+    margin-left: 20px
 }

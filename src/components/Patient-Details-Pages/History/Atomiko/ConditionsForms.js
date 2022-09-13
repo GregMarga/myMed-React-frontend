@@ -58,8 +58,10 @@ const ConditionsForm = (props) => {
 
                 <Col sm={2}><input type='date' ref={dateOfDiagnosisInputRef} /></Col>
                 <Col sm={2}><input type='date' ref={dateOfHealingInputRef} /></Col>
-                <Col className='text-start' sm={2}>
+                <Col className='text-end' sm={1}>
                     {!!selectedCondition && <SmallSaveButton />}
+                </Col>
+                <Col className='text-start' sm={1}>
                     <SmallDeleteButton onClick={() => { props.setAddCondition(false) }} />
                 </Col>
             </Row>

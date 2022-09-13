@@ -11,7 +11,6 @@ import moment from "moment";
 
 
 const OzoiListItem = (props) => {
-    console.log(props.id)
     const [editForm, setEditForm] = useState(false)
     const { sendRequest, error, clearError } = useHttpClient();
     const auth = useContext(AuthContext);

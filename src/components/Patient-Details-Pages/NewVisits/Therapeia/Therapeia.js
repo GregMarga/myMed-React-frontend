@@ -23,7 +23,6 @@ const Therapeia = (props) => {
         const fetchTherapeia = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/therapeia`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
                 props.dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData } })
                 props.dispatch({ type: 'oldTherapeia', payload: { oldTherapeia: true } })
 
@@ -63,7 +62,6 @@ const Therapeia = (props) => {
                 }
             );
         } catch (err) { console.log(err) }
-        console.log(newTherapeia);
     }
     const removeTherapeiaHandler = async (therapeiaIdToDelete) => {
         let therapeiaList = props.state.therapeiaList.filter(therapeia => {

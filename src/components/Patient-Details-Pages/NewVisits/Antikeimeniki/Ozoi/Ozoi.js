@@ -26,7 +26,7 @@ const Ozoi = (props) => {
         const fetchOzoi = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/ozos`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
+                
                 setOzosList((prevState) => {
                     return prevState.concat(responseData)
                 });
@@ -38,7 +38,7 @@ const Ozoi = (props) => {
         const fetchPreviousOzoi = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/previousOzos`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
+               
                 setOzosList(responseData);
 
             } catch (err) { console.log(err) }

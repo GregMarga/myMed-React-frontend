@@ -3,6 +3,8 @@ import PatientDetail from './pages/PatientDetail';
 import PatientProfile from './components/Patient-Profile/PatientProfile';
 import Statistics from './components/Patient-Profile/Statistics/Statistics';
 import Patients from './pages/Patients';
+import Visit from './components/Patient-Details-Pages/NewVisits/Visit';
+import Basic from './components/Patient-Details-Pages/Basic';
 import Auth from './authentication/Auth';
 import { AuthContext } from './context/auth-context';
 import { PatientContext } from './context/patient-context';
@@ -114,6 +116,13 @@ function App() {
     }
   }, [createVisitId]);
 
+  useEffect(() => {
+    const storedData = localStorage.getItem('gender');
+    if (storedData) {
+      changeGender(storedData);
+    }
+  }, [changeGender]);
+
 
   let routes;
   if (token === null) {
@@ -144,9 +153,19 @@ function App() {
           <Patients />
 
         </Route>
+        <Route path='/patients/:patientId/visits/:visitId' exact>
+          <Logo />
+          <Visit />
+        </Route>
+
         <Route path='/patients/:patientId/profile' exact>
           <Logo />
           <PatientProfile />
+        </Route>
+
+        <Route path='/patients/:patientId/basics' exact>
+          <Logo basic/>
+          <Basic profil/>
         </Route>
 
         <Route path='/patients/:patientId/statistics' exact>

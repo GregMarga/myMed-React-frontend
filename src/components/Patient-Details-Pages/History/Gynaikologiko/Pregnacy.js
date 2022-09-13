@@ -70,6 +70,32 @@ const Pregnacy = (props) => {
 
     }
 
+    const editPregnacyHandler = async (addedPregnacy, pregnacyIdtoUpdate) => {
+        console.log(addedPregnacy,pregnacyIdtoUpdate)
+        setPregnaciesList(prevState => {
+            return prevState.map(pregnacy => {
+                if (pregnacy._id === pregnacyIdtoUpdate) {
+                    return pregnacy = addedPregnacy
+                } else return pregnacy = pregnacy
+            })
+        })
+
+        try {
+            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacy/${pregnacyIdtoUpdate}`, 'PATCH',
+                JSON.stringify({
+                    date_of_birth: addedPregnacy.date_of_birth,
+                    gennisi: addedPregnacy.gennisi,
+                    baby_weight: addedPregnacy.baby_weight,
+                    comments: addedPregnacy.comments
+                })
+                , {
+                    Authorization: 'Bearer ' + auth.token,
+                    'Content-Type': 'application/json'
+                });
+
+        } catch (err) { console.log(err) }
+    }
+
     return (
         <Container>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
@@ -82,7 +108,7 @@ const Pregnacy = (props) => {
                     <Col sm={2}></Col>
                 </Row>
                 {addPregnacy && <PregnacyForm setAddPregnacy={setAddPregnacy} addPregnacyHandler={addPregnacyHandler} />}
-                <PregnaciesList removePregnacyHandler={removePregnacyHandler} pregnacyList={pregnacyList} addPregnacy={addPregnacy} />
+                <PregnaciesList editPregnacyHandler={editPregnacyHandler} removePregnacyHandler={removePregnacyHandler} pregnacyList={pregnacyList} addPregnacy={addPregnacy} />
                 <Row>
                     <Col>
                         {((!!props.info && props.editGynaikologiko) || (!props.info)) && <button type='button' onClick={() => { setAddPregnacy(true) }} className={classes.addPregnacy}>Προσθήκη Κύησης</button>}

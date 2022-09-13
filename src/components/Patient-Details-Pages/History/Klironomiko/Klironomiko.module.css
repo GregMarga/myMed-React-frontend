@@ -1,15 +1,22 @@
-.klironomiko label{
+.klironomiko label {
     font-size: 1rem;
     font-weight: 400;
 }
-.klironomikoInfoCard{
+
+.klironomikoInfoCard {
     padding: 20px;
 }
-.klironomikoCard{
+
+.klironomikoCard {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
-.addKlironomiko{
+
+.addKlironomiko {
     margin-left: 20px;
     margin-top: 2%;
+}
+
+.addLoaded {
+    margin-left: 20px;
 }

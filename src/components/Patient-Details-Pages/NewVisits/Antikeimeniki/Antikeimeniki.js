@@ -1,7 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap"
 import Card from "../../../UI/Card";
 import classes from './Antikeimeniki.module.css';
-import { useContext, useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect, Fragment } from "react";
 import SaveButton from '../../../UI/SaveButton';
 import EditFormButton from '../../../UI/EditFormButton';
 import BMI from "../../Visits/BMI";
@@ -11,10 +11,12 @@ import moment from "moment";
 import { AuthContext } from "../../../../context/auth-context";
 import { PatientContext } from "../../../../context/patient-context";
 import { useHttpClient } from "../../../../hooks/http-hook";
+import VisitsFiles from "./VisitsFiles";
 
 
 const Antikeimeniki = () => {
-    const [loadVisit, setLoadVisit] = useState({ test_volume: '' });
+    const [loadVisit, setLoadVisit] = useState({ test_volume: '', weight: '' });
+    const [filesList, setFilesList] = useState([])
     const [editAntikemeniki, setEditAntikemeniki] = useState(false)
 
     const [bmiParams, setBmiParams] = useState({
@@ -25,13 +27,19 @@ const Antikeimeniki = () => {
     const auth = useContext(AuthContext)
     const patientContext = useContext(PatientContext);
     const { error, sendRequest, clearError, isLoading } = useHttpClient();
-   
+
+    console.log('visitId:', patientContext.visitId)
+    console.log(patientContext.gender)
+
     useEffect(() => {
 
         const fetchHistory = async () => {
+            console.log('fetchHistory')
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/${patientContext.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                setLoadVisit(responseData);
+
+                setLoadVisit(responseData.visit);
+                setFilesList(responseData.filesList)
                 setBmiParams({ height: responseData.height, weight: responseData.weight })
                 setEditAntikemeniki(true)
 
@@ -41,13 +49,13 @@ const Antikeimeniki = () => {
         };
 
         const fetchPreviousHistory = async () => {
+            console.log('fetchOldHistory')
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/oldAntikeimeniki`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setLoadVisit(prevState => {
-                    return { test_volume: '', height: responseData }
+                    return { ...prevState, test_volume: '', height: responseData.height }
                 });
-                setBmiParams({ height: responseData })
-                setEditAntikemeniki(false)
+                setBmiParams({ height: responseData.height })
 
 
             } catch (err) { console.log(err) }
@@ -58,7 +66,7 @@ const Antikeimeniki = () => {
 
             fetchHistory();
         }
-        if (!!patientContext.visitId && patientContext.visitId === 'new') {
+        if (patientContext.visitId === 'new') {
             fetchPreviousHistory()
         }
 
@@ -72,6 +80,8 @@ const Antikeimeniki = () => {
     const piesiInputRef = useRef();
     const weightInputRef = useRef();
     const heightInputRef = useRef();
+
+    const teleutaia_emminos_risiInputRef = useRef();
     const test_volumeInputRef = useRef();
 
     const tektInputRef = useRef();
@@ -103,9 +113,10 @@ const Antikeimeniki = () => {
                     sfiksis: sfiksisInputRef.current.value,
                     weight: weightInputRef.current.value,
                     height: heightInputRef.current.value,
-                    smkt: smktInputRef.current.value,
+                    smkt: (patientContext.gender === 'female') ? smktInputRef.current.value : null,
                     tekt: tektInputRef.current.value,
-                    // test_volume: test_volumeInputRef.current.value,                  
+                    test_volume: (patientContext.gender === 'male') ? test_volumeInputRef.current.value : null,
+                    teleutaia_emminos_risi: (patientContext.gender === 'female') ? teleutaia_emminos_risiInputRef.current.value : null,
 
 
                 }), {
@@ -133,10 +144,11 @@ const Antikeimeniki = () => {
                     sfiksis: sfiksisInputRef.current.value,
                     weight: weightInputRef.current.value,
                     height: heightInputRef.current.value,
-                    smkt: smktInputRef.current.value,
+                    smkt: (patientContext.gender === 'female') ? smktInputRef.current.value : null,
                     tekt: tektInputRef.current.value,
                     // if (patientContext.gender==='male')
                     test_volume: (patientContext.gender === 'male') ? test_volumeInputRef.current.value : null,
+                    teleutaia_emminos_risi: (patientContext.gender === 'female') ? teleutaia_emminos_risiInputRef.current.value : null,
 
                 }), {
                 'Content-Type': 'application/json',
@@ -177,6 +189,12 @@ const Antikeimeniki = () => {
                             <input ref={aitia_proseleusisInputRef} name='geniki_eikona' defaultValue={loadVisit.geniki_eikona} className={classes.fullSize} disabled={editAntikemeniki} />
                         </Col>
                     </Row>
+                    {(filesList.length > 0) && <Fragment>
+                        <Row>
+                            <Col> <span className={classes.subtitle}>Συνημμένα Αρχεία</span></Col>
+                        </Row>
+                        <VisitsFiles filesList={filesList} />
+                    </Fragment>}
                     <Row>
                         <Col> <span className={classes.subtitle}>Βιομετρικά</span></Col>
                     </Row>
@@ -209,25 +227,25 @@ const Antikeimeniki = () => {
                             </select>
                         </Col>
                     </Row>
-                    {/* {(patientContext.gender === 'female') && <Row> */}
-                    <Row>
-                        <Col>
-                            <label>Στάδιο Μαστών Κατά Tanner</label>
-                            <select ref={smktInputRef} name='smkt' disabled={editAntikemeniki}>
-                                <option value={0} selected disabled hidden>Select an Option</option>
-                                <option value={1} selected={loadVisit.smkt === 1}>1</option>
-                                <option value={2} selected={loadVisit.smkt === 2}>2</option>
-                                <option value={3} selected={loadVisit.smkt === 3}>3</option>
-                                <option value={4} selected={loadVisit.smkt === 4}>4</option>
-                                <option value={5} selected={loadVisit.smkt === 5}>5</option>
-                            </select>
-                        </Col>
-                    </Row>
-                    {/* </Row>} */}
-                    {(true) && <Row>
+                    {(patientContext.gender === 'female') && <Row>
+                        <Row>
+                            <Col>
+                                <label>Στάδιο Μαστών Κατά Tanner</label>
+                                <select ref={smktInputRef} name='smkt' disabled={editAntikemeniki}>
+                                    <option value={0} selected disabled hidden>Select an Option</option>
+                                    <option value={1} selected={loadVisit.smkt === 1}>1</option>
+                                    <option value={2} selected={loadVisit.smkt === 2}>2</option>
+                                    <option value={3} selected={loadVisit.smkt === 3}>3</option>
+                                    <option value={4} selected={loadVisit.smkt === 4}>4</option>
+                                    <option value={5} selected={loadVisit.smkt === 5}>5</option>
+                                </select>
+                            </Col>
+                        </Row>
+                    </Row>}
+                    {(patientContext.gender === 'female') && <Row>
                         <Col>
                             <label>Τελευταία Έμμηνος Ρύση</label>
-                            <input className={classes.date} type='date' disabled={editAntikemeniki} />
+                            <input ref={teleutaia_emminos_risiInputRef} defaultValue={(!!loadVisit.teleutaia_emminos_risi) ? moment(loadVisit.teleutaia_emminos_risi).format('YYYY-MM-DD') : null} className={classes.date} type='date' disabled={editAntikemeniki} />
                         </Col>
                     </Row>}
                     {(patientContext.gender === 'male') && <Row>
@@ -241,6 +259,7 @@ const Antikeimeniki = () => {
                     </Row>
                 </Card>
             </form>
+
         </Container>
     );
 };

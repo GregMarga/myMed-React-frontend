@@ -60,9 +60,9 @@ const ImageUpload = props => {
           {previewUrl && <img src={previewUrl} alt="Preview" />}
           {!previewUrl && <p>Παρακαλώ διαλέξτε μια φωτογραφία του ασθενή.</p>}
         </div>
-        <Button type="button" onClick={pickImageHandler}>
+        {!props.editBasics && <Button type="button" onClick={pickImageHandler}>
           {(!!props.imageSource) ? "Αλλάξτε Φωτογραφία" : "Επιλέξτε Φωτογραφία"}
-        </Button>
+        </Button>}
       </div>
       {!isValid && <p>{props.errorText}</p>}
       {/* </Card>

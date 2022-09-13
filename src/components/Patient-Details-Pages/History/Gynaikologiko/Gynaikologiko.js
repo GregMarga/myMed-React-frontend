@@ -112,24 +112,24 @@ const Gynaikologiko = (props) => {
                 <Card className={classes.erCard}>
                     <Row>
                         <Col sm lg="2" className='text-end'><label>Εμμηναρχή</label></Col>
-                        <Col sm lg="2" className='text-start'><input disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminarxiInputRef} defaultValue={gynaikologiko.emminarxi} required/></Col>
+                        <Col sm lg="2" className='text-start'><input min={1} max={99} disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminarxiInputRef} defaultValue={gynaikologiko.emminarxi} required/></Col>
                     </Row>
                     <Row>
                         <Col className='text-end'><label>Σταθερότητα</label></Col>
                         <Col>
-                            <select name='stability' onChange={stabilityChangeHandler} ref={stabilityInputRef} >
+                            <select name='stability' onChange={stabilityChangeHandler} ref={stabilityInputRef} disabled={editGynaikologiko}>
                                 <option value={false} selected={!gynaikologiko.stabilityInputRef}>ασταθής</option>
                                 <option value={true} selected >σταθερή</option>
                             </select>
                         </Col>
                         <Col className='text-end'><label>Διάρκεια Κύκλου</label></Col>
-                        <Col><input type='number' placeholder="διάρκεια σε ημέρες" defaultValue={(gynaikologiko.cycle_duration !== 28) ? (gynaikologiko.cycle_duration) : 28} disabled={(stability === false) || editGynaikologiko} ref={cycle_durationInputRef} /></Col>
+                        <Col><input min={1} max={999}  type='number' placeholder="διάρκεια σε ημέρες" defaultValue={(gynaikologiko.cycle_duration !== 28) ? (gynaikologiko.cycle_duration) : 28} disabled={(stability === false) || editGynaikologiko} ref={cycle_durationInputRef} /></Col>
                         <Col className='text-end'><label>Διάρκεια Περιόδου</label></Col>
-                        <Col ><input type='number'placeholder="διάρκεια σε ημέρες" disabled={editGynaikologiko} defaultValue={gynaikologiko.period_duration} ref={period_durationInputRef} /></Col>
+                        <Col ><input min={1} max={99} type='number'placeholder="διάρκεια σε ημέρες" disabled={editGynaikologiko} defaultValue={gynaikologiko.period_duration} ref={period_durationInputRef} /></Col>
                     </Row>
                     <Row>
                         <Col sm={2} className='text-end'><label>Εμμηνόπαυση</label></Col>
-                        <Col sm={2} className='text-start'><input disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminopausiInputRef} defaultValue={gynaikologiko.emminopausi} /></Col>
+                        <Col sm={2} className='text-start'><input min={1} max={99} disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminopausiInputRef} defaultValue={gynaikologiko.emminopausi} /></Col>
                     </Row>
                     {!isLoading && <Row className="justify-content-sm-end">
                         <Col >

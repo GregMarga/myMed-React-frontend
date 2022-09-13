@@ -141,7 +141,7 @@ const Auth = () => {
                             type="text"
                             label="Όνομα"
                             validators={[VALIDATOR_REQUIRE()]}
-                            errorText="Please enter a name."
+                            errorText="Παρακαλώ εισάγετε ένα όνομα."
                             onInput={inputHandler}
                         />
                     )}
@@ -151,7 +151,7 @@ const Auth = () => {
                         type="email"
                         label="E-Mail"
                         validators={[VALIDATOR_EMAIL()]}
-                        errorText="Please enter a valid email address."
+                        errorText="Παρακαλώ εισάγετε ένα έγκυρο email."
                         onInput={inputHandler}
                     />
                     <Input
@@ -160,7 +160,7 @@ const Auth = () => {
                         type="password"
                         label="Κωδικός"
                         validators={[VALIDATOR_MINLENGTH(5)]}
-                        errorText="Please enter a valid password, at least 5 characters."
+                        errorText="Παρακαλώ εισάγετε έναν έγκυρο κωδικό, τουλάχιστον 5 χαρακτήρες."
                         onInput={inputHandler}
                     />
                     <Button type="submit" disabled={!formState.isValid}>

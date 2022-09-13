@@ -1,18 +1,20 @@
 import { Row, Col } from "react-bootstrap";
 import classes from './PatientProfile.module.css';
 import profile from './profile.webp';
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/auth-context";
 import { PatientContext } from "../../context/patient-context";
 import { useHttpClient } from "../../hooks/http-hook";
 import moment from "moment";
-import { useParams } from "react-router-dom";
+import ErrorModal from "../UI/ErrorModal";
+import { Link, useParams } from "react-router-dom";
 
 const BasicInfo = (props) => {
     const [loadedBasics, setLoadedBasics] = useState({ name: '', sirname: '', amka: '', diagnosis: '', tel: '', dateOfBirth: '', job: '', gender: '', area: '', address: '', postalCode: '', familyStatus: '', fathersName: '', imageName: null })
     const auth = useContext(AuthContext);
     const patientContext = useContext(PatientContext)
-    const { isLoading, error, clearError, sendRequest } = useHttpClient()
+    const { error, clearError, sendRequest } = useHttpClient();
+    const params = useParams()
 
 
     const fetchPatients = async () => {
@@ -39,84 +41,92 @@ const BasicInfo = (props) => {
 
 
     return (
-        <Row className={classes.basicInfo}>
-            <Col md={2} className='text-center'>
-                <div>
-                    <label>Όνομα:</label>
-                    <span>{loadedBasics.name}</span>
-                </div>
-                <div>
-                    <label>Τόπος Γέννησης:</label>
-                    <span></span>
-                </div>
-                <div>
-                    <label>Επάγγελμα:</label>
-                    <span>{loadedBasics.job}</span>
-                </div>
-                <div>
-                    <label>Τ.Κ:</label>
-                    <span></span>
-                </div>
-            </Col>
-            <Col md={3} className='text-center'>
-                <div>
-                    <label>Πατρώνυμο:</label>
-                    <span>{loadedBasics.fathersName}</span>
-                </div>
-                <div>
-                    <label>Ημ/ Γεννήσης:</label>
-                    <span>{(!!loadedBasics.dateOfBirth) ? moment(loadedBasics.dateOfBirth).format('DD-MM-YYYY') : ''}</span>
-                </div>
-                <div>
-                    <label>Οικογενειακή Κατάσταση:</label>
-                    <span></span>
-                </div>
-                <div>
-                    <label>E-mail:</label>
-                    <span>{loadedBasics.email}</span>
-                </div>
-            </Col>
-            <Col md={2} className='text-center'>
-                <div>
-                    <label>Επώνυμο:</label>
-                    <span>{loadedBasics.sirname}</span>
-                </div>
-                <div>
-                    <label>Φύλο:</label>
-                    <span>{(loadedBasics.gender === 'male') ? 'Άρρεν' : 'Θήλυ'}</span>
-                </div>
-                <div>
-                    <label>Περιοχή:</label>
-                    <span>{loadedBasics.area}</span>
-                </div>
-                <div>
-                    <label>Τηλέφωνο:</label>
-                    <span>{loadedBasics.tel}</span>
-                </div>
-            </Col>
-            <Col md={2} className='text-center'>
-                <div>
-                    <label>ΑΜΚΑ:</label>
-                    <span>{loadedBasics.amka}</span>
-                </div>
-                <div>
-                    <label>Οικογενειακή Κατάσταση:</label>
-                    <span></span>
-                </div>
-                <div>
-                    <label>Διεύθυνση:</label>
-                    <span></span>
-                </div>
-            </Col>
+        <Fragment>
+            {!!error && < ErrorModal onClear={clearError} error={error} />}
+            <Row className={classes.basicInfo}>
+                <Col md={2} className='text-center'>
+                    <div>
+                        <label>Όνομα:</label>
+                        <span>{loadedBasics.name}</span>
+                    </div>
+                    <div>
+                        <label>Τόπος Γέννησης:</label>
+                        <span>{loadedBasics.placeOfBirth}</span>
+                    </div>
+                    <div>
+                        <label>Επάγγελμα:</label>
+                        <span>{loadedBasics.job}</span>
+                    </div>
+                    <div>
+                        <label>Τηλέφωνο:</label>
+                        <span>{loadedBasics.tel}</span>
+                    </div>
+
+                </Col>
+                <Col md={3} className='text-center'>
+                    <div>
+                        <label>Πατρώνυμο:</label>
+                        <span>{loadedBasics.fathersName}</span>
+                    </div>
+                    <div>
+                        <label>Ημ/ Γεννήσης:</label>
+                        <span>{(!!loadedBasics.dateOfBirth) ? moment(loadedBasics.dateOfBirth).format('DD-MM-YYYY') : ''}</span>
+                    </div>
+                    <div>
+                        <label>Οικογενειακή Κατάσταση:</label>
+                        {(loadedBasics.familyStatus === 'married') && <span>Παντρεμμένος/η</span>}
+                        {(loadedBasics.familyStatus === 'notmarried') && <span>Ανύπνατρος/η</span>}
+                        {(loadedBasics.familyStatus === 'divorced') && <span>Διαζευγμένος/η</span>}
+
+                    </div>
+                    <div>
+                        <label>E-mail:</label>
+                        <span>{loadedBasics.email}</span>
+                    </div>
+                </Col>
+                <Col md={2} className='text-center'>
+                    <div>
+                        <label>Επώνυμο:</label>
+                        <span>{loadedBasics.sirname}</span>
+                    </div>
+                    <div>
+                        <label>Φύλο:</label>
+                        <span>{(loadedBasics.gender === 'male') ? 'Άρρεν' : 'Θήλυ'}</span>
+                    </div>
+                    <div>
+                        <label>Περιοχή:</label>
+                        <span>{loadedBasics.area}</span>
+                    </div>
+
+                </Col>
+                <Col md={2} className='text-center'>
+                    <div>
+                        <label>ΑΜΚΑ:</label>
+                        <span>{loadedBasics.amka}</span>
+                    </div>
+                    <div>
+                        <label>Διεύθυνση:</label>
+                        <span>{loadedBasics.address}</span>
+                    </div>
+                    <div>
+                        <label>Τ.Κ:</label>
+                        <span>{loadedBasics.postalCode}</span>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div><button className={classes.editBasicsButton}><Link to={`/patients/${params.patientId}/basics`}> Επεξεργασία</Link></button></div>
+                </Col>
 
 
-            <Col md={3} className='text-end' xs={{ order: 'first' }} sm={{ order: 'last' }}>
-                <span className={classes.profileImage}>
-                    <img src={(!!loadedBasics.imageName) ? `http://localhost:5000/uploads/images/${loadedBasics.imageName}` : profile} />
-                </span>
+                <Col md={3} className='text-end' xs={{ order: 'first' }} sm={{ order: 'last' }}>
+                    <span className={classes.profileImage}>
+                        <img src={(!!loadedBasics.imageName) ? `http://localhost:5000/uploads/images/${loadedBasics.imageName}` : profile} />
+                    </span>
 
-            </Col>
-        </Row >
+                </Col>
+            </Row >
+            
+        </Fragment>
     );
 }
 

@@ -1,10 +1,16 @@
-.farmakaCard{
+.farmakaCard {
     margin-top: 3%;
     padding: 20px;
+
 }
-.farmakaCard2{
+
+.farmakaCard2 {
     padding: 20px;
+    max-height: 25vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
-.addFarmako{
+
+.addFarmako {
     margin-top: 2%;
 }

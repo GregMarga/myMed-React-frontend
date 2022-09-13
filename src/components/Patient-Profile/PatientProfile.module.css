@@ -4,13 +4,17 @@
     margin-left: 5%;
     padding: 20px;
 }
-.basicInfo{
-    margin-left: 10%;
+
+.basicInfo {
+    /* margin-left: 10%; */
+    /* border: 1px solid black; */
 }
-.basicInfo label{
+
+.basicInfo label {
     font-weight: 500;
     margin-right: 3px;
 }
+
 .profileImage {
     min-width: 11rem;
     min-height: 11rem;
@@ -26,14 +30,27 @@
     margin-left: 15%;
     overflow: hidden;
 }
-.profileImage img{
+
+.editBasicsButton {
+    font-size: 1.2rem;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.editBasicsButton a {
+    text-decoration: none;
+    color: black;
+}
+
+.profileImage img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  @media only screen and (max-width: 700px){
-    .profileImage{
+}
+
+@media only screen and (max-width: 700px) {
+    .profileImage {
         width: 50%;
         margin-left: calc((50%)/2);
     }
-  }
+}

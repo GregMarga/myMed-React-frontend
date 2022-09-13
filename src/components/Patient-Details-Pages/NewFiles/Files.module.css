@@ -4,6 +4,9 @@
 }
 .filesCard2{
     padding: 20px;
+    max-height: 75vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .addFile{
     margin-top: 2%;

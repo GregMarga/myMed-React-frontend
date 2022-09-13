@@ -7,7 +7,7 @@ const AllergiesLoaded = (props) => {
     const [addAllergy, setAddAllergy] = useState(false);
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' });
     
-   
+   console.log(props.allergiesList)
     
     let removeHandler=(nameToDelete)=>{
         console.log('out')

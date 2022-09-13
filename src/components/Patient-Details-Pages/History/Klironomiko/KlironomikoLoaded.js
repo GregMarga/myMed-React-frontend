@@ -19,7 +19,7 @@ const KlirnomikoLoaded = (props) => {
             console.log('in')
         }
     
-    },[props.cleronomicalList,props.removeFromAllergyList])
+    },[props.cleronomicalList,props.removeFromCleronomicalList])
     useEffect(()=>{
         if (selectedCondition.code!==''){
             props.addToCleronomicalList(selectedCondition.code+': '+selectedCondition.condition)

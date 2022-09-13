@@ -1,5 +1,8 @@
 .conditionsCard{
     padding: 20px;
+    max-height: 25vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .addCondition{
     margin-top: 2%;

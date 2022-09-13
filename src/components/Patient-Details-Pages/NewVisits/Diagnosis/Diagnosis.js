@@ -23,7 +23,6 @@ const Diagnosis = (props) => {
         const fetchDiagnosis = async () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-                console.log(responseData)
                 props.dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData } })
                 props.dispatch({ type: 'oldDiagnosis', payload: { oldDiagnosis: true } })
 

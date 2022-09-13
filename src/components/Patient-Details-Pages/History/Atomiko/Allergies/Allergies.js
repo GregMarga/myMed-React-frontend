@@ -42,11 +42,25 @@ const Allergies = (props) => {
         }
     }, [patientContext.patientId, sendRequest]);
 
+
     useEffect(() => {
-        if (allergiesList.length === 0) {
-            setAllergiesLoaded(false)
+        if (!!props.profil) {
+            setAllergiesLoaded(true)
         }
-    }, [allergiesList])
+    }, [props.profil])
+
+    useEffect(() => {
+        if (allergiesLoaded) {
+            setSelectedConditionsList([])
+        }
+    }, [allergiesLoaded])
+
+
+    // useEffect(() => {
+    //     if (allergiesList.length === 0) {
+    //         setAllergiesLoaded(false)
+    //     }
+    // }, [allergiesList])
 
     // useEffect(() => {
     //     if (!!patientContext.anamnistikoId)
@@ -66,7 +80,7 @@ const Allergies = (props) => {
     }
     const addToAllergyList = async (allergyName) => {
         const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
-
+        console.log(allergyName, responseData)
         setAllergiesList((prevState) => {
 
             if (!checkIfInList(allergyName, allergiesList)) {
@@ -75,6 +89,24 @@ const Allergies = (props) => {
             }
             else return [...prevState];
         })
+        if (allergiesLoaded && allergiesList.length > 0) {
+            console.log('innnnnnnnnn')
+            try {
+                await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/allergies_loaded`, 'POST',
+                    JSON.stringify({
+                        name: allergyName,
+                        _id: responseData
+                    })
+                    , {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + auth.token
+                    }
+                );
+
+            } catch (err) {
+
+            }
+        }
     }
     const removeFromAllergyList = async (allergyId) => {
         console.log(allergyId)
@@ -89,7 +121,7 @@ const Allergies = (props) => {
             })
 
         } catch (err) {
-            console.log(err)
+
         }
     }
 
@@ -99,14 +131,14 @@ const Allergies = (props) => {
         if (event.target.checked) {
             const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             setAllergiesList((prevState) => {
-                if (!checkIfInList(event.target.value,allergiesList)) {
+                if (!checkIfInList(event.target.value, allergiesList)) {
                     return [...prevState, { name: event.target.value, _id: responseData }]
                 }
                 else return [...prevState];
             })
         }
         else if (!event.target.checked) {
-            console.log(event.target.value,selectedConditionsList)
+            console.log(event.target.value, selectedConditionsList)
             if (checkIfInList(event.target.value, selectedConditionsList)) {
                 setSelectedConditionsList(prevState => {
                     return prevState.filter(allergy => {
@@ -156,13 +188,21 @@ const Allergies = (props) => {
     return (
 
         <Container>
-            {!!error && <ErrorModal error={error} clearError={clearError} />}
+            {!!error && <ErrorModal error={error} onClear={clearError} />}
 
             {(!props.profil) && <Row><Col className="text-center"><div className={classes.title}><h4>Αλλεργίες</h4></div></Col></Row>}
             {isLoading && allergiesLoaded && <LoadingSpinner />}
             <form className={(!!props.profil) ? classes.infoAllergiesForm : classes.allergiesForm} onSubmit={submitHandler}>
                 <Card className={(!!props.profil) ? classes.infoAllergiesCard : classes.allergiesForm}>
-                    {allergiesLoaded && <AllergiesLoaded allergiesList={allergiesList} addToAllergyList={addToAllergyList} removeFromAllergyList={removeFromAllergyList} />}
+                    {allergiesLoaded && (allergiesList.length > 0) && <AllergiesLoaded allergiesList={allergiesList} addToAllergyList={addToAllergyList} removeFromAllergyList={removeFromAllergyList} />}
+                    {allergiesLoaded && (allergiesList.length === 0) && <Fragment>
+                        <Row>
+                            <Col className="text-center">
+                                Δεν υπάρχουν καταγεγραμμένες αλλεργίες,για να προσθέσετε πατήστε
+                                <button type='button' className={classes.addLoaded} onClick={() => { setAllergiesLoaded(false) }}>Προσθήκη</button>
+                            </Col>
+                        </Row>
+                    </Fragment>}
                     {!allergiesLoaded && <Fragment>
                         <Row className="justify-content-space-around">
                             <Col xs={1}></Col>

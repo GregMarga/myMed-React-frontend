@@ -7,7 +7,7 @@ import DiagnosisListItem from "./DiagnosisListItem";
 
 const DiagnosisList = (props) => {
     const visitId = useParams().visitId
-   
+
     const loadHandler = async (event) => {
 
         props.dispatch({ type: 'oldDiagnosis', payload: { oldDiagnosis: true } })
@@ -36,7 +36,7 @@ const DiagnosisList = (props) => {
                         Για να φορτώσετε τις  διαγνώσεις της τελευταίας επίσκεψης πατήστε το κουμπί <button type='button' onClick={loadHandler}>Φόρτωση</button>
                     </Col>
                 </Row>} */}
-                {(props.diagnosisList.length === 0) && <Row>
+                {(props.diagnosisList.length === 0) && (!props.addDiagnosis) && <Row>
                     <Col className='text-center'>Η λίστα είναι άδεια,προσθέστε μια διάγνωση.</Col>
                 </Row>}
 

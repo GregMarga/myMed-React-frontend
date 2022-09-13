@@ -5,8 +5,6 @@ import TherapeiaListItem from "./TherapeiaListItem";
 import classes from './TherapeiaList.module.css'
 
 const TherapeiaList = (props) => {
-
-    console.log(props.therapeiaList)
     const visitId = useParams().visitId
     const patientId = useParams().patientId;
 

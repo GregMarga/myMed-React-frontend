@@ -4,6 +4,9 @@
 
 .visitsListCard {
     padding: 20px;
+    max-height: 25vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .visitButton {
