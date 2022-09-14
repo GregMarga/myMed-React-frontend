@@ -76,7 +76,7 @@ const Basic = (props) => {
 
     const fetchPatients = async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             console.log(responseData)
             setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, email: responseData.email });
             if (!!responseData.files) {
@@ -125,7 +125,7 @@ const Basic = (props) => {
                 formData.append('fathersName', fathersNameInputRef.current.value)
                 formData.append('patientId', patientContext.patientId)   ////////
 
-                const responseData = await sendRequest(`http://localhost:5000/patients/new/basic/image`,
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/new/basic/image`,
                     'POST',
                     formData
                 );
@@ -140,7 +140,7 @@ const Basic = (props) => {
         } else {
             try {
 
-                const responseData = await sendRequest(`http://localhost:5000/patients/new/basic`,
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/new/basic`,
                     'POST',
                     JSON.stringify({
                         uid: auth.userId,
@@ -201,7 +201,7 @@ const Basic = (props) => {
                 formData.append('patientId', patientContext.patientId)   ////////
                 console.log(formData)
 
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic/image`,
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/basic/image`,
                     'PATCH',
                     formData
                 );
@@ -212,7 +212,7 @@ const Basic = (props) => {
         } else {
             try {
 
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`,
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/basic`,
                     'PATCH',
                     JSON.stringify({
                         patientId: patientContext.patientId,
@@ -276,7 +276,7 @@ const Basic = (props) => {
                             </Col>
 
                             <Col className="text-center">
-                                <ImageUpload editBasics={editBasics} center imageSource={(!!loadedBasics.imageName) ? `http://localhost:5000/uploads/images/${loadedBasics.imageName}` : null} onInput={inputHandler} id='image' />
+                                <ImageUpload editBasics={editBasics} center imageSource={(!!loadedBasics.imageName) ? `${process.env.REACT_APP_BACKEND_URL}/uploads/images/${loadedBasics.imageName}` : null} onInput={inputHandler} id='image' />
                             </Col>
                         </Row>
                         <Row className='justify-content-center'>

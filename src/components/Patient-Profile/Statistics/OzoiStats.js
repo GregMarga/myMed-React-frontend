@@ -32,7 +32,7 @@ const OzoiStats = (props) => {
     useEffect(() => {
         const fetchOzoiStats = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/statistics/ozoi`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/statistics/ozoi`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 if (responseData.ozosData.length>0){
                 setOzoiData(responseData.ozosData)

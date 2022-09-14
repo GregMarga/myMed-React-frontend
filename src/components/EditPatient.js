@@ -36,7 +36,7 @@ const EditPatient = (props) => {
     useEffect(() => {
         const fetchPatients = async () => {
             try {
-                const data = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'GET', null, {
+                const data = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${props.patientId}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
                 setLoadedPatient({ sirname: data.sirname, name: data.name, diagnosis: data.diagnosis, dateOfBirth: moment(data.dateOfBirth).format('YYYY-MM-DD'), tel: data.tel, amka: data.amka })
@@ -51,18 +51,6 @@ const EditPatient = (props) => {
 
 
 
-
-    // fetch(`http://localhost:5000/patients/${props.patientId}`
-    // ).then((response) => {
-    //     return response.json()
-    // })
-    //     .then((data) => {
-    //         setLoadedPatient({ sirname: data.sirname, name: data.name, fathersName: data.fathersName, age: data.age, tel: data.tel, amka: data.amka });
-    //     })
-    //     .catch((err) => {
-    //         console.log(err.message);
-    //     });
-
     async function submitHandler(event) {
         event.preventDefault();
         const updatedPatient = {
@@ -73,7 +61,7 @@ const EditPatient = (props) => {
             tel: TelInputRef.current.value,
             amka: amkaInputRef.current.value
         };
-        const response = await sendRequest(`http://localhost:5000/patients/${props.patientId}`, 'PATCH', JSON.stringify(updatedPatient),
+        const response = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${props.patientId}`, 'PATCH', JSON.stringify(updatedPatient),
             {
                 Authorization: 'Bearer ' + auth.token,
                 'Content-Type': 'application/json'

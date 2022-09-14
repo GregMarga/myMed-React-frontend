@@ -18,8 +18,10 @@ const PatientSearch = (props) => {
                     <Col><h4 className={classes.h4s}>Αναζήτηση ασθενή</h4></Col>
                 </Row>
                 <Row>
-                    <Col >
+                    <Col md={4} className="text-md-end">
                         <label className={classes.labels}>ΑΜΚΑ Ασθενή</label>
+                    </Col>
+                    <Col className="text-start" >
                         <input className={classes.inputs} type='text' onChange={changeAmkaHandler} value={amka} />
                     </Col>
                 </Row>

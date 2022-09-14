@@ -22,7 +22,7 @@ const Therapeia = (props) => {
     useEffect(() => {
         const fetchTherapeia = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/therapeia`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/therapeia`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 props.dispatch({ type: 'loadTherapeiaList', payload: { loadedTherapeiaList: responseData } })
                 props.dispatch({ type: 'oldTherapeia', payload: { oldTherapeia: true } })
 
@@ -42,11 +42,11 @@ const Therapeia = (props) => {
     }
 
     const addTherapeiaHandler = async (newTherapeia) => {
-        const therapeiaId = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const therapeiaId = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
         try {
             props.dispatch({ type: 'addTherapeiaList', payload: { therapeia: {...newTherapeia,_id: therapeiaId} } })
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia`, 'POST',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia`, 'POST',
                 JSON.stringify({
                     _id: therapeiaId,
                     posotita: newTherapeia.posotita,
@@ -71,7 +71,7 @@ const Therapeia = (props) => {
         try {
             props.dispatch({ type: 'removeTherapeiaList', payload: { therapeiaList: therapeiaList } })
 
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia/${therapeiaIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia/${therapeiaIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
         } catch (err) { }
 
     }

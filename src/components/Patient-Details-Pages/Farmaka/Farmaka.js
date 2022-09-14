@@ -31,7 +31,7 @@ const Farmaka = (props) => {
 
     const fetchFarmaka = useCallback(async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/farmaka`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/farmaka`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             setFarmakaList(responseData.farmakaList)
 
 
@@ -72,7 +72,7 @@ const Farmaka = (props) => {
         })
 
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/farmaka/${farmakoIdToUpdate}`, 'PATCH',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/farmaka/${farmakoIdToUpdate}`, 'PATCH',
                 JSON.stringify({
                     dateOfStart: newFarmako.dateOfStart,
                     dateOfEnd: newFarmako.dateOfEnd

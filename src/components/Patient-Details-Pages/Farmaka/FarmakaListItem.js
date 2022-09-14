@@ -22,7 +22,7 @@ const FarmakaListItem = (props) => {
 
     const clickHandler = async (event) => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/farmaka/${props.id}`, 'DELETE', null, {
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/farmaka/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
             }
             );

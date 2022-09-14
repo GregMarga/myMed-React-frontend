@@ -29,7 +29,7 @@ const Klironomiko = (props) => {
     useEffect(() => {
         const fetchKlironomiko = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/klironomiko`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/klironomiko`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 if (responseData.length > 0) {
                     setCleronomicalList(responseData);
                     setKlironomikoLoaded(true)
@@ -66,7 +66,7 @@ const Klironomiko = (props) => {
         return res;
     }
     const addToCleronomicalList = async (allergyName) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
         setCleronomicalList((prevState) => {
 
@@ -79,7 +79,7 @@ const Klironomiko = (props) => {
         if (klirnomikoLoaded && cleronomicalList.length > 0) {
             console.log('innnnnnnnnn')
             try {
-                await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/klironomiko_loaded`, 'POST',
+                await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/klironomiko_loaded`, 'POST',
                     JSON.stringify({
                         name: allergyName,
                         _id: responseData
@@ -99,7 +99,7 @@ const Klironomiko = (props) => {
         console.log(klironomikoId)
         try {
             if (klirnomikoLoaded) {
-                await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/klironomiko/${klironomikoId}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+                await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/klironomiko/${klironomikoId}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
             }
             setCleronomicalList((prevState) => {
                 return prevState.filter((klironomiko) => {
@@ -113,7 +113,7 @@ const Klironomiko = (props) => {
 
     const changeHandler = async (event) => {
         if (event.target.checked) {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             setCleronomicalList((prevState) => {
                 if (!checkIfInList(event.target.value, cleronomicalList)) {
                     return [...prevState, { name: event.target.value, _id: responseData }]
@@ -142,7 +142,7 @@ const Klironomiko = (props) => {
     }
 
     const addToSelectedConditionsList = async (hit) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         setSelectedConditionsList((prevState) => {
             return [...prevState, { name: hit.code + ': ' + hit.condition, _id: responseData }];
         })
@@ -155,7 +155,7 @@ const Klironomiko = (props) => {
         event.preventDefault();
         console.log(cleronomicalList)
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/klironomiko`, 'POST',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/klironomiko`, 'POST',
                 JSON.stringify({
                     cleronomical: cleronomicalList
                 })

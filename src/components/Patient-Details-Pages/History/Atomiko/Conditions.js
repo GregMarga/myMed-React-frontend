@@ -10,15 +10,19 @@ import { PatientContext } from "../../../../context/patient-context";
 import { useHttpClient } from "../../../../hooks/http-hook";
 import ErrorModal from "../../../UI/ErrorModal";
 import LoadingSpinner from "../../../UI/LoadingSpinner";
+import DeleteConditionsModal from "../../../UI/DeleteConditionsModal";
 
 
 
 const Conditions = (props) => {
     const [conditionsList, setConditionsList] = useState([]);
     const [addCondition, setAddCondition] = useState(false);
+    const [selectedConditionId, setSelectedConditionId] = useState()
     const openAddForm = (event) => {
         setAddCondition(true);
     }
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
 
     const auth = useContext(AuthContext);
     const patientContext = useContext(PatientContext);
@@ -31,7 +35,7 @@ const Conditions = (props) => {
     useEffect(() => {
         const fetchConditions = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/conditions`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/conditions`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setConditionsList(responseData);
             } catch (err) { }
 
@@ -44,9 +48,18 @@ const Conditions = (props) => {
     }, [patientContext.patientId, sendRequest, props.profil]);
 
 
+    const openDeleteModal = (id) => {
+        setDeleteModalIsOpen(true);
+        setSelectedConditionId(id);
+    }
+
+    const closeDeleteModal = () => {
+        setDeleteModalIsOpen(false)
+    }
+
     const addConditionHandler = async (condition) => {
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/condition`, 'POST',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/condition`, 'POST',
                 JSON.stringify({
                     _id: condition._id,
                     name: condition.name,
@@ -71,30 +84,25 @@ const Conditions = (props) => {
 
     }
 
-    const removeConditionHandler = async (conditionIdToDelete) => {
+    const removeConditionHandler = async () => {
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/condition/${conditionIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/condition/${selectedConditionId}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
 
             setConditionsList((prevState) => {
                 return prevState.filter(condition => {
-                    return condition._id !== conditionIdToDelete
+                    return condition._id !== selectedConditionId
                 })
             })
+            setDeleteModalIsOpen(false);
         } catch (err) { }
 
     }
 
     const editConditionHandler = async (addedCondition, conditionIdtoUpdate) => {
-        setConditionsList(prevState => {
-            return prevState.map(condition => {
-                if (condition._id === conditionIdtoUpdate) {
-                    return condition = addedCondition
-                } else return condition = condition
-            })
-        })
-        console.log(addedCondition.status)
+
+
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/${conditionIdtoUpdate}`, 'PATCH',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/${conditionIdtoUpdate}`, 'PATCH',
                 JSON.stringify({
                     status: addedCondition.status,
                     dateOfDiagnosis: addedCondition.dateOfDiagnosis,
@@ -105,6 +113,14 @@ const Conditions = (props) => {
                     'Content-Type': 'application/json'
                 });
 
+            setConditionsList(prevState => {
+                return prevState.map(condition => {
+                    if (condition._id === conditionIdtoUpdate) {
+                        return condition = addedCondition
+                    } else return condition = condition
+                })
+            })
+
         } catch (err) { console.log(err) }
     }
 
@@ -113,12 +129,14 @@ const Conditions = (props) => {
         <Container >
             {!!error && <ErrorModal error={error} onClear={clearError} />}
             {!props.profil && <Row><Col className="text-center"><div className={classes.title}><h4>Παθήσεις</h4></div></Col></Row>}
+            {deleteModalIsOpen && <DeleteConditionsModal onConfirm={removeConditionHandler} onCancel={closeDeleteModal} description={'Για να επιβεβαιώσετε τη διαγραφή πληκτρολόγηστε το νούμερο:'} title='Διαγραφή Πάθησης' />}
+
             <Card className={classes.conditionsCard}>
                 {isLoading && <LoadingSpinner />}
                 <ConditionsHeader />
 
                 {addCondition && <ConditionsForm setAddCondition={setAddCondition} addConditionHandler={addConditionHandler} />}
-                <ConditionsList addCondition={addCondition} conditionsList={conditionsList} editConditionHandler={editConditionHandler} removeConditionHandler={removeConditionHandler} />
+                <ConditionsList addCondition={addCondition} conditionsList={conditionsList} editConditionHandler={editConditionHandler} openDeleteModal={openDeleteModal} removeConditionHandler={removeConditionHandler} />
 
                 <Row>
                     <Col>

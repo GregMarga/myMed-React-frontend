@@ -34,7 +34,7 @@ const FilesForm = (props) => {
             formData.append('dateOfDiagnosis', dateOfDiagnosisInputRef.current.value);
             formData.append('dateOfVisit', dateOfVisitInputRef.current.value);
 
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/uploads/exams`, 'POST', formData);
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/uploads/exams`, 'POST', formData);
             fileId = responseData.exam._id
             console.log(responseData);
 

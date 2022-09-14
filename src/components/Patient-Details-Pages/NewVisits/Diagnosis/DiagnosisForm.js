@@ -21,7 +21,7 @@ const DiagnosisForm = (props) => {
 
     const submitHandler = async (event) => {
         event.preventDefault()
-        const responseData = await sendRequest(`http://localhost:5000/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
         let diagnosis = {
             name: selectedCondition.code + ': ' + selectedCondition.condition,

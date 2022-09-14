@@ -1,5 +1,6 @@
 .allergiesForm {
     padding: 20px;
+    min-width: 400px;
 }
 
 .allergiesForm input {
@@ -8,6 +9,8 @@
 
 .infoAllergiesCard {
     padding: 20px;
+    min-width: none;
+
 }
 
 .allergiesForm label {

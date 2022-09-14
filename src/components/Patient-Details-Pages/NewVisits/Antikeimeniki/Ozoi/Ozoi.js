@@ -25,7 +25,7 @@ const Ozoi = (props) => {
 
         const fetchOzoi = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/ozos`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/ozos`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 
                 setOzosList((prevState) => {
                     return prevState.concat(responseData)
@@ -37,7 +37,7 @@ const Ozoi = (props) => {
 
         const fetchPreviousOzoi = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/previousOzos`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/previousOzos`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                
                 setOzosList(responseData);
 
@@ -55,11 +55,11 @@ const Ozoi = (props) => {
     }, [patientContext.visitId, sendRequest]);
 
     const addOzosHandler = async (ozos) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         ozos._id = responseData;
 
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/ozos`, 'POST',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/ozos`, 'POST',
                 JSON.stringify({
                     name: ozos.name,
                     length: ozos.depth,
@@ -82,7 +82,7 @@ const Ozoi = (props) => {
 
     const removeOzosHandler = async (ozosIdToDelete) => {
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/ozos/${ozosIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/ozos/${ozosIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
 
             setOzosList((prevState) => {
                 return prevState.filter(ozos => {
@@ -103,7 +103,7 @@ const Ozoi = (props) => {
             })
         })
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/ozos/${ozosIdtoUpdate}`, 'PATCH',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/631889e05aa8e7970c0e6155/visit/${patientContext.visitId}/ozos/${ozosIdtoUpdate}`, 'PATCH',
                 JSON.stringify({
                     length: addedOzos.length,
                     height: addedOzos.height,

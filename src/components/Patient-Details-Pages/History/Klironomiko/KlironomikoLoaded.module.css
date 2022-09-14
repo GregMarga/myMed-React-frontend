@@ -41,3 +41,17 @@
     font-size: 1.1rem;
     border-radius: 5px;
 }
+
+@media only screen and (max-width: 800px) {
+    .addAllergy button{
+        margin-left: 0;
+    }
+    .loadedAllergy,.addAllergy{
+        width: auto;
+        margin-left: 0;
+    }
+    .loadedAllergy button{
+        margin-left: 0;
+        
+    }
+}

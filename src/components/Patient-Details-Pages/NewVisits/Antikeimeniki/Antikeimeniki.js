@@ -4,7 +4,7 @@ import classes from './Antikeimeniki.module.css';
 import { useContext, useRef, useState, useEffect, Fragment } from "react";
 import SaveButton from '../../../UI/SaveButton';
 import EditFormButton from '../../../UI/EditFormButton';
-import BMI from "../../Visits/BMI";
+import BMI from "./BMI";
 import ErrorModal from "../../../UI/ErrorModal";
 import LoadingSpinner from "../../../UI/LoadingSpinner";
 import moment from "moment";
@@ -36,11 +36,11 @@ const Antikeimeniki = () => {
         const fetchHistory = async () => {
             console.log('fetchHistory')
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/${patientContext.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visits/${patientContext.visitId}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
                 setLoadVisit(responseData.visit);
                 setFilesList(responseData.filesList)
-                setBmiParams({ height: responseData.height, weight: responseData.weight })
+                setBmiParams({ height: responseData.visit.height, weight: responseData.visit.weight })
                 setEditAntikemeniki(true)
 
 
@@ -51,7 +51,7 @@ const Antikeimeniki = () => {
         const fetchPreviousHistory = async () => {
             console.log('fetchOldHistory')
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/oldAntikeimeniki`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visits/oldAntikeimeniki`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setLoadVisit(prevState => {
                     return { ...prevState, test_volume: '', height: responseData.height }
                 });
@@ -104,7 +104,7 @@ const Antikeimeniki = () => {
         event.preventDefault();
         console.log('submit')
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/antikeimeniki`, 'POST',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/antikeimeniki`, 'POST',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -133,7 +133,7 @@ const Antikeimeniki = () => {
         console.log('update')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visits/${patientContext.visitId}/antikeimeniki`, 'PATCH',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visits/${patientContext.visitId}/antikeimeniki`, 'PATCH',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -166,7 +166,7 @@ const Antikeimeniki = () => {
                 <Card className={classes.cardsNewVisit}>
 
                     <Row>
-                        <Col> <span className={classes.subtitle}>Γενικά</span></Col>
+                        <Col> <span className={classes.subtitleFirst}>Γενικά</span></Col>
                     </Row>
                     <Row>
                         <Col>

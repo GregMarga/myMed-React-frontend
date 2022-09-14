@@ -26,7 +26,7 @@ const Biometrics = (props) => {
     useEffect(() => {
         const fetchBiometrics = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/statistics/biometrics`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/statistics/biometrics`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 if (responseData.BMI_data.length > 0) {
                     setBmiData(responseData.BMI_data)
                     setShowDefault(false)

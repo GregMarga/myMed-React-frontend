@@ -40,7 +40,7 @@ const PatientForm = (props) => {
             amka: amkaInputRef.current.value,
             uid: auth.userId
         }
-        const response = await sendRequest('http://localhost:5000/patients', 'POST', JSON.stringify(enteredPatient), {
+        const response = await sendRequest('${process.env.REACT_APP_BACKEND_URL}/patients', 'POST', JSON.stringify(enteredPatient), {
             Authorization: 'Bearer ' + auth.token,
             'Content-Type': 'application/json'
         });

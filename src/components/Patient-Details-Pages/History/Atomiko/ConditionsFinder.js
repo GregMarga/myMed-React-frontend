@@ -18,7 +18,7 @@ const ConditionsFinder = (props) => {
     useEffect(() => {
         const fetchConditionHits = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/new/conditions/name/${conditionInput}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/new/conditions/name/${conditionInput}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setHitList(responseData);
             } catch (err) { }
 

@@ -22,7 +22,7 @@ const Diagnosis = (props) => {
     useEffect(() => {
         const fetchDiagnosis = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 props.dispatch({ type: 'loadDiagnosisList', payload: { loadedDiagnosisList: responseData } })
                 props.dispatch({ type: 'oldDiagnosis', payload: { oldDiagnosis: true } })
 
@@ -47,7 +47,7 @@ const Diagnosis = (props) => {
         console.log('add')
         try {
             props.dispatch({ type: 'addDiagnosisList', payload: { diagnosis: newDiagnosis } })
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis`, 'POST',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis`, 'POST',
                 JSON.stringify({
                     _id: newDiagnosis._id,
                     name: newDiagnosis.name,
@@ -71,7 +71,7 @@ const Diagnosis = (props) => {
         try {
             props.dispatch({ type: 'removeDiagnosisList', payload: { diagnosisList: diagnosisList } })
 
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis/${diagnosisIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis/${diagnosisIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
         } catch (err) { }
 
 
@@ -85,7 +85,7 @@ const Diagnosis = (props) => {
         })
         try {
             props.dispatch({ type: 'editDiagnosisList', payload: { diagnosisList: tempList } })
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis/${diagnosisIdtoUpdate}`, 'PATCH',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis/${diagnosisIdtoUpdate}`, 'PATCH',
                 JSON.stringify({
                     status: addedDiagnosis.length,
                     dateOfDiagnosis: addedDiagnosis.dateOfDiagnosis,

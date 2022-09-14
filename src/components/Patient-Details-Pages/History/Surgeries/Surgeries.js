@@ -21,7 +21,7 @@ const Surgeries = (props) => {
     useEffect(() => {
         const fetchSurgeries = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/surgeries`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/surgeries`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setSurgeriesList(responseData);
             } catch (err) { }
 
@@ -37,10 +37,10 @@ const Surgeries = (props) => {
     }
 
     const addSurgeryHandler = async (surgery) => {
-        const id = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const id = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/surgery`, 'POST',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/surgery`, 'POST',
                 JSON.stringify({
                     _id: id,
                     title: surgery.title,
@@ -70,7 +70,7 @@ const Surgeries = (props) => {
     const removeSurgeryHandler = async (surgeryIdToDelete) => {
 
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/surgery/${surgeryIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/surgery/${surgeryIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
 
             setSurgeriesList((prevState) => {
                 return prevState.filter(surgery => {
@@ -91,7 +91,7 @@ const Surgeries = (props) => {
         })
 
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/surgery/${surgeryIdtoUpdate}`, 'PATCH',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/surgery/${surgeryIdtoUpdate}`, 'PATCH',
                 JSON.stringify({
                     title: addedSurgery.title,
                     dateOfEntrance: addedSurgery.dateOfEntrance,

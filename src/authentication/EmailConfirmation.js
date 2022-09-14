@@ -19,7 +19,7 @@ const EmailConfirmation = () => {
 
     useEffect(() => {
         const completeSignup = async () => {
-            const responseData = await sendRequest(`http://localhost:5000/users/${userId}/login`, 'GET', null, { 'Content-Type': 'application/json' })
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/${userId}/login`, 'GET', null, { 'Content-Type': 'application/json' })
             console.log(responseData);
             auth.login(responseData.userId, responseData.token);
         }

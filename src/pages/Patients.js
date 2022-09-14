@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap';
 import PatientsList from '../components/PatientsList';
-import PatientsListHeader from '../components/PatientsListHeader';
+// import PatientsListHeader from '../components/PatientsListHeader';
 import PatientSearch from '../components/UI/PatientSearch';
 import Backdrop from '../components/UI/Backdrop';
 import classes from './Patients.module.css';
@@ -51,11 +51,12 @@ const Patients = () => {
     const [state, dispatch] = useReducer(reducer, defaultSearch);
 
 
+
     useEffect(() => {
         const fetchPatients = async () => {
             try {
                 const responseData = await sendRequest(
-                    `http://localhost:5000/patients/getPatients/${auth.userId}?name=${state.name}&sirname=${state.sirname}&diagnosis=${state.diagnosis}&tel=${state.tel}&amka=${state.amka}`, 'GET', null, {
+                    `${process.env.REACT_APP_BACKEND_URL}/patients/getPatients/${auth.userId}?name=${state.name}&sirname=${state.sirname}&diagnosis=${state.diagnosis}&tel=${state.tel}&amka=${state.amka}`, 'GET', null, {
                     Authorization: 'Bearer ' + auth.token
                 });
                 setLoadedPatients(responseData);
@@ -66,9 +67,6 @@ const Patients = () => {
     }, [sendRequest, state]);
 
 
-    function addPatientHandler() {
-        setModalIsOpen(true);
-    }
 
     function closeHandler() {
         setModalIsOpen(false);
@@ -93,7 +91,7 @@ const Patients = () => {
         });
     }
     async function deletePatientHandler() {
-        const responseDeletedPatient = await sendRequest(`http://localhost:5000/patients/${patientToDelete.id}`, 'DELETE', null, {
+        const responseDeletedPatient = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientToDelete.id}`, 'DELETE', null, {
             Authorization: 'Bearer ' + auth.token
         }
         );

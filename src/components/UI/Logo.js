@@ -51,8 +51,8 @@ const Logo = (props) => {
             <Navbar.Toggle aria-controls='basic-navbar-nav' />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Container fluid >
-                    <Row>
-                        <Col>
+                    <Row className={classes.logoLink}>
+                        <Col  >
                             <Link to='/'>
                                 <img src={logo} alt='logo' />
                             </Link>
@@ -62,18 +62,18 @@ const Logo = (props) => {
                         </Col>
                         {/* <Col>Βασικά</Col>
                 <Col>Βασικά</Col> */}
-                        {auth.isLoggedIn && <Col xs={2} className='text-center'><button className={classes.logoutButton} onClick={auth.logout}>Αποσύνδεση</button></Col>}
+                        {auth.isLoggedIn && <Col xs={6} lg={2} className='text-center'><button className={classes.logoutButton} onClick={auth.logout}>Αποσύνδεση</button></Col>}
                         {/* <Col>Μία εφαρμογή διαχείρισης δεδομένων ασθενών.</Col> */}
                     </Row>
                     {addPatient && <Row className="justify-content-md-end">
                         <Col className="text-center" md={4} lg={2} xxl={1}><button className={classes.linkButton}> <NavLink to={`/`}>Αρχική</NavLink></button></Col>
-                        <Col className="text-center"md={4} lg={2} xxl={1}>
+                        <Col className="text-center" md={4} lg={2} xxl={1}>
                             <button className={classes.linkButton}>  <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/basic`}>Βασικά</NavLink></button>
                         </Col>
-                        <Col className="text-center"md={4} lg={2} xxl={2}><button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/anamnistiko`}>Αναμνηστικό</NavLink></button></Col>
-                        <Col className="text-center" md={4} lg={2} xxl={2}> <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/farmaka`}>Φαρμακευτική Αγωγή</NavLink></button></Col>
-                        <Col className="text-center" md={4} lg={2} xxl={1}>  <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/aad`}>Αρχεία</NavLink></button></Col>
-                        <Col className="text-center" md={4} lg={2} xxl={2}> <button className={classes.linkButton}>  <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/visits`}> Δημιουργία Επίσκεψης</NavLink></button></Col>
+                        {(!!patientContext.patientId) && <Col className="text-center" md={4} lg={2} xxl={2}><button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/anamnistiko`}>Αναμνηστικό</NavLink></button></Col>}
+                        {(!!patientContext.patientId) && <Col className="text-center" md={4} lg={2} xxl={2}> <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/farmaka`}>Φαρμακευτική Αγωγή</NavLink></button></Col>}
+                        {(!!patientContext.patientId) && <Col className="text-center" md={4} lg={2} xxl={1}>  <button className={classes.linkButton}> <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/aad`}>Αρχεία</NavLink></button></Col>}
+                        {(!!patientContext.patientId) && <Col className="text-center" md={4} lg={2} xxl={2}> <button className={classes.linkButton}>  <NavLink activeClassName={classes.active} to={`/patients/${params.patientId}/visits`}> Δημιουργία Επίσκεψης</NavLink></button></Col>}
 
                     </Row>}
                     {profile && !showVisit && !props.basic && <Row className="justify-content-md-end">

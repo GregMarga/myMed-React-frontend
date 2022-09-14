@@ -19,7 +19,7 @@ const BasicInfo = (props) => {
 
     const fetchPatients = async () => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/basic`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             setLoadedBasics({ name: responseData.name, sirname: responseData.sirname, amka: responseData.amka, dateOfBirth: responseData.dateOfBirth, diagnosis: responseData.diagnosis, tel: responseData.tel, placeOfBirth: responseData.placeOfBirth, address: responseData.address, area: responseData.area, job: responseData.job, fathersName: responseData.fathersName, familyStatus: responseData.familyStatus, gender: responseData.gender, postalCode: responseData.postalCode, email: responseData.email });
             patientContext.changeGender(responseData.gender)
             if (!!responseData.files) {
@@ -120,7 +120,7 @@ const BasicInfo = (props) => {
 
                 <Col md={3} className='text-end' xs={{ order: 'first' }} sm={{ order: 'last' }}>
                     <span className={classes.profileImage}>
-                        <img src={(!!loadedBasics.imageName) ? `http://localhost:5000/uploads/images/${loadedBasics.imageName}` : profile} />
+                        <img src={(!!loadedBasics.imageName) ? `${process.env.REACT_APP_BACKEND_URL}/uploads/images/${loadedBasics.imageName}` : profile} />
                     </span>
 
                 </Col>

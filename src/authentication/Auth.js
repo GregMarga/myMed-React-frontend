@@ -70,19 +70,11 @@ const Auth = () => {
 
     const authSubmitHandler = async event => {
         event.preventDefault();
-        // if (!isLoginMode) {
-        //     setSendingEmail(true);
-        //     const data=sendRequest('http://localhost:5000/email', 'POST',
-        //         JSON.stringify({ email: formState.inputs.email.value }), {
-        //         'Content-Type': 'application/json'
-        //     });
-        //     setSendingEmail(false);
-        //     notify(data.msg)
-
-        // }
+        console.log(process.env.REACT_APP_BACKEND_URL)
+       
         if (isLoginMode) {
             try {
-                const responseData = await sendRequest('http://localhost:5000/users/login', 'POST',
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/login`, 'POST',
                     JSON.stringify({
                         email: formState.inputs.email.value,
                         password: formState.inputs.password.value
@@ -94,7 +86,7 @@ const Auth = () => {
 
         } else {
             try {
-                const responseData = await sendRequest('http://localhost:5000/users/signup', 'POST',
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, 'POST',
                     JSON.stringify({
                         name: formState.inputs.name.value,
                         email: formState.inputs.email.value,
@@ -108,22 +100,7 @@ const Auth = () => {
                 // auth.login(responseData.userId, responseData.token);
             } catch (err) { }
         }
-        // try {
-        //         const responseData = await sendRequest('http://localhost:5000/users/signup', 'POST',
-        //             JSON.stringify({
-        //                 name: formState.inputs.name.value,
-        //                 email: formState.inputs.email.value,
-        //                 password: formState.inputs.password.value
-        //             }),
-        //             {
-        //                 'Content-Type': 'application/json'
-        //             });
-        //         notify(responseData.msg)
-        //         console.log(responseData)
-        //         auth.login(responseData.userId, responseData.token);
-        //     } catch (err) { }
-        // }
-
+       
     };
     return (
         <Fragment>

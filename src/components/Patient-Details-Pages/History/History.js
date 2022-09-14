@@ -47,7 +47,7 @@ const History = (props) => {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/female`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/female`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 setConditionsList(responseData.conditionsList);
                 setSurgeriesList(responseData.surgeries);
@@ -77,7 +77,7 @@ const History = (props) => {
         event.preventDefault();
         console.log('submit')
         try {
-            const responseDate = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko`, 'POST',
+            const responseDate = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko`, 'POST',
                 JSON.stringify({
                     allergies: allergiesList,
                     cleronomical: cleronomicalList,
@@ -108,7 +108,7 @@ const History = (props) => {
         event.preventDefault();
 
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko`, 'PATCH',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko`, 'PATCH',
                 JSON.stringify({
                     allergies: allergiesList,
                     cleronomical: cleronomicalList,

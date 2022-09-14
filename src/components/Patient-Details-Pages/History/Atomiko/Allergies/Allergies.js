@@ -29,7 +29,7 @@ const Allergies = (props) => {
     useEffect(() => {
         const fetchAllergies = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/allergies`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/allergies`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 if (responseData.length > 0) {
                     setAllergiesList(responseData);
                     setAllergiesLoaded(true)
@@ -79,7 +79,7 @@ const Allergies = (props) => {
         return res;
     }
     const addToAllergyList = async (allergyName) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         console.log(allergyName, responseData)
         setAllergiesList((prevState) => {
 
@@ -92,7 +92,7 @@ const Allergies = (props) => {
         if (allergiesLoaded && allergiesList.length > 0) {
             console.log('innnnnnnnnn')
             try {
-                await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/allergies_loaded`, 'POST',
+                await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/allergies_loaded`, 'POST',
                     JSON.stringify({
                         name: allergyName,
                         _id: responseData
@@ -112,7 +112,7 @@ const Allergies = (props) => {
         console.log(allergyId)
         try {
             if (allergiesLoaded) {
-                await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/allergies/${allergyId}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+                await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/allergies/${allergyId}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
             }
             setAllergiesList((prevState) => {
                 return prevState.filter((allergy) => {
@@ -129,7 +129,7 @@ const Allergies = (props) => {
     const changeHandler = async (event) => {
 
         if (event.target.checked) {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
             setAllergiesList((prevState) => {
                 if (!checkIfInList(event.target.value, allergiesList)) {
                     return [...prevState, { name: event.target.value, _id: responseData }]
@@ -158,7 +158,7 @@ const Allergies = (props) => {
     }
 
     const addToSelectedConditionsList = async (hit) => {
-        const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         setSelectedConditionsList((prevState) => {
             return [...prevState, { name: hit.code + ': ' + hit.condition, _id: responseData }];
         })
@@ -170,7 +170,7 @@ const Allergies = (props) => {
         event.preventDefault();
         console.log(allergiesList)
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/allergies`, 'POST',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/allergies`, 'POST',
                 JSON.stringify({
                     allergies: allergiesList
                 })
@@ -193,7 +193,7 @@ const Allergies = (props) => {
             {(!props.profil) && <Row><Col className="text-center"><div className={classes.title}><h4>Αλλεργίες</h4></div></Col></Row>}
             {isLoading && allergiesLoaded && <LoadingSpinner />}
             <form className={(!!props.profil) ? classes.infoAllergiesForm : classes.allergiesForm} onSubmit={submitHandler}>
-                <Card className={(!!props.profil) ? classes.infoAllergiesCard : classes.allergiesForm}>
+                <Card className={(allergiesLoaded ) ? classes.infoAllergiesCard : classes.allergiesForm}>
                     {allergiesLoaded && (allergiesList.length > 0) && <AllergiesLoaded allergiesList={allergiesList} addToAllergyList={addToAllergyList} removeFromAllergyList={removeFromAllergyList} />}
                     {allergiesLoaded && (allergiesList.length === 0) && <Fragment>
                         <Row>

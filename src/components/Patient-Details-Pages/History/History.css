@@ -22,6 +22,7 @@
 } */
 .Collapsible__contentInner{
     background-color: #ebeced;
+    overflow: scroll;
 }
 .history label{
     font-weight: bold;

@@ -25,7 +25,7 @@ const ConditionsForm = (props) => {
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        const id = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const id = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
 
         let condition = {

@@ -20,14 +20,14 @@ const FarmakoFinder = (props) => {
     useEffect(() => {
         const fetchNameHits = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/new/farmako/name/${drugInput}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/new/farmako/name/${drugInput}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setHitList(responseData);
             } catch (err) { }
 
         };
         const fetchATCNameHits = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/new/farmako/ATC_name/${atcInput}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/new/farmako/ATC_name/${atcInput}`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setHitList(responseData);
             } catch (err) { }
 
@@ -70,7 +70,7 @@ const FarmakoFinder = (props) => {
     return (
         <Row>
            
-            <Col className="text-start">
+            <Col className="text-center" xs={12} sm={6}>
             {(props.therapeia) && <label className="drastiki__ousia">Όνομα Φαρμάκου</label>}
                 <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugNames" name="drugName" id="drugName" value={drugInput} onChange={nameChangeHandler} defaultValue={selectedHit.name} />
                 <datalist id="drugNames" >
@@ -79,7 +79,7 @@ const FarmakoFinder = (props) => {
                 </datalist>
             </Col>
             
-            <Col className="text-start">
+            <Col className="text-center" xs={12} sm={6}>
             {(props.therapeia) && <label className="drastiki__ousia">Δραστική Ουσία</label>}
                 <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugATCs" name="drugATC" id="drugATC" defaultValue={selectedHit.ATC_name} onChange={atcNameChangeHandler} required/>
                 <datalist id="drugATCs">

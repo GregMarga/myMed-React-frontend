@@ -22,7 +22,7 @@ const Pregnacy = (props) => {
     useEffect(() => {
         const fetchPregnacies = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacies`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacies`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 setPregnaciesList(responseData);
             } catch (err) { console.log(err) }
 
@@ -34,9 +34,9 @@ const Pregnacy = (props) => {
 
 
     const addPregnacyHandler = async (pregnacy) => {
-        const id = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+        const id = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacy`, 'POST',
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacy`, 'POST',
                 JSON.stringify({
                     _id: id,
                     date_of_birth: pregnacy.date_of_birth,
@@ -59,7 +59,7 @@ const Pregnacy = (props) => {
     const removePregnacyHandler = async (pregnacyIdToDelete) => {
 
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacy/${pregnacyIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacy/${pregnacyIdToDelete}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
 
             setPregnaciesList((prevState) => {
                 return prevState.filter(pregnacy => {
@@ -81,7 +81,7 @@ const Pregnacy = (props) => {
         })
 
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacy/${pregnacyIdtoUpdate}`, 'PATCH',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/gynaikologiko/pregnacy/${pregnacyIdtoUpdate}`, 'PATCH',
                 JSON.stringify({
                     date_of_birth: addedPregnacy.date_of_birth,
                     gennisi: addedPregnacy.gennisi,

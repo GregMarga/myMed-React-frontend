@@ -8,13 +8,15 @@ import { Fragment, useState } from "react";
 
 const ConditionsListItem = (props) => {
     const [editForm, setEditForm] = useState(false)
+
     const clickHandler = (event) => {
-        console.log(props.id)
-        props.removeConditionHandler(props.id)
+            props.openDeleteModal(props.id)
+        // props.removeConditionHandler(props.id)
     }
     const editHanlder = () => {
         setEditForm(true)
     }
+    
 
 
     return (
@@ -26,20 +28,20 @@ const ConditionsListItem = (props) => {
                 <Col className="text-center"><span>{props.dateOfDiagnosis}</span></Col>
                 <Col className="text-center" ><span>{props.dateOfHealing}</span></Col>
                 <Col className={`text-end ${classes.editButton}`} sm={1}>{
-                    (!!props.editConditionHandler) && <EditButton onClick={editHanlder}/>
+                    (!!props.editConditionHandler) && <EditButton onClick={editHanlder} />
                 }</Col>
                 <Col sm={1} className="text-start">
                     <DeleteButton onClick={clickHandler} />
                 </Col>
             </Row>}
-            {editForm && <ConditionsEditForm 
-                            setEditForm={setEditForm}
-                            condition={props.condition}
-                            editConditionHandler={props.editConditionHandler}
-                            status={props.status}
-                            dateOfDiagnosis={props.date_of_diagnosis}
-                            dateOfHealing={props.date_of_healing}
-                            id={props.id}
+            {editForm && <ConditionsEditForm
+                setEditForm={setEditForm}
+                condition={props.condition}
+                editConditionHandler={props.editConditionHandler}
+                status={props.status}
+                dateOfDiagnosis={props.date_of_diagnosis}
+                dateOfHealing={props.date_of_healing}
+                id={props.id}
             />}
         </Fragment>
     );

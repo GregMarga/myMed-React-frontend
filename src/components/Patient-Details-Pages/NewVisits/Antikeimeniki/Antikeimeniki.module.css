@@ -12,10 +12,12 @@
 }
 .date {
     width: 15%;
+    min-width: 100px;
 }
 
 .threeInput input {
     width: 30%;
+    min-width: 100px;
 }
 
 .invisible {
@@ -40,13 +42,24 @@
 .multiInputs input {
     width: 20%;
     margin-bottom: 1%;
+    min-width: 100px;
 }
 
 .fullSize {
     width: 60%;
 }
-
+.subtitleFirst{
+    display: inline-block;
+    margin-top: 0;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 2%;
+    margin-bottom: 0;
+}
 .subtitle {
+    display: inline-block;
+    margin-top: 20px;
     font-size: 1.3rem;
     font-weight: bold;
     text-decoration: underline;
@@ -63,5 +76,21 @@
 @media only screen and (max-width: 1000px) {
     .date {
       width: auto;
+    }
+    .multiInputs input {
+        width: 30%;
+        margin-bottom: 1%;
+    }
+  }
+  @media only screen and (max-width: 500px) {
+    .date {
+      width: 120px;
+    }
+    .multiInputs input {
+        width: 100px;
+        margin-bottom: 1%;
+    }
+    .threeInput input {
+        width: 100px;
     }
   }

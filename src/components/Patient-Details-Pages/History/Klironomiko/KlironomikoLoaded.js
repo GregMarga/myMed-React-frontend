@@ -33,7 +33,7 @@ const KlirnomikoLoaded = (props) => {
             {props.cleronomicalList.map((allergy) => {
                 return (
                     <Row className={classes.loadedAllergy} key={allergy._id}>
-                        <Col>
+                        <Col sm={12} md={10}>
                             <span>
                                 {allergy.name}
                             </span>
@@ -45,10 +45,10 @@ const KlirnomikoLoaded = (props) => {
                 )
             })}
              {addAllergy&&<Row className={classes.addAllergy}>
-                <Col  >
+                <Col  sm={12} md={10} >
                     <ConditionsFinder setSelectedCondition={setSelectedCondition} setAddAllergy={setAddAllergy}/>
                 </Col>
-                <Col xs={2}>
+                <Col sm={2}>
                     <button>Ακύρωση</button>
                 </Col>
             </Row>}

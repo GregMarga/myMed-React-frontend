@@ -81,7 +81,7 @@ const Visit = () => {
 
         const fetchHistory = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientId}/visits/info`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientId}/visits/info`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 // setOzosList(responseData.ozosList)
                 // if (visitId !== 'new') {
@@ -139,7 +139,7 @@ const Visit = () => {
         console.log('submit')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientId}/visits`, 'POST',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientId}/visits`, 'POST',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,
@@ -167,7 +167,7 @@ const Visit = () => {
         console.log('update')
         event.preventDefault();
         try {
-            await sendRequest(`http://localhost:5000/patients/${patientId}/visits/${visitId}`, 'PATCH',
+            await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientId}/visits/${visitId}`, 'PATCH',
                 JSON.stringify({
                     date: dateInputRef.current.value,
                     geniki_eikona: geniki_eikonaInputRef.current.value,

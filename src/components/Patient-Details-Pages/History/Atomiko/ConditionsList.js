@@ -20,6 +20,7 @@ const ConditionsList = (props) => {
                         date_of_healing={condition.dateOfHealing}
                         key={condition._id}
                         id={condition._id}
+                        openDeleteModal={props.openDeleteModal}
                         removeConditionHandler={props.removeConditionHandler}
                         editConditionHandler={props.editConditionHandler}
                     />

@@ -32,7 +32,7 @@ const Gynaikologiko = (props) => {
     useEffect(() => {
         const fetchGynaikologiko = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/gynaikologiko`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
                 console.log(responseData)
                 if (!!responseData) {
                     setGynaikologiko(responseData);
@@ -59,14 +59,14 @@ const Gynaikologiko = (props) => {
         event.preventDefault();
         console.log('submit')
         try {
-            const responseDate = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko`, 'POST',
+            const responseDate = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/gynaikologiko`, 'POST',
                 JSON.stringify({
                     emminarxi: emminarxiInputRef.current.value,
                     stability: stabilityInputRef.current.value,
                     cycle_duration: cycle_durationInputRef.current.value,
                     period_duration: period_durationInputRef.current.value,
                     emminopausi: emminopausiInputRef.current.value,
-                  
+
 
                 }), {
                 'Content-Type': 'application/json',
@@ -76,20 +76,20 @@ const Gynaikologiko = (props) => {
             // patientContext.createAnamnistikoId(responseDate._id)
             setEditGynaikologiko(true)
 
-        } catch (err) { console.log(err)}
+        } catch (err) { console.log(err) }
     }
     const updateHandler = async (event) => {
         event.preventDefault();
         console.log('update')
         try {
-            const responseDate = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/anamnistiko/gynaikologiko`, 'PATCH',
+            const responseDate = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/gynaikologiko`, 'PATCH',
                 JSON.stringify({
                     emminarxi: emminarxiInputRef.current.value,
                     stability: stabilityInputRef.current.value,
                     cycle_duration: cycle_durationInputRef.current.value,
                     period_duration: period_durationInputRef.current.value,
                     emminopausi: emminopausiInputRef.current.value,
-                    
+
 
                 }), {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const Gynaikologiko = (props) => {
             patientContext.createAnamnistikoId(responseDate._id)
             setEditGynaikologiko(false)
 
-        } catch (err) { console.log(err)}
+        } catch (err) { console.log(err) }
     }
 
 
@@ -111,25 +111,25 @@ const Gynaikologiko = (props) => {
             <form onSubmit={(!editGynaikologiko) ? submitHandler : updateHandler}>
                 <Card className={classes.erCard}>
                     <Row>
-                        <Col sm lg="2" className='text-end'><label>Εμμηναρχή</label></Col>
-                        <Col sm lg="2" className='text-start'><input min={1} max={99} disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminarxiInputRef} defaultValue={gynaikologiko.emminarxi} required/></Col>
+                        <Col sm lg="2" className='text-sm-end'><label>Εμμηναρχή</label></Col>
+                        <Col sm lg="2" className='text-start'><input min={1} max={99} disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminarxiInputRef} defaultValue={gynaikologiko.emminarxi} required /></Col>
                     </Row>
                     <Row>
-                        <Col className='text-end'><label>Σταθερότητα</label></Col>
-                        <Col>
+                        <Col sm={6}  lg={2} className='text-sm-end'><label>Σταθερότητα</label></Col>
+                        <Col sm={6}  lg={2}>
                             <select name='stability' onChange={stabilityChangeHandler} ref={stabilityInputRef} disabled={editGynaikologiko}>
                                 <option value={false} selected={!gynaikologiko.stabilityInputRef}>ασταθής</option>
                                 <option value={true} selected >σταθερή</option>
                             </select>
                         </Col>
-                        <Col className='text-end'><label>Διάρκεια Κύκλου</label></Col>
-                        <Col><input min={1} max={999}  type='number' placeholder="διάρκεια σε ημέρες" defaultValue={(gynaikologiko.cycle_duration !== 28) ? (gynaikologiko.cycle_duration) : 28} disabled={(stability === false) || editGynaikologiko} ref={cycle_durationInputRef} /></Col>
-                        <Col className='text-end'><label>Διάρκεια Περιόδου</label></Col>
-                        <Col ><input min={1} max={99} type='number'placeholder="διάρκεια σε ημέρες" disabled={editGynaikologiko} defaultValue={gynaikologiko.period_duration} ref={period_durationInputRef} /></Col>
+                        <Col sm={6}  lg={2} className='text-sm-end'><label>Διάρκεια Κύκλου</label></Col>
+                        <Col sm={6}  lg={2}><input min={1} max={999} type='number' placeholder="διάρκεια σε ημέρες" defaultValue={(gynaikologiko.cycle_duration !== 28) ? (gynaikologiko.cycle_duration) : 28} disabled={(stability === false) || editGynaikologiko} ref={cycle_durationInputRef} /></Col>
+                        <Col sm={6}  lg={2} className='text-sm-end'><label>Διάρκεια Περιόδου</label></Col>
+                        <Col sm={6}  lg={2}><input min={1} max={99} type='number' placeholder="διάρκεια σε ημέρες" disabled={editGynaikologiko} defaultValue={gynaikologiko.period_duration} ref={period_durationInputRef} /></Col>
                     </Row>
                     <Row>
-                        <Col sm={2} className='text-end'><label>Εμμηνόπαυση</label></Col>
-                        <Col sm={2} className='text-start'><input min={1} max={99} disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminopausiInputRef} defaultValue={gynaikologiko.emminopausi} /></Col>
+                        <Col sm={6}  lg={2} className='text-sm-end'><label>Εμμηνόπαυση</label></Col>
+                        <Col sm={6}  lg={2} className='text-start'><input min={1} max={99} disabled={editGynaikologiko} type='number' placeholder="ηλικία σε έτη" ref={emminopausiInputRef} defaultValue={gynaikologiko.emminopausi} /></Col>
                     </Row>
                     {!isLoading && <Row className="justify-content-sm-end">
                         <Col >

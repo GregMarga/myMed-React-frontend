@@ -11,7 +11,6 @@
 
 .addAllergy {
     width: 90%;
-    margin-left: 5%;
     background-color: lightblue;
     border: 1px solid lightgrey;
     padding: 5px;
@@ -21,16 +20,19 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.addAllergy button{
+
+.addAllergy button {
     padding: 3px;
     font-size: 1.1rem;
     border-radius: 5px;
+    margin-left: 50px;
 }
 
 .loadedAllergy button {
     padding: 3px;
     font-size: 1.1rem;
     border-radius: 5px;
+    margin-left: 50px;
     /* padding: 5px; */
 }
 
@@ -40,4 +42,30 @@
     padding: 3px;
     font-size: 1.1rem;
     border-radius: 5px;
+}
+
+
+@media only screen and (max-width: 1300px) {
+    .addAllergy button{
+        margin-left: 0;
+    }
+  
+    .loadedAllergy button{
+        margin-left: 0;
+        
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .addAllergy button{
+        margin-left: 0;
+    }
+    .loadedAllergy,.addAllergy{
+        width: auto;
+        margin-left: 0;
+    }
+    .loadedAllergy button{
+        margin-left: 0;
+        
+    }
 }

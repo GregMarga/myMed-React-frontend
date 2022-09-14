@@ -16,7 +16,7 @@ const FilesListItem = (props) => {
 
     const clickHandler = async (event) => {
         try {
-            const responseData = await sendRequest(`http://localhost:5000/patients/${patientContext.patientId}/uploads/exams/${props.id}`, 'DELETE', null, {
+            const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/uploads/exams/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
             }
             );
@@ -32,7 +32,7 @@ const FilesListItem = (props) => {
             <Col className="text-center" sm={4} md={2}>{props.dateOfDiagnosis}</Col>
             <Col className="text-center" sm={4} md={2}>{props.dateOfVisit}</Col>
             <Col sm={1} className="text-end">
-                <a href={`http://localhost:5000/uploads/exams/${props.path}`} target="_blank"><ViewButton /></a>
+                <a href={`${process.env.REACT_APP_BACKEND_URL}/uploads/exams/${props.path}`} target="_blank"><ViewButton /></a>
             </Col>
             <Col sm={1} className="text-start">
                 {!isLoading && <DeleteButton onClick={clickHandler} />}
