@@ -87,7 +87,7 @@ const Diagnosis = (props) => {
             props.dispatch({ type: 'editDiagnosisList', payload: { diagnosisList: tempList } })
             const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/diagnosis/${diagnosisIdtoUpdate}`, 'PATCH',
                 JSON.stringify({
-                    status: addedDiagnosis.length,
+                    status: addedDiagnosis.status,
                     dateOfDiagnosis: addedDiagnosis.dateOfDiagnosis,
                     dateOfHealing: addedDiagnosis.dateOfHealing
                 })

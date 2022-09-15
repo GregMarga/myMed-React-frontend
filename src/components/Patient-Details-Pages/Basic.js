@@ -285,7 +285,7 @@ const Basic = (props) => {
                                 <label htmlFor="dateOfBirth">Ημερομηνία Γέννησης</label>
                             </Col>
                             <Col className='text-sm-end '>
-                                <input disabled={editBasics} ref={dateOfBirthInputRef} id='dateOfBirth' type='date' name="dateOfBirth" defaultValue={moment(age).format('YYYY-MM-DD')} lang="el" />
+                                <input disabled={editBasics} ref={dateOfBirthInputRef} id='dateOfBirth' type='date' name="dateOfBirth" defaultValue={moment(age).format('YYYY-MM-DD')}  />
                             </Col>
                             <Col className='text-sm-end '>
                                 <label htmlFor="birth_place" >Τόπος Γεννήσεως</label>

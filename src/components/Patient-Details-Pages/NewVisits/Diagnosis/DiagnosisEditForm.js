@@ -21,7 +21,7 @@ const DiagnosisEditForm = (props) => {
         // const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/630ce238394ce3043ab038c8/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
         event.preventDefault();
         let diagnosis = {
-            name: props.condition,
+            conditionName: props.condition,
             status: stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,

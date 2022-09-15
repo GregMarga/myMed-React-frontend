@@ -19,7 +19,7 @@ const DiagnosisList = (props) => {
                 {(props.diagnosisList.length !== 0) && props.diagnosisList.map((diagnosis) => {
 
                     return <DiagnosisListItem
-                        condition={diagnosis.name}
+                        condition={diagnosis.conditionName}
                         status={diagnosis.status}
                         dateOfDiagnosis={(!!diagnosis.dateOfDiagnosis) ? moment(diagnosis.dateOfDiagnosis).format('DD-MM-YYYY') : ''}
                         dateOfHealing={(!!diagnosis.dateOfHealing) ? moment(diagnosis.dateOfHealing).format('DD-MM-YYYY') : ''}

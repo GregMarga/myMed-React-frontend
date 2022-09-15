@@ -29,6 +29,7 @@ const TherapeiaList = (props) => {
                     key={therapeia._id}
                     id={therapeia._id}
                     removeTherapeiaHandler={props.removeTherapeiaHandler}
+                    editTherapeiaHandler={props.editTherapeiaHandler}
                 />
             })}
 

@@ -33,6 +33,8 @@ const reducer = (state, action) => {
             return { ...state, diagnosisList: action.payload.diagnosisList }
         case 'editDiagnosisList':
             return { ...state, diagnosisList: action.payload.diagnosisList }
+        case 'editTherapeiaList':
+            return { ...state, therapeiaList: action.payload.therapeiaList }
         case 'loadDiagnosisList':
             return { ...state, loadedDiagnosisList: action.payload.loadedDiagnosisList }
         case 'loadTherapeiaList':

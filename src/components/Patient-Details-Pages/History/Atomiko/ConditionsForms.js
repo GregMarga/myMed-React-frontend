@@ -17,7 +17,6 @@ const ConditionsForm = (props) => {
     const [selectedCondition, setSelectedCondition] = useState({ code: '', condition: '' })
     const { sendRequest } = useHttpClient();
     const stateInputRef = useRef();
-    const severityInputRef = useRef();
     const dateOfDiagnosisInputRef = useRef();
     const dateOfHealingInputRef = useRef();
 
@@ -29,12 +28,13 @@ const ConditionsForm = (props) => {
 
 
         let condition = {
-            name: selectedCondition.code + ': ' + selectedCondition.condition,
+            name: selectedCondition,
             status: (stateInputRef.current.value !== 'none') ? stateInputRef.current.value : null,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,
             _id: id
         }
+        console.log(selectedCondition)
         props.addConditionHandler(condition);
         props.setAddCondition(false);
 

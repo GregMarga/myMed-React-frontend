@@ -25,6 +25,7 @@ const DiagnosisForm = (props) => {
 
         let diagnosis = {
             name: selectedCondition.code + ': ' + selectedCondition.condition,
+            conditionName: selectedCondition.code + ': ' + selectedCondition.condition,
             status: stateInputRef.current.value,
             dateOfDiagnosis: dateOfDiagnosisInputRef.current.value,
             dateOfHealing: dateOfHealingInputRef.current.value,

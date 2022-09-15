@@ -33,12 +33,15 @@ const ConditionsFinder = (props) => {
 
     const nameChangeHandler = (event) => {
         setConditionInput(event.target.value);
+        console.log(event.target.value)
+        props.setSelectedCondition(event.target.value)
         let hit;
         for (let i = 0; i < hitList.length; i++) {
 
             if (hitList[i].code === event.target.value.split(":")[0]) {       /// find selected
+                console.log('in')
                 setSelectedHit(hitList[i]);
-                props.setSelectedCondition({ code: hitList[i].code, condition: hitList[i].condition });
+                props.setSelectedCondition(hitList[i].code + ": " + hitList[i].condition);
                 hit = { code: hitList[i].code, condition: hitList[i].condition }
 
                 if (!!props.add) {
@@ -56,7 +59,7 @@ const ConditionsFinder = (props) => {
     return (
         <Row>
             <Col>
-                <input list="conditionNames" name="conditionName" id="conditionName" value={conditionInput} onChange={nameChangeHandler} required />
+                <input list="conditionNames" name="conditionName" id="conditionName" minLength={5} value={conditionInput} onChange={nameChangeHandler} required />
                 <datalist id="conditionNames" >
                     <ConditionsHits hit={hitList} />
                 </datalist>

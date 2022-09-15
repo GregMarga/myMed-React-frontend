@@ -46,7 +46,7 @@ const TherapeiaForm = (props) => {
                         <input className={classes.conditionInput} list='conditionsNames' name='conditionName' ref={conditionInputRef} value={nameInput} onChange={changeHandler} required />
                         <datalist id='conditionsNames'>
                             {props.diagnosisList.map((diagnosis) => {
-                                return <option value={diagnosis.name} key={uuid()} />
+                                return <option value={diagnosis.conditionName} key={uuid()} />
                             })}
                         </datalist>
                     </Col>
@@ -64,7 +64,7 @@ const TherapeiaForm = (props) => {
                             <option value='0.25'>0.25</option>
                             <option value='0.5'>0.5</option>
                             <option value='1'>1</option>
-                            <option value='1'>1.5</option>
+                            <option value='1.5'>1.5</option>
                             <option value='2'>2</option>
                             <option value='2.5'>2.5</option>
                             <option value='3'>3</option>
@@ -99,7 +99,7 @@ const TherapeiaForm = (props) => {
                             <option value='25'>25</option>
                             <option value='26'>26</option>
                             <option value='27'>27</option>
-                            <option value='9'>28</option>
+                            <option value='28'>28</option>
                             <option value='29'>29</option>
                             <option value='30'>30</option>
                             <option value='31'>31</option>

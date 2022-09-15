@@ -3,3 +3,5 @@ public/add.png
 src\components\Patient-Profile\ConditionsInfo\KlironomikoInfo\monasept2022.pdf
 .eslintcache
 .env
+.env.production
+build

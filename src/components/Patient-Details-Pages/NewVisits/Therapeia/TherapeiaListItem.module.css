@@ -11,7 +11,14 @@
     margin-right: 10px;
 }
 
+.editButton {
+    font-size: 1.1rem;
+    padding: 3px;
+    min-width: 110px;
+}
+
 .deleteButton {
     font-size: 1.1rem;
     padding: 3px;
+    min-width: 110px;
 }

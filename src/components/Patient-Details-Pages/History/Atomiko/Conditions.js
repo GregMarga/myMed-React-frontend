@@ -86,6 +86,7 @@ const Conditions = (props) => {
 
     const removeConditionHandler = async () => {
         try {
+            setDeleteModalIsOpen(false);
             await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/anamnistiko/condition/${selectedConditionId}`, 'DELETE', null, { Authorization: 'Bearer ' + auth.token });
 
             setConditionsList((prevState) => {
@@ -93,7 +94,7 @@ const Conditions = (props) => {
                     return condition._id !== selectedConditionId
                 })
             })
-            setDeleteModalIsOpen(false);
+
         } catch (err) { }
 
     }

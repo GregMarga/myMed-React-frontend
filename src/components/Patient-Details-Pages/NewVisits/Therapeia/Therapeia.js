@@ -45,7 +45,7 @@ const Therapeia = (props) => {
         const therapeiaId = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/conditions/id`, 'GET', null, { Authorization: 'Bearer ' + auth.token });
 
         try {
-            props.dispatch({ type: 'addTherapeiaList', payload: { therapeia: {...newTherapeia,_id: therapeiaId} } })
+            props.dispatch({ type: 'addTherapeiaList', payload: { therapeia: { ...newTherapeia, _id: therapeiaId } } })
             await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia`, 'POST',
                 JSON.stringify({
                     _id: therapeiaId,
@@ -76,13 +76,37 @@ const Therapeia = (props) => {
 
     }
 
+    const editTherapeiaHandler = async (newTherapeia, therapeiaId) => {
+        let tempList = props.state.therapeiaList;
+        tempList = tempList.map(therapeia => {
+            if (therapeia._id === therapeiaId) {
+                return therapeia = newTherapeia
+            } else { return therapeia = therapeia }
+        })
+        props.dispatch({ type: 'editTherapeiaList', payload: { therapeiaList: tempList } })
+
+        // try {
+        //     await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/patients/${patientContext.patientId}/visit/${patientContext.visitId}/therapeia/${therapeiaId}`, 'PATCH',
+        //         JSON.stringify({
+        //             posotita: newTherapeia.posotita,
+        //             syxnotita: newTherapeia.syxnotita,
+        //             duration: newTherapeia.duration
+        //         })
+        //         , {
+        //             'Content-Type': 'application/json',
+        //             Authorization: 'Bearer ' + auth.token
+        //         }
+        //     );
+        // } catch (err) { console.log(err) }
+    }
+
 
     return (
         <Container>
             {!!error && <ErrorModal error={error} onClear={clearError} />}
             <Card className={classes.therapeiaCard}>
                 {isLoading && <LoadingSpinner />}
-                <TherapeiaList touchForm={props.state.touchTherapeiaForm} loadedTherapeiaList={props.loadedTherapeiaList} therapeiaList={props.therapeiaList} oldTherapeia={props.state.oldTherapeia} dispatch={props.dispatch} addTherapeia={addTherapeia} removeTherapeiaHandler={removeTherapeiaHandler} />
+                <TherapeiaList editTherapeiaHandler={editTherapeiaHandler} touchForm={props.state.touchTherapeiaForm} loadedTherapeiaList={props.loadedTherapeiaList} therapeiaList={props.therapeiaList} oldTherapeia={props.state.oldTherapeia} dispatch={props.dispatch} addTherapeia={addTherapeia} removeTherapeiaHandler={removeTherapeiaHandler} />
                 <Row>
                     <Col>
                         {addTherapeia && <TherapeiaForm addTherapeia={addTherapeia} addTherapeiaHandler={addTherapeiaHandler} diagnosisList={props.diagnosisList} setAddTherapeia={setAddTherapeia} />}

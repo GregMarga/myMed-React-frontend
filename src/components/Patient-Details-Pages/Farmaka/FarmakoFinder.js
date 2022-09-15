@@ -39,10 +39,13 @@ const FarmakoFinder = (props) => {
             fetchATCNameHits();
         }
 
-    }, [drugInput, sendRequest, atcInput,auth.token]);
+    }, [drugInput, sendRequest, atcInput, auth.token]);
 
     const nameChangeHandler = (event) => {
         setDrugInput(event.target.value);
+        props.setSelectedFarmako((prevState) => {
+            return { ...prevState, name: event.target.value }
+        });
         for (let i = 0; i < hitList.length; i++) {
 
             if (hitList[i].name === event.target.value) {
@@ -54,7 +57,10 @@ const FarmakoFinder = (props) => {
     }
     const atcNameChangeHandler = (event) => {
         setAtcInput(event.target.value)
-        console.log(event.target.value, atcInput)
+
+        props.setSelectedFarmako((prevState) => {
+            return { ...prevState, ATC_name: event.target.value }
+        });
         for (let i = 0; i < hitList.length; i++) {
             console.log(hitList[i].ATC_name, event.target.value);
             if (hitList[i].ATC_name === event.target.value) {
@@ -69,19 +75,19 @@ const FarmakoFinder = (props) => {
 
     return (
         <Row>
-           
+
             <Col className="text-center" xs={12} sm={6}>
-            {(props.therapeia) && <label className="drastiki__ousia">Όνομα Φαρμάκου</label>}
-                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugNames" name="drugName" id="drugName" value={drugInput} onChange={nameChangeHandler} defaultValue={selectedHit.name} />
+                {(props.therapeia) && <label className="drastiki__ousia">Όνομα Φαρμάκου</label>}
+                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugNames" name="drugName" id="drugName" minLength={5} value={drugInput} onChange={nameChangeHandler} defaultValue={selectedHit.name} />
                 <datalist id="drugNames" >
                     <FarmakaHit hit={hitList} />
 
                 </datalist>
             </Col>
-            
+
             <Col className="text-center" xs={12} sm={6}>
-            {(props.therapeia) && <label className="drastiki__ousia">Δραστική Ουσία</label>}
-                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugATCs" name="drugATC" id="drugATC" defaultValue={selectedHit.ATC_name} onChange={atcNameChangeHandler} required/>
+                {(props.therapeia) && <label className="drastiki__ousia">Δραστική Ουσία</label>}
+                <input className={`${props.therapeia && 'farmako__finder__input'}`} list="drugATCs" name="drugATC" id="drugATC" minLength={3} defaultValue={selectedHit.ATC_name} onChange={atcNameChangeHandler} required />
                 <datalist id="drugATCs">
                     <FarmakaATC hit={hitList} />
                 </datalist>
